@@ -1,8 +1,12 @@
+# Core pipeline
 music21>=9.0
 matplotlib>=3.8
 
-# Optional second OMR backend. Comment out if you don't want the extra ~2 min
-# per page of pipeline runtime.
-oemer>=0.1.5
+# Chord-symbol classifier (pipeline/train_classifier.py + chord_parser.py).
+# Pillow is also needed for the classifier's image loading.
 torch>=2.1
 pillow>=10
+
+# Optional second OMR backend. Adds ~2 min per page of pipeline runtime
+# (only when --with-oemer is passed). Comment out to skip.
+oemer>=0.1.5
