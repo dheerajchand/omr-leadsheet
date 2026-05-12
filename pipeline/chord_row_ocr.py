@@ -215,6 +215,41 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
                     deduped[-1] = (xc, tok)
                 continue
             deduped.append((xc, tok))
+
+        # Optional: re-classify each token with the trained chord-symbol CNN.
+        # Tesseract is good at *localising* chords; the CNN is better at
+        # *recognising* them. If the CNN is confident, we trust its label.
+        classifier_path = os.environ.get("CHORD_CLASSIFIER_PATH")
+        if classifier_path and os.path.exists(classifier_path) and deduped:
+            try:
+                from classifier_infer import ChordClassifier
+                clf = ChordClassifier(classifier_path)
+                refined: list[tuple[int, str]] = []
+                for xc, tok in deduped:
+                    # Crop a window around the token's x-center
+                    half = 40
+                    x0 = max(0, xc - half)
+                    w = min(img_width - x0, half * 2)
+                    crop_path = os.path.join(td, f"clf_{xc}.png")
+                    subprocess.run(
+                        ["magick", png_path, "-crop",
+                         f"{w}x{strip_h}+{x0}+{top}", "+repage", crop_path],
+                        capture_output=True, check=False,
+                    )
+                    if not os.path.exists(crop_path):
+                        refined.append((xc, tok))
+                        continue
+                    chord_str, conf = clf.recognise(crop_path)
+                    # High confidence and the CNN disagrees → trust the CNN.
+                    # Low confidence → keep tesseract.
+                    if conf >= 0.6:
+                        refined.append((xc, chord_str))
+                    else:
+                        refined.append((xc, tok))
+                return refined
+            except Exception as e:
+                # Don't let the classifier break the pipeline; fall back to tesseract
+                print(f"  (classifier disabled: {e})", file=__import__("sys").stderr)
         return deduped
 
 

@@ -70,7 +70,14 @@ def load_png_as_tensor(path: str):
         new_img = Image.new("L", (new_w, h), 255)
         new_img.paste(img, ((new_w - w) // 2, 0))
     new_img = new_img.resize((IMG_W, IMG_H))
-    arr = torch.tensor(list(new_img.getdata()), dtype=torch.float32).reshape(1, IMG_H, IMG_W)
+    # Pillow 14 deprecates Image.getdata(); use numpy when available.
+    try:
+        import numpy as np
+        arr = torch.from_numpy(np.asarray(new_img, dtype="float32")).unsqueeze(0)
+    except ImportError:
+        arr = torch.tensor(
+            list(new_img.getdata()), dtype=torch.float32
+        ).reshape(1, IMG_H, IMG_W)
     return arr / 255.0
 
 
