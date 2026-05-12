@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Pipeline outputs (paths typically live outside the repo via BOOK_DIR,
+# but if anyone runs locally and BOOK_DIR points here, ignore the artifacts)
+LeadSheets/
+MusicXML/
+MusicXML-oemer/
+Lyrics/
+Individual Songs/
+
+# Sample run outputs
+sample/output/
