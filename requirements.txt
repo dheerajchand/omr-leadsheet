@@ -4,3 +4,5 @@ matplotlib>=3.8
 # Optional second OMR backend. Comment out if you don't want the extra ~2 min
 # per page of pipeline runtime.
 oemer>=0.1.5
+torch>=2.1
+pillow>=10
