@@ -158,9 +158,14 @@ def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]
             text = parts[11].strip()
         except ValueError:
             continue
-        if conf < 25 or not text:
+        if not text or not CHORD_REGEX.match(text):
             continue
-        if not CHORD_REGEX.match(text):
+        # Bare-letter chord names (A, D, F, etc.) get many false positives
+        # from stray ink, accent marks, and lyric letters that happen to be
+        # at the chord-row y. Require much higher tesseract confidence for
+        # those. Multi-character chords (A7, Cmaj7, …) keep the lower bar.
+        min_conf = 75 if len(text) == 1 else 25
+        if conf < min_conf:
             continue
         out.append((x_offset + left + width // 2, text))
     return out
