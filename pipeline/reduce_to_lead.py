@@ -125,6 +125,24 @@ def reduce_score(
         if isinstance(n, note.Note):
             n.octave = (n.octave or 4) - 1
 
+    # Strip piano dynamics / hairpins. The Audiveris export sometimes attaches
+    # piano-staff dynamic marks (mf, p, cresc.) to the vocal part. A jazz lead
+    # sheet shouldn't carry dynamics — those belong on the performer's part.
+    from music21 import dynamics, spanner
+    drop_classes = (
+        dynamics.Dynamic,
+        dynamics.Crescendo,
+        dynamics.Diminuendo,
+        spanner.Crescendo,
+        spanner.Diminuendo,
+    )
+    for el in list(new_part.recurse().getElementsByClass(drop_classes)):
+        holder = el.getContextByClass(stream.Measure) or new_part
+        try:
+            holder.remove(el, recurse=True)
+        except Exception:
+            pass
+
     # Capture key/time from the source vocal part BEFORE we trim measures,
     # so we can re-install them on the new first measure if trimming drops them.
     source_key = next(iter(new_part.recurse().getElementsByClass(key.KeySignature)), None)

@@ -261,6 +261,25 @@ def insert_missing(musicxml_path: str, missing: list[OMRChord], out_path: str) -
         dur = target_m.duration.quarterLength or 4.0
         frac = c.measure_frac if c.measure_frac is not None else 0.0
         offset = round(frac * dur * 4) / 4  # snap to quarter-beat
+        # Final dedup before insertion: skip if the same chord value already
+        # exists anywhere in this measure, or if any chord at a similar offset
+        # exists. Prevents the "G7 appears twice" issue when Audiveris and
+        # chord_row_ocr both detect the same chord at slightly different x.
+        existing = list(target_m.recurse().getElementsByClass(harmony.ChordSymbol))
+        norm_target = normalize_chord(c.value)
+        duplicate = False
+        for ex in existing:
+            if normalize_chord(ex.figure) == norm_target:
+                duplicate = True
+                break
+            if abs(float(ex.offset) - offset) < 0.5 and (
+                norm_target in normalize_chord(ex.figure)
+                or normalize_chord(ex.figure) in norm_target
+            ):
+                duplicate = True
+                break
+        if duplicate:
+            continue
         # Many Audiveris chord-name values aren't music21-parseable
         # (e.g., "b", "7(6)", "m7sus4"). Fall back to a TextExpression so the
         # user sees the recognized text without crashing the pipeline.

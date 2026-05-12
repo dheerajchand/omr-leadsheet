@@ -240,9 +240,13 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
                         refined.append((xc, tok))
                         continue
                     chord_str, conf = clf.recognise(crop_path)
-                    # High confidence and the CNN disagrees → trust the CNN.
-                    # Low confidence → keep tesseract.
-                    if conf >= 0.6:
+                    # Confidence gate. Short predictions (bare letters like
+                    # "A" or "D") are visually ambiguous with stray ink and
+                    # need higher confidence to be trusted. Long ones can be
+                    # accepted with lower confidence because their visual
+                    # signature is more distinctive.
+                    threshold = 0.8 if len(chord_str) <= 2 else 0.6
+                    if conf >= threshold:
                         refined.append((xc, chord_str))
                     else:
                         refined.append((xc, tok))
