@@ -128,23 +128,25 @@ def reduce_score(
     # Strip piano dynamics / hairpins. The Audiveris export sometimes attaches
     # piano-staff dynamic marks (mf, p, cresc.) to the vocal part. A jazz lead
     # sheet shouldn't carry dynamics — those belong on the performer's part.
-    # Use activeSite-based removal because dynamics typically live inside Voice
-    # containers, not directly under Measure.
-    from music21 import dynamics, spanner
-    drop_classes = (
-        dynamics.Dynamic,
-        dynamics.Crescendo,
-        dynamics.Diminuendo,
-        spanner.Crescendo,
-        spanner.Diminuendo,
+    # After deepcopy, the elements' activeSite chain isn't reliable, so walk
+    # every container explicitly and remove direct children.
+    from music21 import dynamics
+    droppable_types: tuple = tuple(
+        c for c in (
+            getattr(dynamics, "Dynamic", None),
+            getattr(dynamics, "Crescendo", None),
+            getattr(dynamics, "Diminuendo", None),
+            getattr(dynamics, "DynamicWedge", None),
+        ) if c is not None
     )
-    for el in list(new_part.recurse().getElementsByClass(drop_classes)):
-        site = getattr(el, "activeSite", None)
-        if site is not None:
-            try:
-                site.remove(el)
-            except Exception:
-                pass
+
+    def _purge_stream(stream_obj) -> None:
+        for el in list(stream_obj):
+            if isinstance(el, droppable_types):
+                stream_obj.remove(el)
+            elif hasattr(el, "elements"):
+                _purge_stream(el)
+    _purge_stream(new_part)
 
     # Capture key/time from the source vocal part BEFORE we trim measures,
     # so we can re-install them on the new first measure if trimming drops them.

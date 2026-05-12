@@ -160,12 +160,15 @@ def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]
             continue
         if not text or not CHORD_REGEX.match(text):
             continue
-        # Bare-letter chord names (A, D, F, etc.) get many false positives
-        # from stray ink, accent marks, and lyric letters that happen to be
-        # at the chord-row y. Require much higher tesseract confidence for
-        # those. Multi-character chords (A7, Cmaj7, …) keep the lower bar.
-        min_conf = 75 if len(text) == 1 else 25
-        if conf < min_conf:
+        # Reject bare single-letter "chords" outright. Audiveris reliably
+        # detects bare-letter chord names (D, G, C, etc.) directly. The
+        # value-add of chord_row_ocr is multi-char chords Audiveris misses
+        # (A7, Cm7, G9/7, Cmaj7, etc.). Single-letter findings here are
+        # almost always false positives from stray ink or accent marks at
+        # the chord-row y.
+        if len(text) < 2:
+            continue
+        if conf < 25:
             continue
         out.append((x_offset + left + width // 2, text))
     return out

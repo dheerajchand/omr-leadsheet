@@ -17,9 +17,11 @@ source "$(dirname "${BASH_SOURCE[0]}")/env.sh"
 
 set -euo pipefail
 
+# Alias env-exported names to the script's older variable conventions so
+# the bulk of the script can stay as-is.
 BOOK="$BOOK_DIR"
-CODE="$BOOK_DIR/code"
-PY="$CODE/.venv/bin/python"
+CODE="$CODE_DIR"
+PY="$VENV_PY"
 AUDIVERIS="$AUDIVERIS_BIN"
 MSCORE="$MSCORE_BIN"
 STYLE="$STYLE_FILE"

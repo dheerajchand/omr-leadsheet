@@ -9,7 +9,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/env.sh"
 set -euo pipefail
 
 BOOK="$BOOK_DIR"
-CODE="$BOOK_DIR/code"
+CODE="$CODE_DIR"
 IN_DIR="$BOOK_DIR/Individual Songs"
 LOG="$BOOK_DIR/LeadSheets/_batch.log"
 
