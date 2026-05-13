@@ -148,6 +148,20 @@ def reduce_score(
                 _purge_stream(el)
     _purge_stream(new_part)
 
+    # Also strip articulations (accent, marcato, staccato, etc.) from every
+    # note in the vocal part. Real Book lead sheets don't carry per-note
+    # articulations — those are performer interpretation. Many "^" marks in
+    # the rendered output are also OCR misclassifications: the jazz-font
+    # capital A above a note can be misread as a marcato articulation on
+    # the note itself. Either way, the visible noise should go.
+    from music21 import articulations
+    art_types = (articulations.Articulation,)
+    for n in new_part.recurse().notes:
+        if isinstance(n, note.Note) and getattr(n, "articulations", None):
+            n.articulations = [
+                a for a in n.articulations if not isinstance(a, art_types)
+            ]
+
     # Capture key/time from the source vocal part BEFORE we trim measures,
     # so we can re-install them on the new first measure if trimming drops them.
     source_key = next(iter(new_part.recurse().getElementsByClass(key.KeySignature)), None)

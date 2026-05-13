@@ -160,16 +160,12 @@ def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]
             continue
         if not text or not CHORD_REGEX.match(text):
             continue
-        # Reject bare single-letter "chords" outright. Audiveris reliably
-        # detects bare-letter chord names (D, G, C, etc.) directly. The
-        # value-add of chord_row_ocr is multi-char chords Audiveris misses
-        # (A7, Cm7, G9/7, Cmaj7, etc.). Single-letter findings here are
-        # almost always false positives from stray ink or accent marks at
-        # the chord-row y.
-        if len(text) < 2:
-            continue
         if conf < 25:
             continue
+        # Single-letter tokens (A, D, F, etc.) are kept here so the classifier
+        # can try to upgrade them to multi-char chords (A → A7, D → Dm7, …).
+        # If the classifier doesn't upgrade them, they get rejected at the
+        # end of _ocr_chord_row.
         out.append((x_offset + left + width // 2, text))
     return out
 
