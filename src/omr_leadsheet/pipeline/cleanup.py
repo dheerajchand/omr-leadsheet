@@ -1,34 +1,75 @@
 #!/usr/bin/env python3
 """Pre-clean Audiveris .mxl / .musicxml output so MuseScore can import it.
 
-Audiveris occasionally emits unclosed <tuplet> notations (a <tuplet
-type="start"> with no matching type="stop" in the same measure).
-MuseScore rejects the whole file with exit 40.
+Audiveris occasionally emits unclosed ``<tuplet>`` notations (a
+``<tuplet type="start">`` with no matching ``type="stop"`` in the same
+measure). MuseScore rejects the whole file with exit 40.
 
-Our fix: for each measure, if the tuplet brackets don't balance, strip
-all <tuplet> notations in that measure. We keep <time-modification>
-elements so note durations remain correct — MuseScore just won't draw
-the tuplet bracket.
-
-Usage: cleanup_mxl.py <input.mxl|.xml> <output.xml>
+The fix: for each measure, if tuplet brackets don't balance, strip
+``<tuplet>`` notations in that measure. ``<time-modification>`` goes
+with them so note durations stay correct; MuseScore just doesn't draw
+the bracket.
 """
 from __future__ import annotations
+
 import re
-import sys
 import zipfile
-import xml.etree.ElementTree as ET
+from pathlib import Path
+
+__all__ = ["cleanup", "load_xml", "strip_all_tuplets", "fix_tuplets_in_measure"]
 
 
-def load_xml(path: str) -> str:
-    if path.endswith(".mxl"):
+def load_xml(path: str | Path) -> str:
+    path = Path(path)
+    if path.suffix == ".mxl":
         with zipfile.ZipFile(path) as z:
             names = [n for n in z.namelist() if n.endswith(".xml") and "META-INF" not in n]
             if not names:
                 raise RuntimeError(f"no .xml in {path}")
             with z.open(names[0]) as f:
                 return f.read().decode("utf-8")
-    with open(path) as f:
-        return f.read()
+    return path.read_text()
+
+
+def cleanup(input_path: str | Path, output_path: str | Path, *, aggressive: bool = False) -> int:
+    """Rebalance tuplets and write a clean MusicXML file.
+
+    Parameters
+    ----------
+    input_path : str | Path
+        Source ``.mxl`` or ``.musicxml`` file.
+    output_path : str | Path
+        Destination ``.xml`` file. Parent directories are created if missing.
+    aggressive : bool
+        If True, strip every tuplet (not just unbalanced ones).
+
+    Returns
+    -------
+    int
+        Number of measures rewritten (0 when aggressive=True, since the
+        whole document is overwritten without per-measure counting).
+    """
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    xml = load_xml(input_path)
+
+    if aggressive:
+        output_path.write_text(strip_all_tuplets(xml))
+        return 0
+
+    fixed = 0
+
+    def fixer(match: re.Match) -> str:
+        nonlocal fixed
+        original = match.group(0)
+        replaced = fix_tuplets_in_measure(original)
+        if replaced != original:
+            fixed += 1
+        return replaced
+
+    new_xml = re.sub(r"<measure[^>]*>.*?</measure>", fixer, xml, flags=re.DOTALL)
+    output_path.write_text(new_xml)
+    return fixed
 
 
 def fix_tuplets_in_measure(measure_xml: str) -> str:
@@ -57,35 +98,19 @@ def strip_all_tuplets(xml: str) -> str:
 
 def main() -> None:
     import argparse
+
     ap = argparse.ArgumentParser()
     ap.add_argument("input")
     ap.add_argument("output")
     ap.add_argument("--aggressive", action="store_true",
                     help="Strip ALL tuplets, not just unbalanced ones")
     args = ap.parse_args()
-    xml = load_xml(args.input)
 
+    fixed = cleanup(args.input, args.output, aggressive=args.aggressive)
     if args.aggressive:
-        out_xml = strip_all_tuplets(xml)
-        with open(args.output, "w") as f:
-            f.write(out_xml)
         print("  aggressive: stripped all tuplets and time-modifications")
-        return
-
-    # Walk each measure and fix unbalanced tuplets
-    fixed = 0
-    def fixer(match: re.Match) -> str:
-        nonlocal fixed
-        m = match.group(0)
-        new_m = fix_tuplets_in_measure(m)
-        if new_m != m:
-            fixed += 1
-        return new_m
-
-    out_xml = re.sub(r"<measure[^>]*>.*?</measure>", fixer, xml, flags=re.DOTALL)
-    with open(args.output, "w") as f:
-        f.write(out_xml)
-    print(f"  tuplet-rebalanced measures: {fixed}")
+    else:
+        print(f"  tuplet-rebalanced measures: {fixed}")
 
 
 if __name__ == "__main__":
