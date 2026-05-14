@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 .venv/
 
+# Pytest test files are excluded by the global ~/.gitignore on this machine.
+# Override that for this repo so the test suite is tracked.
+!tests/test_*.py
+
 # Model rollbacks and experimental dataset clones
 *.pt.bak
 dataset_new/
