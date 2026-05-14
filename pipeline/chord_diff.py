@@ -223,7 +223,14 @@ def normalize_chord(s: str) -> str:
 
 
 def diff(omr: list[OMRChord], mxl: list[tuple[int, str]]) -> list[OMRChord]:
-    """Return OMR chord-names that have no matching entry in mxl for the same measure."""
+    """Return OMR chord-names that have no matching entry in mxl for the same measure.
+
+    Coverage rule: a present chord covers the target only if it is at
+    least as specific (≥ length). So existing "Am7" covers an OMR
+    "Am" (less specific, skip), but existing "G7" does NOT cover an
+    OMR "G9/7" (more specific, insert and let insert_missing replace
+    the less-specific one).
+    """
     by_meas: dict[int, list[str]] = {}
     for meas, fig in mxl:
         by_meas.setdefault(meas, []).append(normalize_chord(fig))
@@ -234,8 +241,10 @@ def diff(omr: list[OMRChord], mxl: list[tuple[int, str]]) -> list[OMRChord]:
             continue
         present = by_meas.get(c.measure_global, [])
         target = normalize_chord(c.value)
-        # Match if any present chord contains or is contained in target
-        matched = any(target == p or target in p or p in target for p in present)
+        matched = any(
+            target == p or (len(target) <= len(p) and target in p)
+            for p in present
+        )
         if not matched:
             missing.append(c)
     return missing
@@ -268,27 +277,78 @@ def insert_missing(musicxml_path: str, missing: list[OMRChord], out_path: str) -
         existing = list(target_m.recurse().getElementsByClass(harmony.ChordSymbol))
         norm_target = normalize_chord(c.value)
         duplicate = False
+        # First pass: detect exact duplicates and skip
         for ex in existing:
             if normalize_chord(ex.figure) == norm_target:
                 duplicate = True
                 break
-            if abs(float(ex.offset) - offset) < 0.5 and (
-                norm_target in normalize_chord(ex.figure)
-                or normalize_chord(ex.figure) in norm_target
-            ):
-                duplicate = True
-                break
         if duplicate:
             continue
+        # Second pass: nearby substring matches.
+        #  - If target is contained in a present chord, present is more
+        #    specific (or equal) — skip target.
+        #  - If a present chord is contained in target, target is more
+        #    specific — REMOVE the less-specific present, then insert.
+        to_remove = []
+        for ex in existing:
+            if abs(float(ex.offset) - offset) >= 0.5:
+                continue
+            ex_norm = normalize_chord(ex.figure)
+            if norm_target in ex_norm and len(norm_target) < len(ex_norm):
+                duplicate = True
+                break
+            if ex_norm in norm_target and len(ex_norm) < len(norm_target):
+                to_remove.append(ex)
+        if duplicate:
+            continue
+        for ex in to_remove:
+            site = ex.activeSite
+            if site is not None:
+                site.remove(ex)
+        # Also remove any TextExpression in this measure whose text
+        # normalises to the same chord — earlier pipeline steps may have
+        # emitted "G 7" as a `<direction>` when music21 couldn't parse
+        # the spaced figure as a ChordSymbol; once we have the real
+        # ChordSymbol we don't want both.
+        from music21 import expressions
+        for te in list(target_m.recurse().getElementsByClass(expressions.TextExpression)):
+            te_text = getattr(te, "content", "")
+            if te_text and normalize_chord(te_text) == norm_target:
+                site = te.activeSite
+                if site is not None:
+                    site.remove(te)
         # Many Audiveris chord-name values aren't music21-parseable
-        # (e.g., "b", "7(6)", "m7sus4"). Fall back to a TextExpression so the
-        # user sees the recognized text without crashing the pipeline.
-        try:
-            cs = harmony.ChordSymbol(c.value)
+        # (e.g., "b", "7(6)", "m7sus4"). For stacked-extension chords
+        # like "F#9/7" — where the "/7" is a stacked-7 numerator on
+        # top of "9", not a slash-chord — we strip the suffix for
+        # music21 parsing but force the visible figure to the full
+        # original text. That gives a real ChordSymbol with full
+        # rendering, not just a text overlay.
+        figure = c.value
+        cs = None
+        # Detect stacked extension: digit slash digit at end (e.g., "9/7", "6/5").
+        # Parse using the top digit only (music21 understands "F#9") and
+        # override the chord-kind display text so MuseScore renders the
+        # full "9/7" stack. Setting .figure re-triggers parsing and fails;
+        # chordKindStr just overrides display.
+        m_stack = re.search(r"(\d)/(\d)$", figure)
+        if m_stack:
+            base_for_parse = figure[:m_stack.start()] + m_stack.group(1)
+            try:
+                cs = harmony.ChordSymbol(base_for_parse)
+                cs.chordKindStr = f"{m_stack.group(1)}/{m_stack.group(2)}"
+            except (ValueError, KeyError, IndexError):
+                cs = None
+        if cs is None:
+            try:
+                cs = harmony.ChordSymbol(figure)
+            except (ValueError, KeyError, IndexError):
+                cs = None
+        if cs is not None:
             target_m.insert(offset, cs)
-        except (ValueError, KeyError, IndexError):
+        else:
             from music21 import expressions
-            te = expressions.TextExpression(c.value)
+            te = expressions.TextExpression(figure)
             te.style.fontStyle = "italic"
             target_m.insert(offset, te)
         inserted += 1
