@@ -130,7 +130,7 @@ def process(omr_path: str, png_dir: str, out_dir: str) -> None:
             # over each LH staff (plus a margin for ledger lines above and
             # below the actual staff lines).
             rects: list[str] = []
-            margin_above = 55  # Audiveris coords — cover ledger lines + dynamics
+            margin_above = 55  # Audiveris coords - cover ledger lines + dynamics
             margin_below = 55
             for _, top_a, bot_a in lh_staves:
                 y0 = int((top_a - margin_above) * sy)

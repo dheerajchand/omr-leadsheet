@@ -85,7 +85,7 @@ def find_refrain_start(part) -> int | None:
     """Return the measure number where the refrain begins, or None.
 
     Heuristic: first measure with a left barline of type 'heavy-light'
-    (MusicXML repeat-start) — this is what 'Refrain' sections typically use
+    (MusicXML repeat-start) - this is what 'Refrain' sections typically use
     in these piano-vocal arrangements.
     """
     for m in part.getElementsByClass("Measure"):
@@ -127,7 +127,7 @@ def reduce_score(
 
     # Strip piano dynamics / hairpins. The Audiveris export sometimes attaches
     # piano-staff dynamic marks (mf, p, cresc.) to the vocal part. A jazz lead
-    # sheet shouldn't carry dynamics — those belong on the performer's part.
+    # sheet shouldn't carry dynamics - those belong on the performer's part.
     # After deepcopy, the elements' activeSite chain isn't reliable, so walk
     # every container explicitly and remove direct children.
     from music21 import dynamics
@@ -150,7 +150,7 @@ def reduce_score(
 
     # Also strip articulations (accent, marcato, staccato, etc.) from every
     # note in the vocal part. Real Book lead sheets don't carry per-note
-    # articulations — those are performer interpretation. Many "^" marks in
+    # articulations - those are performer interpretation. Many "^" marks in
     # the rendered output are also OCR misclassifications: the jazz-font
     # capital A above a note can be misread as a marcato articulation on
     # the note itself. Either way, the visible noise should go.
@@ -247,7 +247,7 @@ def reduce_score(
             break
         m = measures[pos - 1]
         m.insert(0, expressions.RehearsalMark(letter))
-        # System break at each letter (except the first) — forces one section
+        # System break at each letter (except the first) - forces one section
         # per line for sight-reading. No page breaks: MuseScore flows pages.
         if idx > 0:
             sl = layout.SystemLayout()
@@ -256,7 +256,7 @@ def reduce_score(
         letters_added.append((letter, pos))
 
     # Collapse key signatures to one per section (majority vote). Audiveris
-    # often misreads the key change at a refrain boundary — a few bars of the
+    # often misreads the key change at a refrain boundary - a few bars of the
     # wrong key, then "correction" to the right one. Majority within each
     # section is robust for single-key verses/refrains.
     from collections import Counter
@@ -300,7 +300,7 @@ def reduce_score(
         elif source_key is not None:
             first_m.insert(0, deepcopy(source_key))
 
-        # Time signature — reinstall if trimmed away
+        # Time signature - reinstall if trimmed away
         if not list(first_m.getElementsByClass(meter.TimeSignature)) and source_time is not None:
             first_m.insert(0, deepcopy(source_time))
 
@@ -328,7 +328,7 @@ def reduce_score(
     new_part.partAbbreviation = ""
     lead.insert(0, new_part)
 
-    # Try writing with makeNotation=False first — music21's default makeNotation
+    # Try writing with makeNotation=False first - music21's default makeNotation
     # pass can corrupt rhythm-troubled Audiveris output. If that fails, fall back.
     try:
         lead.write("musicxml", fp=out_path, makeNotation=False)

@@ -7,16 +7,16 @@ The pipeline runs Audiveris OMR over your source PDFs, then layers on
 chord-symbol recovery (CNN + vision-language model), lyric OCR + spell
 correction, optional second-engine OMR via
 [oemer](https://github.com/BreezeWhite/oemer), and a music21-based
-reducer that turns the piano-vocal grand staff into a Real Book–style
-single-staff melody with chord symbols, rehearsal letters (A, B, C…),
+reducer that turns the piano-vocal grand staff into a Real Book-style
+single-staff melody with chord symbols, rehearsal letters (A, B, C...),
 and the original lyrics underneath.
 
 For each song you get:
 
-- `Song.mscz` — the lead sheet, ready to open in MuseScore.
-- `review.html` — a per-song page with cropped source images of every
+- `Song.mscz` - the lead sheet, ready to open in MuseScore.
+- `review.html` - a per-song page with cropped source images of every
   measure flagged for review.
-- `Song.review.md` — the same flags in markdown.
+- `Song.review.md` - the same flags in markdown.
 
 ## Status
 
@@ -36,7 +36,7 @@ ollama, or Claude via the Anthropic API). See `docs/vlm.md` and
 | Poppler (`pdftoppm`) | High-DPI PDF rendering | `brew install poppler` |
 | ImageMagick (`magick`) | Image cropping / compositing | `brew install imagemagick` |
 | Python 3.11+ | Pipeline runtime | system / pyenv |
-| `ollama` (optional, recommended) | Local vision-language model for chord OCR — see `docs/vlm.md` | `brew install ollama && ollama pull qwen2.5vl:7b` |
+| `ollama` (optional, recommended) | Local vision-language model for chord OCR - see `docs/vlm.md` | `brew install ollama && ollama pull qwen2.5vl:7b` |
 
 You also need a MuseScore `.mss` style file in jazz lead-sheet style.
 The repo ships no style file; supply your own and point `STYLE_FILE`
@@ -137,11 +137,11 @@ omr-leadsheet/
 
 ## Docs
 
-- [`getting-started.md`](docs/getting-started.md) — full install + run walkthrough
-- [`pipeline.md`](docs/pipeline.md) — stage-by-stage reference
-- [`vlm.md`](docs/vlm.md) — ollama + Anthropic backends for chord recognition
-- [`classifier.md`](docs/classifier.md) — training the CNN classifier
-- [`failure_modes.md`](docs/failure_modes.md) — known weak spots
+- [`getting-started.md`](docs/getting-started.md) - full install + run walkthrough
+- [`pipeline.md`](docs/pipeline.md) - stage-by-stage reference
+- [`vlm.md`](docs/vlm.md) - ollama + Anthropic backends for chord recognition
+- [`classifier.md`](docs/classifier.md) - training the CNN classifier
+- [`failure_modes.md`](docs/failure_modes.md) - known weak spots
 
 ## License
 

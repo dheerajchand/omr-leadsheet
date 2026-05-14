@@ -20,7 +20,7 @@ This tool:
         - octave transpose: optional (-12 semitones if the target uses
           treble-8vb clef)
         - duration: WHOLE_NOTE=4.0, NOTEHEAD_VOID=2.0, NOTEHEAD_BLACK=1.0
-          (modified by flag/beam count — simplified to quarter by default)
+          (modified by flag/beam count - simplified to quarter by default)
 
 Usage: head_recovery.py <omr> <reduced.musicxml> <out.musicxml>
                         [--measure-offset N] [--transpose-octave-down]

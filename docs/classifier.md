@@ -15,18 +15,18 @@ chord-recognition rate jumps from ~85% to ~99%.
 
 * The vocabulary is small. Real-world jazz lead sheets use roughly 50
   chord symbols (`C, Cm, C7, Cmaj7, C6, Cm6, Cm7, Cdim, Caug, C+,
-  C7b5, C7#5, C9, Cm9, C11, C13, …` repeated for each of 12 roots).
+  C7b5, C7#5, C9, Cm9, C11, C13, ...` repeated for each of 12 roots).
 * The crops are small (~60×40 pixels) and the visual variation is low
-  — same handful of fonts across a songbook, same glyph shapes for
+ - same handful of fonts across a songbook, same glyph shapes for
   digits, sharps, and flats.
 * Training data is free: every chord Audiveris **already** recognised
   correctly is a labeled example. You can extract thousands per book.
-* Inference is fast — a few ms per crop with a small CNN — and trivial
+* Inference is fast - a few ms per crop with a small CNN - and trivial
   to integrate.
 
 ## Strategy in one paragraph
 
-Train a CNN that maps a `(H, W) → chord-symbol string` for ~50–200
+Train a CNN that maps a `(H, W) → chord-symbol string` for ~50-200
 chord classes. Get most of your training set from the `<chord-name>`
 glyphs Audiveris labelled correctly in your `.omr` files (these come
 with both the value string and the pixel-exact bounds). Augment with
@@ -53,7 +53,7 @@ for omr in omr_dir.glob("*.omr"):
             save(crop, label=chord_name.value)
 ```
 
-For our 30-song Gershwin book this yields ~600–800 labeled crops with
+For our 30-song Gershwin book this yields ~600-800 labeled crops with
 no manual work. Augment with rotation/scale/noise to get ~5,000
 examples. Group by chord class; aim for at least 10 examples of each
 class you want to recognise.
@@ -94,11 +94,11 @@ Standard recipe:
 
 * Dataset → 90/10 train/val split (preferably stratified, and ideally
   by song so a song's chords are entirely in either train or val).
-* Random rotation ±5°, scale 0.95–1.05, brightness jitter, occasional
+* Random rotation ±5°, scale 0.95-1.05, brightness jitter, occasional
   morphological dilation/erosion (these match the kinds of variation
   you'll see across scan quality).
 * `nn.CrossEntropyLoss`, Adam, learning rate 1e-3, batch size 32,
-  20–50 epochs.
+  20-50 epochs.
 * Track top-1 accuracy and per-class precision/recall. Per-class
   matters: getting "C" right is easy; the chord-recognition gain
   comes from getting "C#+" right.
@@ -115,11 +115,11 @@ available, else manual labeling).
 
 Measure:
 
-* **Recall on tesseract-missed chords** — the cases that previously
+* **Recall on tesseract-missed chords** - the cases that previously
   fell through. This is the headline metric.
-* **Precision on tesseract-caught chords** — make sure the
+* **Precision on tesseract-caught chords** - make sure the
   classifier isn't worse than tesseract on the easy cases.
-* **Per-class breakdown** — especially the chromatic / extended
+* **Per-class breakdown** - especially the chromatic / extended
   chords that motivated this project (G⁹⁷, C#+, F#⁹⁷, etc.).
 
 ### Step 5: Integrate into the pipeline
@@ -169,7 +169,7 @@ project, a 2-hour session can do this:
 
 If you see ≥90% val accuracy on that first untuned run, the full
 project is worth doing. If you see <80%, the bottleneck is probably
-data quality — look at your `dataset/` for mis-labeled crops or
+data quality - look at your `dataset/` for mis-labeled crops or
 ambiguous classes that should be merged.
 
 ## Alternatives considered
@@ -182,6 +182,6 @@ ambiguous classes that should be merged.
   recognition) but slower to iterate on than a Python CNN. Worth
   doing in parallel for the specific case of missed `+` and stacked
   digits.
-* **Large vision-language model.** Overkill — chord symbols are
+* **Large vision-language model.** Overkill - chord symbols are
   literally a small image classification problem, and a tiny CNN
   beats VLMs on latency, cost, and reliability for this class of task.

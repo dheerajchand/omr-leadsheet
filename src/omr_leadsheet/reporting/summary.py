@@ -42,7 +42,7 @@ def main() -> None:
 
     all_reasons = sorted({r for _, c, _ in rows for r in c})
 
-    lines = ["# Gershwin Songbook — Review Summary", ""]
+    lines = ["# Gershwin Songbook - Review Summary", ""]
     lines.append(f"Total songs: **{len(rows)}**. "
                  f".mscz present: **{sum(1 for _, _, ok in rows if ok)}**.")
     lines.append("")
@@ -79,7 +79,7 @@ def main() -> None:
             "Suggests an OCR miss on a line of lyric text.",
     }
     for r in all_reasons:
-        lines.append(f"- **{r}** — {descriptions.get(r, '(no description)')}")
+        lines.append(f"- **{r}** - {descriptions.get(r, '(no description)')}")
     lines.append("")
     lines.append("## Per-song reviews")
     lines.append("")

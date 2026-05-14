@@ -7,12 +7,12 @@ best), and writes the prediction + confidence into the CSV. User then
 only needs to *correct* the wrong ones.
 
 Adds two columns:
-  classifier_guess  — current model's prediction
-  classifier_conf   — softmax confidence (0..1)
+  classifier_guess - current model's prediction
+  classifier_conf - softmax confidence (0..1)
 
 The `correct_label` column is left as it was. To accept the classifier's
 guess for a row, you can set correct_label = classifier_guess in the
-CSV — or leave it blank and we'll treat that as "skip / not a chord".
+CSV - or leave it blank and we'll treat that as "skip / not a chord".
 
 Usage: dataset_prefill_labels.py <labeling-dir>
 """

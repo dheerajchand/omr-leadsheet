@@ -3,17 +3,17 @@
 
 The companion to dataset_extract.py. That script pulls every
 <chord-name value="X"> where Audiveris already produced a label. This
-one pulls the ones it *couldn't* — the crops the model has never seen:
+one pulls the ones it *couldn't* - the crops the model has never seen:
 
   1. <chord-name> elements where Audiveris produced no `value`
      attribute (it found a chord glyph but couldn't read it).
   2. <articulation shape="MARCATO|ACCENT"> elements that sit in
      chord-row territory above a vocal staff (Audiveris misclassified
-     the chord glyph as an articulation — these were what the recovery
+     the chord glyph as an articulation - these were what the recovery
      pass already finds, but here we keep them for re-training).
   3. <chord-name value="..."> entries where the value contains a `#`
      (sharps are under-represented and historically mislabeled, e.g.
-     Eb79 should have been Eb97 — worth re-auditing).
+     Eb79 should have been Eb97 - worth re-auditing).
 
 Output:
   <out-dir>/crops/<source>_<sheet>_<x>_<y>.png   (one crop per glyph)
@@ -113,7 +113,7 @@ def process_omr(omr_path: str, crops_dir: str, rows: list[dict]) -> None:
                     context = "chord-name (unlabeled)"
                 elif "#" in val:
                     context = f"chord-name w/ sharp (audiveris={val})"
-                # Skip plain ASCII no-sharp labels — those are in the main dataset already
+                # Skip plain ASCII no-sharp labels - those are in the main dataset already
                 if context is None:
                     continue
                 fname = f"{safe_src}_{sd.replace('#','')}_{x}_{y}.png"
@@ -138,7 +138,7 @@ def process_omr(omr_path: str, crops_dir: str, rows: list[dict]) -> None:
                 # In chord-row band (20-120 px above the nearest staff
                 # below). We don't filter to vocal-only staves because
                 # Audiveris's word-staff mapping is unreliable for
-                # piano-vocal scores — a chord glyph can sit above a
+                # piano-vocal scores - a chord glyph can sit above a
                 # staff that has no <word> elements attached.
                 ns, nd = None, -1.0
                 for s, top in tops.items():

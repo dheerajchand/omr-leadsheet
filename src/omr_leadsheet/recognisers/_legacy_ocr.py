@@ -9,7 +9,7 @@ stores the entry in .omr with value=None. This tool:
   2. For each chord-name with value=None, crops a small region around
      the recorded bounds (with padding) and runs tesseract configured
      for short chord-style text (A-G, #, b, 0-9, m, M, a, j, 7, 9, +,
-     —).
+ - ).
   3. Returns the recovered chord values as a list of (sheet, measure,
      x, value) records, with a confidence indicator.
 
@@ -60,7 +60,7 @@ def _clean_chord(text: str) -> str | None:
     # Replace unicode sharp/flat with ascii
     t = t.replace("♯", "#").replace("♭", "b")
     # Common OCR confusions: 0→o (but chords rarely have o; leave), l→1, I→1
-    # Limit length — chord figures over 10 chars are suspicious
+    # Limit length - chord figures over 10 chars are suspicious
     if len(t) > 10:
         t = t[:10]
     return t

@@ -79,7 +79,7 @@ export CHORD_CLASSIFIER_PATH=~/code/omr-leadsheet/classifier.pt
 ```
 
 Every variable above is also a CLI flag on `omr-lead process` and
-`omr-lead batch` — see `omr-lead process --help`.
+`omr-lead batch` - see `omr-lead process --help`.
 
 ## 5. Run one song
 
@@ -89,11 +89,11 @@ omr-lead process "$BOOK_DIR/individual_songs/13 - Let's Call The Whole Thing Off
 
 Output lands at `$BOOK_DIR/lead_sheets/<song>/`:
 
-- `<song>.mscz` — the final lead sheet
-- `<song>.review.md` — flagged measures in markdown
-- `review.html` — interactive HTML reviewer
-- `<song> - lead.*.musicxml` — intermediate stages, kept for debugging
-- `_pipeline.log` — per-song run log
+- `<song>.mscz` - the final lead sheet
+- `<song>.review.md` - flagged measures in markdown
+- `review.html` - interactive HTML reviewer
+- `<song> - lead.*.musicxml` - intermediate stages, kept for debugging
+- `_pipeline.log` - per-song run log
 
 Pass `--force` to redo every cached step. Pass `--with-oemer` to run
 the second-engine OMR pass.
@@ -129,10 +129,10 @@ gh repo create my-songbook --private --source=. --remote=origin
 
 ## 8. What to read next
 
-- [`pipeline.md`](pipeline.md) — what each stage of the pipeline does
-- [`vlm.md`](vlm.md) — how to set up ollama or the Anthropic API for
+- [`pipeline.md`](pipeline.md) - what each stage of the pipeline does
+- [`vlm.md`](vlm.md) - how to set up ollama or the Anthropic API for
   chord recognition
-- [`classifier.md`](classifier.md) — training the CNN classifier from
+- [`classifier.md`](classifier.md) - training the CNN classifier from
   hand-labeled data
-- [`failure_modes.md`](failure_modes.md) — known weak spots and
+- [`failure_modes.md`](failure_modes.md) - known weak spots and
   workarounds

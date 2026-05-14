@@ -34,7 +34,7 @@ from music21 import converter, note, expressions
 
 GAP_COST = 1.2  # Higher than any substitution cost (which is 1 - similarity, so
                # max 1.0). This makes NW prefer to pair measures positionally
-               # even when content differs — specifically so an empty primary
+               # even when content differs - specifically so an empty primary
                # measure gets paired with its positional counterpart in
                # secondary, not with some other empty measure elsewhere.
 

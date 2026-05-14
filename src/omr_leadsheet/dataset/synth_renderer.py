@@ -5,7 +5,7 @@ Empirical font analysis (see scripts/font_match.py) showed that the
 chord symbols in the source PDFs are drawn in MuseScore's default text
 font, Edwin-Roman, at ~32-36 px. Accidentals (#/b) and stacked
 extensions (9/7) need separate handling because they are positioned
-manually in MuseScore — not as inline ligatures.
+manually in MuseScore - not as inline ligatures.
 
 A synthetic crop is built up like this:
 
@@ -22,7 +22,7 @@ For every chord string, we render variants:
 
 This produces ~8 visually-different training examples per chord string.
 Combined with ~5000 unique chord strings, we get ~40,000 synthetic
-samples — enough to bias the model heavily toward correct readings
+samples - enough to bias the model heavily toward correct readings
 even for sharp-key + stacked-extension chords that are rare in real
 data.
 
@@ -38,7 +38,7 @@ from itertools import product
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 
-# Font paths — Edwin-Roman for text, Bravura for music symbols (sharps/flats)
+# Font paths - Edwin-Roman for text, Bravura for music symbols (sharps/flats)
 TEXT_FONT = "/Applications/MuseScore 4.app/Contents/Resources/fonts/Edwin-Roman.otf"
 TEXT_FONT_ITALIC = "/Applications/MuseScore 4.app/Contents/Resources/fonts/Edwin-Italic.otf"
 MUSIC_FONT = "/Applications/MuseScore 4.app/Contents/Resources/fonts/BravuraText.otf"
@@ -58,7 +58,7 @@ def chord_strings() -> list[str]:
     """All chord-string combinations we want to learn."""
     out: list[str] = []
     for r, a, q, e in product(ROOTS, ACCIDENTALS, QUALITIES, EXTENSIONS):
-        # Some combos don't make musical sense — skip those
+        # Some combos don't make musical sense - skip those
         if q == "+" and e in ("maj7", "11", "13"): continue
         if q == "dim" and e in ("9", "11", "13", "maj7"): continue
         if q == "M" and e == "": continue  # plain "M" is weird, "Maj7" is meaningful

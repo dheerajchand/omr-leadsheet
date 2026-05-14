@@ -6,13 +6,13 @@ wrong per se. The tool reports these so that a user reviewing a batch of
 30+ songs can focus their attention instead of scanning every measure.
 
 Current heuristics:
-  * **All-rests + chord symbols** — the measure has no pitched notes but
+  * **All-rests + chord symbols** - the measure has no pitched notes but
     has one or more chord symbols. Almost always a missed melody note
     (e.g., a whole note misread as a rest).
-  * **Unexpectedly short measure** — measure duration differs from the
+  * **Unexpectedly short measure** - measure duration differs from the
     prevailing time signature's expected duration. Can mean tuplet errors
     or rhythm miscounts.
-  * **No lyric syllables in a lyric-heavy song** — a measure that has
+  * **No lyric syllables in a lyric-heavy song** - a measure that has
     notes but no lyrics, when the surrounding measures do. Can mean the
     OCR failed on a line of text.
 

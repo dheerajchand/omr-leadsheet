@@ -43,7 +43,7 @@ if [[ -n "$OMR" && -f "$OMR" ]]; then
     fi
 fi
 
-# 2. Run oemer on each prepared page (serial — onnxruntime eats a lot of RAM)
+# 2. Run oemer on each prepared page (serial - onnxruntime eats a lot of RAM)
 for png in "$FEED_DIR"/p-*.png; do
     pagenum=$(basename "$png" .png | sed 's/p-//')
     echo "  [oemer] page $pagenum"

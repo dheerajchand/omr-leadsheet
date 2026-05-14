@@ -1,7 +1,7 @@
 """Decompose a chord-symbol string into structured fields.
 
 Chord values from Audiveris (`Cmaj7`, `D9`, `A7(b5)`, `Bb6`, `F97`, `Em6`,
-`C#dim7`, …) are parsed into four independent axes:
+`C#dim7`, ...) are parsed into four independent axes:
 
   - root        : C, C#, D, ... A#, B  (12 classes)
   - quality     : major, minor, dim, aug, sus, dom7 (which we call "7"),

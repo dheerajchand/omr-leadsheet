@@ -2,9 +2,9 @@
 """Render summary charts from the per-song review.md files.
 
 Emits:
-  * <root>/_summary.png      — stacked horizontal bar per song, one colour
+  * <root>/_summary.png - stacked horizontal bar per song, one colour
                                 per flag category
-  * <root>/_totals.png        — simple bar chart of total flags by category
+  * <root>/_totals.png - simple bar chart of total flags by category
 
 Usage: charts.py <leadsheets-root>
 """
@@ -44,9 +44,9 @@ def main() -> None:
 
     categories = sorted({k for _, c in rows for k in c})
     palette = {
-        "all_rests_with_chords": "#c0392b",  # red — likely missed notes
-        "duration_mismatch":     "#f39c12",  # amber — rhythm warnings
-        "missing_lyrics":        "#2980b9",  # blue — OCR misses
+        "all_rests_with_chords": "#c0392b",  # red - likely missed notes
+        "duration_mismatch":     "#f39c12",  # amber - rhythm warnings
+        "missing_lyrics":        "#2980b9",  # blue - OCR misses
     }
     colours = [palette.get(c, "#888") for c in categories]
 
@@ -54,7 +54,7 @@ def main() -> None:
     fig, ax = plt.subplots(figsize=(10, max(6, len(rows) * 0.28)))
     # Short names so the axis doesn't explode
     labels = [re.sub(r"^\d+\s*-\s*", "", n) for n, _ in rows]
-    labels = [l[:40] + ("…" if len(l) > 40 else "") for l in labels]
+    labels = [l[:40] + ("..." if len(l) > 40 else "") for l in labels]
     y = range(len(rows))
     left = [0] * len(rows)
     for cat, colour in zip(categories, colours):

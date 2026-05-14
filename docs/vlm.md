@@ -1,13 +1,13 @@
 # Vision-language chord recognition
 
-The pipeline can use a vision-language model (VLM) instead of, or alongside, the local CNN classifier (`docs/classifier.md`). VLMs handle accidentals and stacked extensions out of the box — no training required — and degrade to a graceful "skip" on non-chord crops rather than producing confident-but-wrong answers.
+The pipeline can use a vision-language model (VLM) instead of, or alongside, the local CNN classifier (`docs/classifier.md`). VLMs handle accidentals and stacked extensions out of the box - no training required - and degrade to a graceful "skip" on non-chord crops rather than producing confident-but-wrong answers.
 
 This document covers two equivalent options:
 
-- **ollama** — FOSS, local, free, slower per-call.
-- **Anthropic Claude vision API** — closed-source, cloud, ~$0.002 per crop, faster.
+- **ollama** - FOSS, local, free, slower per-call.
+- **Anthropic Claude vision API** - closed-source, cloud, ~$0.002 per crop, faster.
 
-Both go through the same `pipeline/chord_vlm.py` module and the same `CHORD_VLM=1` flag — only the backend differs. Both cache responses by image content, so subsequent runs of the same songbook cost nothing.
+Both go through the same `pipeline/chord_vlm.py` module and the same `CHORD_VLM=1` flag - only the backend differs. Both cache responses by image content, so subsequent runs of the same songbook cost nothing.
 
 ---
 
@@ -15,9 +15,9 @@ Both go through the same `pipeline/chord_vlm.py` module and the same `CHORD_VLM=
 
 The local CNN (`docs/classifier.md`) classifies a chord-symbol crop into one of ~115 trained classes. It works well for common chords (A7, Dm7, F7) but has three failure modes that no amount of hand-labeling fully fixes:
 
-1. **Sharp-key chords** (C#+, F#9/7, etc.) — rare in the training data, and adding more labeled examples shifts the root-prediction boundary and *regresses* the common chords.
-2. **Stacked extensions** (9-over-7 written vertically) — the CNN reads the larger digit and drops the other.
-3. **Non-chord crops** (a stray accent mark Audiveris filed as MARCATO, a tempo word) — the CNN is *forced* to classify into one of its 115 classes at some confidence, often producing a wrong-but-confident chord.
+1. **Sharp-key chords** (C#+, F#9/7, etc.) - rare in the training data, and adding more labeled examples shifts the root-prediction boundary and *regresses* the common chords.
+2. **Stacked extensions** (9-over-7 written vertically) - the CNN reads the larger digit and drops the other.
+3. **Non-chord crops** (a stray accent mark Audiveris filed as MARCATO, a tempo word) - the CNN is *forced* to classify into one of its 115 classes at some confidence, often producing a wrong-but-confident chord.
 
 A VLM reads the crop the way a person does. Empirically, on the four most-confounding crops from the Gershwin songbook:
 
@@ -30,7 +30,7 @@ A VLM reads the crop the way a person does. Empirically, on the four most-confou
 
 ---
 
-## Option A — Ollama (local, free)
+## Option A - Ollama (local, free)
 
 ### Install
 
@@ -54,9 +54,9 @@ export CHORD_VLM_MODEL=qwen2.5vl:7b     # optional, this is the default
 
 ### Performance
 
-- First run on a 30-song book: ~3–5 seconds per unique chord crop on Apple Silicon. Roughly 15–25 minutes total for the whole book (with ~200–300 unique crops; the rest are cache hits).
+- First run on a 30-song book: ~3-5 seconds per unique chord crop on Apple Silicon. Roughly 15-25 minutes total for the whole book (with ~200-300 unique crops; the rest are cache hits).
 - Re-runs: near-instant (cache hits).
-- RAM: ~6–8 GB while the model is loaded. Ollama unloads after a few minutes idle.
+- RAM: ~6-8 GB while the model is loaded. Ollama unloads after a few minutes idle.
 
 ### Limitations
 
@@ -65,18 +65,18 @@ export CHORD_VLM_MODEL=qwen2.5vl:7b     # optional, this is the default
 
 ---
 
-## Option B — Anthropic Claude API (cloud, paid)
+## Option B - Anthropic Claude API (cloud, paid)
 
 ### Get a key
 
 1. Sign up at https://console.anthropic.com/
 2. Add billing (a $5 minimum is enough for many songbooks).
-3. Create an API key, copy the `sk-…` value.
+3. Create an API key, copy the `sk-...` value.
 
 ### Run
 
 ```bash
-export ANTHROPIC_API_KEY=sk-…
+export ANTHROPIC_API_KEY=sk-...
 export CHORD_VLM=1
 export CHORD_VLM_BACKEND=anthropic
 # optional model override; default is the cheapest current Haiku
@@ -92,7 +92,7 @@ export CHORD_VLM_MODEL=claude-haiku-4-5-20251001
 
 ### Performance
 
-- ~1 second per call, ~3–5 minutes total for a 30-song book on first run.
+- ~1 second per call, ~3-5 minutes total for a 30-song book on first run.
 
 ---
 
@@ -139,10 +139,10 @@ The hash includes the backend + model, so switching from ollama to Anthropic re-
 
 ## Troubleshooting
 
-**`urllib.error.URLError: [Errno 61] Connection refused`** — ollama isn't running. `ollama serve &` to start it.
+**`urllib.error.URLError: [Errno 61] Connection refused`** - ollama isn't running. `ollama serve &` to start it.
 
-**`ANTHROPIC_API_KEY env var not set`** — `export ANTHROPIC_API_KEY=sk-…` before running, or add it to your shell rc.
+**`ANTHROPIC_API_KEY env var not set`** - `export ANTHROPIC_API_KEY=sk-...` before running, or add it to your shell rc.
 
-**VLM returns chord but pipeline still inserts wrong chord** — the chord-name might be in the .omr's ground truth and the diff insertion is preferring the CNN/Audiveris value at that beat. Check `process_song.sh` step 4 output for "duplicate" skip messages.
+**VLM returns chord but pipeline still inserts wrong chord** - the chord-name might be in the .omr's ground truth and the diff insertion is preferring the CNN/Audiveris value at that beat. Check `process_song.sh` step 4 output for "duplicate" skip messages.
 
-**Model returns commentary instead of just the chord** — most models follow the system prompt. If yours doesn't (e.g. older `llava` variants), try `qwen2.5vl:7b` or `minicpm-v:8b`. They're the best-tested for this task.
+**Model returns commentary instead of just the chord** - most models follow the system prompt. If yours doesn't (e.g. older `llava` variants), try `qwen2.5vl:7b` or `minicpm-v:8b`. They're the best-tested for this task.

@@ -103,7 +103,7 @@ def parse_sheet(xml_path: str, sheet_idx: int) -> tuple[list[OMRChord], int]:
                 frac = (x - prev_bx) / width if width > 0 else 0.0
                 return mid, max(0.0, min(0.99, frac))
             prev_bx = bx
-        # Beyond the last barline in this staff — put it on the last measure
+        # Beyond the last barline in this staff - put it on the last measure
         return lst[-1][1], 0.99
 
     # Now collect chord-names
@@ -139,7 +139,7 @@ def extract_omr_chords(omr_path: str) -> list[OMRChord]:
 
     Merges two sources:
       1. Audiveris's `<chord-name value=...>` entries (its own parsed chords).
-      2. Chord-row tesseract OCR (`chord_row_ocr.py`) — catches chords
+      2. Chord-row tesseract OCR (`chord_row_ocr.py`) - catches chords
          Audiveris missed entirely (e.g. A7 on a weak glyph, the "7" of a
          stacked G9/7 symbol).
     """
@@ -286,9 +286,9 @@ def insert_missing(musicxml_path: str, missing: list[OMRChord], out_path: str) -
             continue
         # Second pass: nearby substring matches.
         #  - If target is contained in a present chord, present is more
-        #    specific (or equal) — skip target.
+        #    specific (or equal) - skip target.
         #  - If a present chord is contained in target, target is more
-        #    specific — REMOVE the less-specific present, then insert.
+        #    specific - REMOVE the less-specific present, then insert.
         to_remove = []
         for ex in existing:
             if abs(float(ex.offset) - offset) >= 0.5:
@@ -306,7 +306,7 @@ def insert_missing(musicxml_path: str, missing: list[OMRChord], out_path: str) -
             if site is not None:
                 site.remove(ex)
         # Also remove any TextExpression in this measure whose text
-        # normalises to the same chord — earlier pipeline steps may have
+        # normalises to the same chord - earlier pipeline steps may have
         # emitted "G 7" as a `<direction>` when music21 couldn't parse
         # the spaced figure as a ChordSymbol; once we have the real
         # ChordSymbol we don't want both.
@@ -319,8 +319,8 @@ def insert_missing(musicxml_path: str, missing: list[OMRChord], out_path: str) -
                     site.remove(te)
         # Many Audiveris chord-name values aren't music21-parseable
         # (e.g., "b", "7(6)", "m7sus4"). For stacked-extension chords
-        # like "F#9/7" — where the "/7" is a stacked-7 numerator on
-        # top of "9", not a slash-chord — we strip the suffix for
+        # like "F#9/7" - where the "/7" is a stacked-7 numerator on
+        # top of "9", not a slash-chord - we strip the suffix for
         # music21 parsing but force the visible figure to the full
         # original text. That gives a real ChordSymbol with full
         # rendering, not just a text overlay.

@@ -2,19 +2,19 @@
 """Vision-language chord recogniser.
 
 Reads a jazz chord-symbol crop and returns the recognised chord string.
-This is the high-accuracy alternative to the local CNN classifier — it
+This is the high-accuracy alternative to the local CNN classifier - it
 doesn't need training data, handles novel combinations (C#+, F#9/7,
 etc.) out of the box, and degrades to "unsure" rather than producing
 confident-but-wrong answers like the CNN.
 
 Two backends are supported:
 
-  ollama       — local FOSS model (Qwen2.5-VL or MiniCPM-V) via the
+  ollama - local FOSS model (Qwen2.5-VL or MiniCPM-V) via the
                  ollama server at http://localhost:11434. Free, private,
                  offline-capable. Slower per-call (~3-5s on Apple Silicon).
                  Requires: `brew install ollama && ollama pull qwen2.5vl:7b`
 
-  anthropic    — Anthropic Claude vision API. Paid, ~$0.002 per crop
+  anthropic - Anthropic Claude vision API. Paid, ~$0.002 per crop
                  with Haiku. Faster (~1s/call) and slightly more
                  accurate on edge cases. Requires ANTHROPIC_API_KEY.
 
@@ -59,7 +59,7 @@ Plus-sign means augmented. A small "m" means minor. "maj7" is major-7.
 Output ONLY the chord symbol in shorthand: A7, Bbm, F#9/7, C#+, Em7, Dmaj7, A7(b5), etc.
 If the image is not a chord (an accent mark, ornament, lyric text, random ink), output exactly: SKIP
 If you cannot read it clearly, output exactly: UNSURE
-No commentary, no explanation, no quotes — just the chord string or SKIP or UNSURE."""
+No commentary, no explanation, no quotes - just the chord string or SKIP or UNSURE."""
 
 CHORD_REGEX = re.compile(r"^[A-G][#b♯♭]?(?:maj|min|aug|dim|sus|m|M|b|#|\+|\-|[0-9/()])*$")
 
@@ -83,7 +83,7 @@ class VLMClassifier:
             if not self.api_key:
                 raise RuntimeError(
                     "ANTHROPIC_API_KEY env var not set. Get a key at "
-                    "https://console.anthropic.com/ — then "
+                    "https://console.anthropic.com/ - then "
                     "`export ANTHROPIC_API_KEY=sk-...` before running."
                 )
         elif self.backend == "ollama":
@@ -184,7 +184,7 @@ class VLMClassifier:
         """Identify the chord in `img` (path string or PIL Image).
 
         Returns (chord_string, confidence). For VLMs, confidence is
-        coarse — 0.95 for a clean chord match, 0.0 for SKIP / UNSURE /
+        coarse - 0.95 for a clean chord match, 0.0 for SKIP / UNSURE /
         unparseable output. The pipeline's downstream threshold of
         0.55 accepts the former and rejects the latter.
         """
@@ -234,7 +234,7 @@ class VLMClassifier:
                 print(f"  [vlm] unexpected error: {e}", file=sys.stderr)
                 return "", 0.0
         if answer is None:
-            # All retries exhausted — don't cache this failure permanently,
+            # All retries exhausted - don't cache this failure permanently,
             # but return empty so the pipeline keeps going.
             return "", 0.0
 

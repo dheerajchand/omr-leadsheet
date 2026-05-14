@@ -3,7 +3,7 @@
 
 The MARCATO/ACCENT recovery in `chord_row_ocr._recover_misclassified_articulations`
 catches glyphs Audiveris *misclassified* (a jazz-font A read as a marcato).
-But some chord-row glyphs are dropped entirely — Audiveris produces no
+But some chord-row glyphs are dropped entirely - Audiveris produces no
 element at all for them. The chord-row tesseract sweep would find these
 if tesseract could read the jazz font, but it usually can't.
 

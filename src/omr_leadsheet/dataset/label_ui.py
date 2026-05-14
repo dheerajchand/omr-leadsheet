@@ -3,7 +3,7 @@
 
 Renders a scrollable grid: each crop shown at 4x with the classifier's
 guess in an input field. You correct the wrong ones, click "Export",
-and the page downloads an updated labels.csv. Local-only, no server —
+and the page downloads an updated labels.csv. Local-only, no server - 
 opens straight from the filesystem.
 
 Usage: dataset_label_ui.py <labeling-dir>
@@ -183,9 +183,9 @@ render();
     print(f"Open it:    open '{out_path}'")
     print()
     print("Workflow:")
-    print("  1. Click 'Accept guesses with conf ≥ 0.85' — auto-labels the easy ones")
-    print("  2. Click 'Show only low-conf' — review and correct the rest")
-    print("  3. Click 'Export updated labels.csv' — saves a new CSV to Downloads")
+    print("  1. Click 'Accept guesses with conf ≥ 0.85' - auto-labels the easy ones")
+    print("  2. Click 'Show only low-conf' - review and correct the rest")
+    print("  3. Click 'Export updated labels.csv' - saves a new CSV to Downloads")
     print(f"  4. Move that CSV back to: {csv_path}")
 
 

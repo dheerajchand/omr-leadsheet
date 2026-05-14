@@ -3,7 +3,7 @@
 
 Inputs:  a `dataset/<chord-label>/*.png` directory tree produced by
          dataset_extract.py.
-Outputs: `classifier.pt` — a state-dict containing the trained model
+Outputs: `classifier.pt` - a state-dict containing the trained model
          plus the label-class lists.
 
 Architecture:
@@ -12,7 +12,7 @@ Architecture:
   * Cross-entropy loss summed across heads, equal weight
 
 Why four heads instead of one flat 116-way classifier?
-  The chord vocabulary follows a strong factorisation — root × quality ×
+  The chord vocabulary follows a strong factorisation - root × quality ×
   extension × alteration. Each axis has many more samples (~100+) than
   any individual chord-string label (often 1-2). Decomposed classifiers
   generalise to unseen combinations of seen axis-values.
@@ -49,7 +49,7 @@ def _import_torch():
 
 
 # --------------------------------------------------------------------------
-# Image loading (no torchvision dependency — keep the install footprint low)
+# Image loading (no torchvision dependency - keep the install footprint low)
 # --------------------------------------------------------------------------
 
 IMG_W, IMG_H = 64, 32  # standard input size after pad/resize
@@ -114,7 +114,7 @@ def build_index(dataset_dir: str, min_per_class: int) -> list[tuple[str, str]]:
         label = cls_dir
         # Reverse the safe_filename mangling
         label = label.replace("sharp", "#").replace("aug", "+").replace("_slash_", "/")
-        # `aug` is also a quality — we only mangle root+quality, so this
+        # `aug` is also a quality - we only mangle root+quality, so this
         # de-mangling is conservative; misreadings here just become unparseable
         if parse_chord(label) is None:
             continue

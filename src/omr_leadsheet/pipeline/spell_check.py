@@ -13,7 +13,7 @@ Algorithm (per verse):
   2. Build the tesseract token stream for that verse (T_1, T_2, ... T_m).
      For verse 1, include all tesseract tokens. For verse 2, use only the
      tokens that appear in stacked-verse sections (detected by verse 2
-     having matching notes) — we pass the whole stream but NW alignment
+     having matching notes) - we pass the whole stream but NW alignment
      penalises unrelated prefix/suffix automatically.
   3. Needleman-Wunsch global alignment with:
         substitution cost = 1 - similarity(a, b) (0..1)
@@ -36,7 +36,7 @@ from difflib import SequenceMatcher
 from music21 import converter, note
 
 
-WORD = re.compile(r"[A-Za-z][A-Za-z'’]*")
+WORD = re.compile(r"[A-Za-z][A-Za-z'']*")
 
 
 # Load system dict
@@ -73,10 +73,10 @@ DICT |= LYRIC_SYLLABLES
 
 def is_real_word(tok: str) -> bool:
     """True if the token looks like a real word that we should trust."""
-    t = tok.lower().strip(".,;:!?\"'’()[]-_")
+    t = tok.lower().strip(".,;:!?\"''()[]-_")
     # Strip trailing punctuation remnants from OCR
     if len(t) < 3:
-        return True  # short tokens (I, a, to, of, go, on...) — trust
+        return True  # short tokens (I, a, to, of, go, on...) - trust
     if t in DICT:
         return True
     return False
@@ -123,7 +123,7 @@ def nw_align(audi: list[str], truth: list[str], gap: float = 0.6) -> list[tuple[
 
 
 def _line_to_tokens(line: str) -> list[str]:
-    line = line.replace("—", " ").replace("_", " ")
+    line = line.replace(" - ", " ").replace("_", " ")
     out: list[str] = []
     for piece in re.split(r"[-\s]+", line):
         m = WORD.match(piece)
@@ -148,7 +148,7 @@ def tesseract_verse_streams(path: str) -> tuple[list[str], list[str]]:
     """Return (v1_tokens, v2_tokens).
 
     Heuristic: consecutive lyric lines that share >= 60% of their tokens
-    (by first-letter prefix similarity) are treated as a v1/v2 pair — the
+    (by first-letter prefix similarity) are treated as a v1/v2 pair - the
     first line goes to v1, the second to v2. Unpaired lines go to both.
     """
     with open(path) as f:

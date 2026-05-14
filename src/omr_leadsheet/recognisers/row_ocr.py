@@ -16,7 +16,7 @@ Pipeline per sheet:
        - Find chord-like tokens (match /^[A-G][#b♯♭]?[a-zA-Z0-9+/-]*$/).
        - Convert token x-positions to (measure_number, offset_fraction)
          using the existing staff-barline table.
-  5. Return the recovered chords — to be merged with Audiveris's parsed
+  5. Return the recovered chords - to be merged with Audiveris's parsed
      chord-names before insertion into the reduced MusicXML.
 
 Usage: chord_row_ocr.py <path-to-.omr>
@@ -163,7 +163,7 @@ def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]
         if conf < 25:
             continue
         # Single-letter tokens (A, D, F, etc.) are kept here so the classifier
-        # can try to upgrade them to multi-char chords (A → A7, D → Dm7, …).
+        # can try to upgrade them to multi-char chords (A → A7, D → Dm7, ...).
         # If the classifier doesn't upgrade them, they get rejected at the
         # end of _ocr_chord_row.
         out.append((x_offset + left + width // 2, text))
@@ -172,7 +172,7 @@ def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]
 
 def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list[tuple[int, str]]:
     """OCR a horizontal strip multiple ways and merge. Chord rows are
-    often crowded — a single PSM fails to segment. We combine:
+    often crowded - a single PSM fails to segment. We combine:
       - PSM 6 (uniform block) over the full strip
       - PSM 11 (sparse text) over the full strip
       - A sliding window with PSM 8 (single word) across the strip,
@@ -209,7 +209,7 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
             if os.path.exists(win_path):
                 results.extend(_ocr_run(win_path, 8, x_offset=x))
             x += step
-        # Dedupe by proximity — within 25px, keep the longer/more-specific token
+        # Dedupe by proximity - within 25px, keep the longer/more-specific token
         results.sort()
         deduped: list[tuple[int, str]] = []
         for xc, tok in results:
@@ -222,10 +222,10 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
 
         # Optional: re-classify each token with a chord recogniser.
         # Two backends supported, in priority order:
-        #   1. VLM (ollama or Anthropic Claude vision) — best accuracy,
+        #   1. VLM (ollama or Anthropic Claude vision) - best accuracy,
         #      handles novel chords like C#+ and stacked extensions out
         #      of the box. Opt-in via CHORD_VLM=1.
-        #   2. Trained CNN — local, fast, but limited to learned classes.
+        #   2. Trained CNN - local, fast, but limited to learned classes.
         # Tesseract is good at *localising* chords; the recogniser is
         # better at *reading* them.
         use_vlm = os.environ.get("CHORD_VLM") == "1"
@@ -303,7 +303,7 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
                 sweep_w, sweep_step = 60, 30
                 sx = 0
                 # Need PIL to check ink density before invoking the classifier
-                # — empty chord-row slices classify as Fmaj7 / Dm7 at ~0.6+
+                # - empty chord-row slices classify as Fmaj7 / Dm7 at ~0.6+
                 # confidence and produce false positives across the board.
                 try:
                     from PIL import Image as _PILImage
@@ -373,14 +373,14 @@ def _recover_misclassified_articulations(
       1. Walking <articulation shape="MARCATO|ACCENT"> elements.
       2. Finding the nearest VOCAL staff.
       3. If the articulation sits >20 px ABOVE that staff's top line,
-         it's in chord-row territory — not a real note articulation.
+         it's in chord-row territory - not a real note articulation.
       4. Crop a generous window around the glyph (wider on the right to
          catch trailing digits like "7" / "9").
       5. Run the chord classifier on the crop. If confidence >= 0.55
          AND the prediction looks like a chord, emit a RowChord.
 
     If the classifier isn't available (no CHORD_CLASSIFIER_PATH), the
-    raw articulation is emitted as 'A' with low priority — caller can
+    raw articulation is emitted as 'A' with low priority - caller can
     decide whether to trust it.
     """
     # Recogniser priority: VLM (if CHORD_VLM=1) > local CNN
@@ -414,7 +414,7 @@ def _recover_misclassified_articulations(
         bh = float(b.get("h") or 24)
         # Find the nearest staff below this articulation. We used to
         # restrict to vocal-tagged staves, but Audiveris's word-staff
-        # mapping is unreliable for piano-vocal scores — a real chord
+        # mapping is unreliable for piano-vocal scores - a real chord
         # glyph can sit above a staff that has no <word> attached.
         nearest_staff = None
         nearest_distance_above = -1.0
@@ -425,7 +425,7 @@ def _recover_misclassified_articulations(
             if nearest_staff is None or d_above < nearest_distance_above:
                 nearest_staff = s
                 nearest_distance_above = d_above
-        # Require the glyph to be 20–120 px above the staff top — that's the
+        # Require the glyph to be 20-120 px above the staff top - that's the
         # chord-row region in this source's 200 DPI layout. Below 20 means
         # it's likely a real articulation on a high note; above 120 means
         # it's probably attached to the previous system.
@@ -510,7 +510,7 @@ def recover_chord_row_chords(omr_path: str) -> list[RowChord]:
             # partial-glyph false reads (the sweep window doesn't know
             # exact glyph bounds and crops mid-character). The MARCATO
             # recovery path handles chord glyphs above non-vocal staves
-            # via Audiveris's own bounding boxes — that's the precise
+            # via Audiveris's own bounding boxes - that's the precise
             # path for those.
             for staff_id in sorted(vocal):
                 top_y = tops.get(staff_id)
@@ -535,7 +535,7 @@ def recover_chord_row_chords(omr_path: str) -> list[RowChord]:
 
             # Stage-2 pass: blob-based chord-row scan over EVERY staff
             # with barlines. Catches chord glyphs Audiveris dropped
-            # entirely (no <chord-name>, no <articulation>) — these
+            # entirely (no <chord-name>, no <articulation>) - these
             # never reach the tesseract sweep or the MARCATO recovery.
             # Only runs when a VLM is enabled because the blob-based
             # crops can be ambiguous, and VLMs degrade to SKIP cleanly
@@ -546,7 +546,7 @@ def recover_chord_row_chords(omr_path: str) -> list[RowChord]:
                     from omr_leadsheet.recognisers.blobs import scan_chord_row_blobs
                     vlm = VLMClassifier()
                     # Emit every blob the VLM identifies. We don't
-                    # pre-dedup against tesseract-found tokens here —
+                    # pre-dedup against tesseract-found tokens here - 
                     # the blob VLM is more accurate (it reads stacked
                     # extensions and accidentals), so its readings
                     # should override. chord_diff.insert_missing has
