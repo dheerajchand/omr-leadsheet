@@ -169,7 +169,7 @@ def extract_omr_chords(omr_path: str) -> list[OMRChord]:
 
     # Pass 2: chord-row OCR
     try:
-        from chord_row_ocr import recover_chord_row_chords
+        from omr_leadsheet.recognisers.row_ocr import recover_chord_row_chords
         row = recover_chord_row_chords(omr_path)
     except Exception:
         row = []

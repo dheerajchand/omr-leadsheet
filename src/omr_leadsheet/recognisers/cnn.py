@@ -1,32 +1,30 @@
 """Load a trained chord-symbol classifier and run it on image crops.
 
 The trained file (`classifier.pt`) bundles the model state and the
-axis-class lists so this module is self-contained — no need to pass
+axis-class lists so this module is self-contained: no need to pass
 ROOTS / QUALITIES / etc. at inference time.
 
-Usage from another module:
+Usage from another module::
 
-    from classifier_infer import ChordClassifier
+    from omr_leadsheet.recognisers.cnn import ChordClassifier
     clf = ChordClassifier("classifier.pt")
     chord_str, confidence = clf.recognise("/path/to/crop.png")
-    # or, recognise a numpy/PIL image directly:
     chord_str, confidence = clf.recognise_image(pil_image)
 """
 from __future__ import annotations
-import os
-import sys
-from pathlib import Path
 
-# Make sibling imports work when this file is run directly
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+import os
+
+__all__ = ["ChordClassifier"]
 
 
 class ChordClassifier:
     def __init__(self, model_path: str):
         import torch
         from PIL import Image  # noqa: F401  (proof Pillow is available)
-        from train_classifier import build_model, IMG_W, IMG_H
-        from chord_parser import ChordFields, format_chord
+
+        from omr_leadsheet.chord_ops.parser import ChordFields, format_chord
+        from omr_leadsheet.training.train import IMG_H, IMG_W, build_model
 
         self._torch = torch
         self._format_chord = format_chord

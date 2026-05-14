@@ -23,6 +23,7 @@ Usage:
                       [--val-split 0.1] [--min-per-class 3]
 """
 from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -31,10 +32,12 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-# Make sibling imports work
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from chord_parser import (
-    ROOTS, QUALITIES, EXTENSIONS, ALTERATIONS, parse_chord,
+from omr_leadsheet.chord_ops.parser import (
+    ALTERATIONS,
+    EXTENSIONS,
+    QUALITIES,
+    ROOTS,
+    parse_chord,
 )
 
 # We import torch lazily so people can read the file without installing it.

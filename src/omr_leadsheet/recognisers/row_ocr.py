@@ -236,13 +236,13 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
         clf_can_run = use_vlm or bool(deduped)
         if use_vlm and clf_can_run:
             try:
-                from chord_vlm import VLMClassifier
+                from omr_leadsheet.recognisers.vlm import VLMClassifier
                 clf = VLMClassifier()
             except Exception as e:
                 print(f"  (VLM disabled: {e})", file=sys.stderr)
         if clf is None and classifier_path and os.path.exists(classifier_path) and deduped:
             try:
-                from classifier_infer import ChordClassifier
+                from omr_leadsheet.recognisers.cnn import ChordClassifier
                 clf = ChordClassifier(classifier_path)
             except Exception as e:
                 print(f"  (CNN disabled: {e})", file=sys.stderr)
@@ -389,13 +389,13 @@ def _recover_misclassified_articulations(
     clf = None
     if use_vlm:
         try:
-            from chord_vlm import VLMClassifier
+            from omr_leadsheet.recognisers.vlm import VLMClassifier
             clf = VLMClassifier()
         except Exception as e:
             print(f"  (VLM disabled in art-recovery: {e})", file=sys.stderr)
     if clf is None and classifier_path and os.path.exists(classifier_path):
         try:
-            from classifier_infer import ChordClassifier
+            from omr_leadsheet.recognisers.cnn import ChordClassifier
             clf = ChordClassifier(classifier_path)
         except Exception:
             clf = None
@@ -542,8 +542,8 @@ def recover_chord_row_chords(omr_path: str) -> list[RowChord]:
             # where the CNN forces a wrong class.
             if os.environ.get("CHORD_VLM") == "1":
                 try:
-                    from chord_vlm import VLMClassifier
-                    from chord_blob_scan import scan_chord_row_blobs
+                    from omr_leadsheet.recognisers.vlm import VLMClassifier
+                    from omr_leadsheet.recognisers.blobs import scan_chord_row_blobs
                     vlm = VLMClassifier()
                     # Emit every blob the VLM identifies. We don't
                     # pre-dedup against tesseract-found tokens here —

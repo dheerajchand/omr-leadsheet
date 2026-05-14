@@ -29,8 +29,9 @@ Selection:
   export CHORD_VLM_BACKEND=anthropic
   export ANTHROPIC_API_KEY=sk-...
 
-Library usage:
-  from chord_vlm import VLMClassifier
+Library usage::
+
+  from omr_leadsheet.recognisers.vlm import VLMClassifier
   clf = VLMClassifier()  # reads env for backend
   chord, conf = clf.recognise("/path/to/crop.png")
 

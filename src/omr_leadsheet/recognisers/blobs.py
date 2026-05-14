@@ -23,12 +23,13 @@ inter-chord whitespace defines them.
 
 Used by `recover_chord_row_chords` when `CHORD_VLM=1` is set.
 
-Library usage:
-  from chord_blob_scan import scan_chord_row_blobs
-  rows = scan_chord_row_blobs(bin_png, strip_top, strip_bottom,
-                              per_staff, staff_id, sheet_idx, clf)
+Library usage::
+
+  from omr_leadsheet.recognisers.blobs import scan_chord_row_blobs
+  rows = scan_chord_row_blobs(bin_png, strip_top, strip_bottom, clf)
 """
 from __future__ import annotations
+
 import os
 import subprocess
 import tempfile

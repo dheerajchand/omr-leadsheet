@@ -20,22 +20,25 @@ from __future__ import annotations
 import csv
 import os
 import sys
-import tempfile
 import subprocess
+import tempfile
+from pathlib import Path
 
 
 def main() -> None:
     if len(sys.argv) != 2:
-        print("Usage: dataset_prefill_labels.py <labeling-dir>", file=sys.stderr)
+        print("Usage: prefill <labeling-dir>", file=sys.stderr)
         sys.exit(2)
     base = sys.argv[1]
     crops_dir = os.path.join(base, "crops")
     csv_path = os.path.join(base, "labels.csv")
-    repo = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    model_path = os.path.join(repo, "classifier.pt")
-    sys.path.insert(0, os.path.join(repo, "pipeline"))
-    from classifier_infer import ChordClassifier
+    model_path = os.environ.get(
+        "CHORD_CLASSIFIER_PATH",
+        str(Path(__file__).resolve().parents[3] / "classifier.pt"),
+    )
     from PIL import Image
+
+    from omr_leadsheet.recognisers.cnn import ChordClassifier
 
     clf = ChordClassifier(model_path)
     with open(csv_path) as f:
