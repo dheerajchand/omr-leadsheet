@@ -135,6 +135,14 @@ omr-leadsheet/
 └── classifier.pt              trained CNN checkpoint
 ```
 
+## Docs
+
+- [`getting-started.md`](docs/getting-started.md) — full install + run walkthrough
+- [`pipeline.md`](docs/pipeline.md) — stage-by-stage reference
+- [`vlm.md`](docs/vlm.md) — ollama + Anthropic backends for chord recognition
+- [`classifier.md`](docs/classifier.md) — training the CNN classifier
+- [`failure_modes.md`](docs/failure_modes.md) — known weak spots
+
 ## License
 
 MIT. See `LICENSE`.

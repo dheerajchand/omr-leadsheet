@@ -91,13 +91,14 @@ lyric text the OCR dropped entirely.
   pages one at a time; the pipeline does this automatically as a
   fallback.
 * **MuseScore exit 40 / silent rejection** — usually a music21
-  edge case with unbalanced tuplets. The `cleanup_mxl --aggressive`
-  fallback in `process_song.sh` strips all tuplet notation as a last
-  resort. You lose the visual tuplet bracket but the notes survive.
+  edge case with unbalanced tuplets. The aggressive
+  `cleanup(..., aggressive=True)` fallback in
+  `omr_leadsheet.pipeline.process` strips all tuplet notation as a
+  last resort. You lose the visual tuplet bracket but the notes
+  survive.
 * **oemer `assert track_nums == 2`** — oemer's hard limitation on
-  staff count per system. We work around this with `oemer_prep.py`,
-  which paints the piano-LH staves white before oemer sees the
-  page.
+  staff count per system. The legacy `_legacy_backends/oemer_prep.py`
+  paints the piano-LH staves white before oemer sees the page.
 
 ## Where reviewing pays off
 

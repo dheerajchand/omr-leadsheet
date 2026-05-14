@@ -38,8 +38,9 @@ song. Drop into `chord_row_ocr.py` behind a feature flag.
 
 ### Step 1: Extract a labeled dataset from existing `.omr` files
 
-`pipeline/dataset_extract.py` (you'll write this — template below)
-walks every `.omr` in your `MusicXML/` directory and emits crops:
+`omr-lead dataset extract` (module:
+`omr_leadsheet.dataset.extract`) walks every `.omr` in your
+`music_xml/` directory and emits crops:
 
 ```python
 # pseudocode
@@ -140,7 +141,10 @@ var or `env.sh`.
 
 The killer feature: every time the user corrects a chord in
 `review.html` and exports `corrections.json`, that becomes new
-training data. Add a `pipeline/incorporate_corrections.py` that:
+training data. The `omr_leadsheet.dataset.import_corrections` module
+already handles the labeling-UI side; a future
+`incorporate_corrections` step would close the loop by walking
+review-tool exports:
 
 1. For each correction `m17 chord at beat 3: A7`, locate the
    measure's region in the source BINARY.png.
