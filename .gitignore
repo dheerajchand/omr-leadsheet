@@ -3,6 +3,16 @@ __pycache__/
 *.py[cod]
 .venv/
 
+# Model rollbacks and experimental dataset clones
+*.pt.bak
+dataset_new/
+dataset_combined/
+
+# Egg / build artifacts
+*.egg-info/
+build/
+dist/
+
 # OS
 .DS_Store
 
