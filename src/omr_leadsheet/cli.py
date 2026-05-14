@@ -183,7 +183,14 @@ def _run_module(module: str, args: list[str]) -> None:
     so external callers (tests, scripts) keep working while subcommands here
     expose a typer-shaped front door.
     """
-    result = subprocess.run([sys.executable, "-m", module, *args], timeout=3600)
+    try:
+        result = subprocess.run([sys.executable, "-m", module, *args], timeout=3600)
+    except subprocess.TimeoutExpired:
+        typer.secho(
+            f"error: 'python -m {module} {' '.join(args)}' exceeded 3600s timeout",
+            err=True, fg=typer.colors.RED,
+        )
+        raise typer.Exit(code=1)
     raise typer.Exit(code=result.returncode)
 
 

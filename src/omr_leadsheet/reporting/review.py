@@ -168,12 +168,15 @@ def crop_to_base64(omr_path: str, sheet_idx: int, x_left: float, x_right: float,
         y0 = max(0, int(y_top - 90))
         height = 250
         crop_path = os.path.join(td, "crop.png")
-        subprocess.run(
-            ["magick", bin_png, "-crop", f"{width}x{height}+{x0}+{y0}",
-             "+repage", crop_path],
-            capture_output=True, check=False,
-            timeout=60,
-        )
+        try:
+            subprocess.run(
+                ["magick", bin_png, "-crop", f"{width}x{height}+{x0}+{y0}",
+                 "+repage", crop_path],
+                capture_output=True, check=False,
+                timeout=60,
+            )
+        except subprocess.TimeoutExpired:
+            return None
         if not os.path.exists(crop_path):
             return None
         with open(crop_path, "rb") as f:

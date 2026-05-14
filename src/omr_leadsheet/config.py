@@ -43,7 +43,7 @@ def _detect_python() -> Path:
             )
             if result.returncode == 0 and result.stdout.strip():
                 return Path(result.stdout.strip())
-        except OSError:
+        except (OSError, subprocess.TimeoutExpired):
             pass
     return Path(sys.executable)
 

@@ -4,7 +4,7 @@
 Evidence-gathering tool for the v2.6.0 writing-code:15 rule. Run against
 any Python repo:
 
-    python3 scan_unbounded_io.py <path> [--exclude-tests]
+    python3 check_unbounded_io.py <path> [--exclude-tests]
 
 Reports each violation as ``<path>:<line>: <call> -- missing timeout``
 and exits 1 if any violations are found, 0 otherwise.
@@ -14,13 +14,20 @@ listed below where 'timeout' is the canonical kwarg name. False
 positives are preferred to false negatives -- a reviewer can dismiss a
 false positive with a one-line comment; a false negative ships a bug.
 
-Targeted surfaces:
-  - subprocess.run / Popen.communicate / Popen.wait
+Targeted surfaces (module-level calls only):
+  - subprocess.{run,call,check_call,check_output}
   - requests.{get,post,put,delete,head,patch,request}
   - httpx.{get,post,...}
   - urllib.request.urlopen
   - socket.create_connection
   - sqlite3.connect (param is also 'timeout')
+
+Known limitation: detection is based on the leftmost name in the
+attribute chain, so instance-method calls like ``proc.communicate()``
+or ``popen_obj.wait()`` are NOT caught. Extend ``_leftmost_name`` or
+track ``Popen`` assignments via AST if instance-method detection is
+needed. Aliased imports (``from subprocess import run as _run``) are
+also not tracked.
 """
 from __future__ import annotations
 
@@ -125,7 +132,7 @@ def main(argv: list[str] | None = None) -> int:
         if any(rel.match(g) for g in args.exclude):
             continue
         if args.exclude_tests and (
-            rel.parts and rel.parts[0] == "tests"
+            (rel.parts and rel.parts[0] == "tests")
             or py.name.startswith("test_")
             or py.name.endswith("_test.py")
         ):

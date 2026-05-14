@@ -143,14 +143,17 @@ def process(omr_path: str, png_dir: str, out_dir: str) -> None:
             draw = " ".join(rects)
 
             out_png = os.path.join(out_dir, f"p-{sheet_idx}.png")
-            subprocess.run(
-                ["magick", png_path,
-                 "-fill", "white", "-stroke", "white",
-                 "-draw", draw,
-                 out_png],
-                capture_output=True, check=False,
-                timeout=60,
-            )
+            try:
+                subprocess.run(
+                    ["magick", png_path,
+                     "-fill", "white", "-stroke", "white",
+                     "-draw", draw,
+                     out_png],
+                    capture_output=True, check=False,
+                    timeout=60,
+                )
+            except subprocess.TimeoutExpired:
+                pass
             if not os.path.exists(out_png):
                 # Fallback: pass through unchanged
                 shutil.copy(png_path, out_png)

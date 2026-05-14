@@ -506,7 +506,8 @@ def recover_chord_row_chords(omr_path: str) -> list[RowChord]:
             img_width = 2500
             try:
                 ident = _run(["magick", "identify", "-format", "%w", bin_png],
-                             capture_output=True, text=True, check=False)
+                             capture_output=True, text=True, check=False,
+                             timeout=60)
                 img_width = int(ident.stdout.strip())
             except Exception:
                 pass

@@ -50,11 +50,14 @@ def crop_chord(bin_png: str, x: int, y: int, w: int, h: int, out_path: str) -> b
         f"{int(w + 2 * pad_x)}x{int(h + 2 * pad_y)}"
         f"+{int(x - pad_x)}+{int(y - pad_y)}"
     )
-    r = subprocess.run(
-        ["magick", bin_png, "-crop", geom, "+repage", out_path],
-        capture_output=True, check=False,
-        timeout=60,
-    )
+    try:
+        r = subprocess.run(
+            ["magick", bin_png, "-crop", geom, "+repage", out_path],
+            capture_output=True, check=False,
+            timeout=60,
+        )
+    except subprocess.TimeoutExpired:
+        return False
     return r.returncode == 0 and os.path.exists(out_path)
 
 
