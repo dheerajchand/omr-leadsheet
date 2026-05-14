@@ -42,4 +42,5 @@ def extract(pdf: Path, out_txt: Path) -> None:
     subprocess.run(
         ["bash", str(_SHELL_HELPER), str(pdf), str(out_txt)],
         check=True,
+        timeout=300,
     )

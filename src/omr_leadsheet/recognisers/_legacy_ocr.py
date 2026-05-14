@@ -102,6 +102,7 @@ def recover_missing_chord_values(omr_path: str) -> list[RecoveredChord]:
                 subprocess.run(
                     ["magick", bin_png, "-crop", geom, "+repage", crop_path],
                     capture_output=True, check=False,
+                    timeout=60,
                 )
                 if not os.path.exists(crop_path):
                     continue
@@ -110,6 +111,7 @@ def recover_missing_chord_values(omr_path: str) -> list[RecoveredChord]:
                     ["tesseract", crop_path, "-", "--psm", "7",
                      "-c", f"tessedit_char_whitelist={CHORD_CHARS}"],
                     capture_output=True, text=True, check=False,
+                    timeout=120,
                 )
                 raw = result.stdout.strip()
                 cleaned = _clean_chord(raw)

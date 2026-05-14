@@ -183,7 +183,7 @@ def _run_module(module: str, args: list[str]) -> None:
     so external callers (tests, scripts) keep working while subcommands here
     expose a typer-shaped front door.
     """
-    result = subprocess.run([sys.executable, "-m", module, *args])
+    result = subprocess.run([sys.executable, "-m", module, *args], timeout=3600)
     raise typer.Exit(code=result.returncode)
 
 

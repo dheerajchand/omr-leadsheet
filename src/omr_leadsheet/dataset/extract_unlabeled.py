@@ -78,6 +78,7 @@ def _crop(bin_png: str, x: int, y: int, w: int, h: int, out_path: str) -> bool:
     r = subprocess.run(
         ["magick", bin_png, "-crop", geom, "+repage", out_path],
         capture_output=True, check=False,
+        timeout=60,
     )
     return r.returncode == 0 and os.path.exists(out_path)
 

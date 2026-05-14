@@ -172,6 +172,7 @@ def crop_to_base64(omr_path: str, sheet_idx: int, x_left: float, x_right: float,
             ["magick", bin_png, "-crop", f"{width}x{height}+{x0}+{y0}",
              "+repage", crop_path],
             capture_output=True, check=False,
+            timeout=60,
         )
         if not os.path.exists(crop_path):
             return None

@@ -69,6 +69,7 @@ def _run_omr(
     subprocess.run(
         [str(config.audiveris_bin), "-batch", "-export", "-output", str(mxl_dir), str(pdf)],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False,
+        timeout=600,
     )
     if mxl.is_file():
         return
@@ -78,6 +79,7 @@ def _run_omr(
         subprocess.run(
             ["pdftoppm", "-r", "400", "-png", str(pdf), str(tmp_path / "page")],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False,
+            timeout=300,
         )
         if shutil.which("magick") is None:
             return
@@ -88,10 +90,12 @@ def _run_omr(
         subprocess.run(
             ["magick", *[str(p) for p in pages], str(hi_pdf)],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False,
+            timeout=300,
         )
         subprocess.run(
             [str(config.audiveris_bin), "-batch", "-export", "-output", str(mxl_dir), str(hi_pdf)],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False,
+            timeout=600,
         )
         hi_mxl = mxl_dir / "hi.mxl"
         hi_omr = mxl_dir / "hi.omr"
@@ -113,6 +117,7 @@ def _export_mscz(
     subprocess.run(
         [str(config.mscore_bin), "-S", str(config.style_file), "-o", str(mscz), str(lead_clean)],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False,
+        timeout=300,
     )
     if mscz.is_file():
         return
@@ -122,6 +127,7 @@ def _export_mscz(
     subprocess.run(
         [str(config.mscore_bin), "-S", str(config.style_file), "-o", str(mscz), str(lead_notup)],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False,
+        timeout=300,
     )
 
 
@@ -235,10 +241,12 @@ def process(
                 [str(config.python_bin), "-m", "omr_leadsheet.reporting.suspicious",
                  "--markdown", str(lead_corr)],
                 stdout=review, check=False,
+                timeout=300,
             )
         subprocess.run(
             [str(config.python_bin), "-m", "omr_leadsheet.reporting.review", str(out_dir)],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False,
+            timeout=300,
         )
 
         _step(log, song, f"done -> {mscz}")
@@ -255,4 +263,5 @@ def _shell_module(module: str, args: list[str], *, config: Config) -> None:
     subprocess.run(
         [str(config.python_bin), "-m", module, *args],
         env=env, check=True,
+        timeout=3600,
     )

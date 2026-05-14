@@ -51,6 +51,7 @@ def _audiveris_image_size(sheet_dir: str) -> tuple[int, int]:
     proc = subprocess.run(
         ["magick", "identify", "-format", "%w %h", bin_png],
         capture_output=True, text=True, check=False,
+        timeout=60,
     )
     w, h = proc.stdout.strip().split()
     return int(w), int(h)
@@ -60,6 +61,7 @@ def _png_size(png_path: str) -> tuple[int, int]:
     proc = subprocess.run(
         ["magick", "identify", "-format", "%w %h", png_path],
         capture_output=True, text=True, check=False,
+        timeout=60,
     )
     w, h = proc.stdout.strip().split()
     return int(w), int(h)
@@ -147,6 +149,7 @@ def process(omr_path: str, png_dir: str, out_dir: str) -> None:
                  "-draw", draw,
                  out_png],
                 capture_output=True, check=False,
+                timeout=60,
             )
             if not os.path.exists(out_png):
                 # Fallback: pass through unchanged

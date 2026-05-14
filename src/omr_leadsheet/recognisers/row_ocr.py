@@ -145,6 +145,7 @@ def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]
          "-c", f"tessedit_char_whitelist={CHORD_CHARS}",
          "tsv"],
         capture_output=True, text=True, check=False,
+        timeout=120,
     )
     out: list[tuple[int, str]] = []
     for line in proc.stdout.splitlines():
@@ -187,6 +188,7 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
         subprocess.run(
             ["magick", png_path, "-crop", f"x{strip_h}+0+{top}", "+repage", strip_path],
             capture_output=True, check=False,
+            timeout=60,
         )
         if not os.path.exists(strip_path):
             return []
@@ -205,6 +207,7 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
             subprocess.run(
                 ["magick", png_path, "-crop", f"{w}x{strip_h}+{x}+{top}", "+repage", win_path],
                 capture_output=True, check=False,
+                timeout=60,
             )
             if os.path.exists(win_path):
                 results.extend(_ocr_run(win_path, 8, x_offset=x))
@@ -260,6 +263,7 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
                         ["magick", png_path, "-crop",
                          f"{w}x{strip_h}+{x0}+{top}", "+repage", crop_path],
                         capture_output=True, check=False,
+                        timeout=60,
                     )
                     if not os.path.exists(crop_path):
                         refined.append((xc, tok))
@@ -321,6 +325,7 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
                         ["magick", png_path, "-crop",
                          f"{w}x{strip_h}+{sx}+{top}", "+repage", sweep_path],
                         capture_output=True, check=False,
+                        timeout=60,
                     )
                     if os.path.exists(sweep_path):
                         # Ink-density gate: chord glyphs are ~5-12% dark
@@ -453,6 +458,7 @@ def _recover_misclassified_articulations(
                     ["magick", bin_png, "-crop",
                      f"{int(cw)}x{int(ch)}+{x0}+{y0}", "+repage", crop_path],
                     capture_output=True, check=False,
+                    timeout=60,
                 )
                 if not os.path.exists(crop_path):
                     continue

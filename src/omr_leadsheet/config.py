@@ -39,6 +39,7 @@ def _detect_python() -> Path:
             result = subprocess.run(
                 [pyenv, "which", "python"],
                 capture_output=True, text=True, check=False,
+                timeout=30,
             )
             if result.returncode == 0 and result.stdout.strip():
                 return Path(result.stdout.strip())

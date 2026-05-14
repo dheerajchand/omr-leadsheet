@@ -73,6 +73,7 @@ def main() -> None:
                     ["magick", bin_png, "-crop",
                      f"{CONTEXT_W}x{CONTEXT_H}+{x0}+{y0}", "+repage", out_path],
                     capture_output=True, check=False,
+                    timeout=60,
                 )
                 if os.path.exists(out_path):
                     n_done += 1
