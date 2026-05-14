@@ -38,6 +38,7 @@ See `docs/failure_modes.md`.
 | Python 3.11+ | Pipeline scripts | system / pyenv |
 | `music21`, `matplotlib` | MusicXML manipulation, charts | `pip install -r requirements.txt` |
 | `oemer` (optional) | Second OMR backend for reconciliation | `pip install oemer` |
+| `ollama` (optional, for VLM chord recognition) | Run a local vision-language model for high-accuracy chord OCR — see `docs/vlm.md` | `brew install ollama && ollama pull qwen2.5vl:7b` |
 
 You also need a MuseScore `.mss` style file in jazz lead-sheet style
 (MuseJazz font, chord-symbol styling, etc.). The repo ships an example
