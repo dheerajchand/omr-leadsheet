@@ -152,6 +152,7 @@ def scan_chord_row_blobs(
                 ["magick", bin_png, "-crop",
                  f"{w}x{h}+{x0}+{y0}", "+repage", crop_path],
                 capture_output=True, check=False,
+                timeout=60,
             )
             if not os.path.exists(crop_path):
                 continue

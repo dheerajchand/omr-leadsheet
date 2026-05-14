@@ -46,23 +46,50 @@ def _staff_bounds(root: ET.Element) -> list[tuple[int, float, float]]:
     return out
 
 
+def _identify_size(label: str, png_path: str) -> tuple[int, int]:
+    """Run ``magick identify`` on ``png_path`` and parse width/height.
+
+    Raises ``RuntimeError`` with diagnostic context on timeout, non-zero
+    exit, or unparseable output. ``label`` is folded into the message so
+    callers know which call site failed.
+    """
+    try:
+        proc = subprocess.run(
+            ["magick", "identify", "-format", "%w %h", png_path],
+            capture_output=True, text=True, check=False,
+            timeout=60,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError(
+            f"{label}: 'magick identify' exceeded 60s timeout on {png_path}"
+        ) from exc
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"{label}: 'magick identify' failed on {png_path} "
+            f"(rc={proc.returncode}, stderr={proc.stderr.strip()!r})"
+        )
+    parts = proc.stdout.strip().split()
+    if len(parts) != 2:
+        raise RuntimeError(
+            f"{label}: 'magick identify' produced unparseable output "
+            f"on {png_path} (stdout={proc.stdout!r})"
+        )
+    try:
+        return int(parts[0]), int(parts[1])
+    except ValueError as exc:
+        raise RuntimeError(
+            f"{label}: 'magick identify' returned non-integer dimensions "
+            f"on {png_path} (stdout={proc.stdout!r})"
+        ) from exc
+
+
 def _audiveris_image_size(sheet_dir: str) -> tuple[int, int]:
     bin_png = os.path.join(sheet_dir, "BINARY.png")
-    proc = subprocess.run(
-        ["magick", "identify", "-format", "%w %h", bin_png],
-        capture_output=True, text=True, check=False,
-    )
-    w, h = proc.stdout.strip().split()
-    return int(w), int(h)
+    return _identify_size("_audiveris_image_size", bin_png)
 
 
 def _png_size(png_path: str) -> tuple[int, int]:
-    proc = subprocess.run(
-        ["magick", "identify", "-format", "%w %h", png_path],
-        capture_output=True, text=True, check=False,
-    )
-    w, h = proc.stdout.strip().split()
-    return int(w), int(h)
+    return _identify_size("_png_size", png_path)
 
 
 def process(omr_path: str, png_dir: str, out_dir: str) -> None:
@@ -141,13 +168,17 @@ def process(omr_path: str, png_dir: str, out_dir: str) -> None:
             draw = " ".join(rects)
 
             out_png = os.path.join(out_dir, f"p-{sheet_idx}.png")
-            subprocess.run(
-                ["magick", png_path,
-                 "-fill", "white", "-stroke", "white",
-                 "-draw", draw,
-                 out_png],
-                capture_output=True, check=False,
-            )
+            try:
+                subprocess.run(
+                    ["magick", png_path,
+                     "-fill", "white", "-stroke", "white",
+                     "-draw", draw,
+                     out_png],
+                    capture_output=True, check=False,
+                    timeout=60,
+                )
+            except subprocess.TimeoutExpired:
+                pass
             if not os.path.exists(out_png):
                 # Fallback: pass through unchanged
                 shutil.copy(png_path, out_png)

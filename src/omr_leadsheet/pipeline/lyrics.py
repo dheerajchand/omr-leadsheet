@@ -33,6 +33,8 @@ def extract(pdf: Path, out_txt: Path) -> None:
         If the shell helper script or input PDF is missing.
     subprocess.CalledProcessError
         If the underlying pdftoppm / tesseract chain fails.
+    subprocess.TimeoutExpired
+        If the extraction pipeline exceeds the 300s timeout.
     """
     if not _SHELL_HELPER.is_file():
         raise FileNotFoundError(f"shell helper missing: {_SHELL_HELPER}")
@@ -42,4 +44,5 @@ def extract(pdf: Path, out_txt: Path) -> None:
     subprocess.run(
         ["bash", str(_SHELL_HELPER), str(pdf), str(out_txt)],
         check=True,
+        timeout=300,
     )

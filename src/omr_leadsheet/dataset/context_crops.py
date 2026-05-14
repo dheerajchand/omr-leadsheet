@@ -69,11 +69,15 @@ def main() -> None:
                     continue
                 x0 = max(0, r["_x"] - CONTEXT_W // 2)
                 y0 = max(0, r["_y"] - CONTEXT_H // 2)
-                subprocess.run(
-                    ["magick", bin_png, "-crop",
-                     f"{CONTEXT_W}x{CONTEXT_H}+{x0}+{y0}", "+repage", out_path],
-                    capture_output=True, check=False,
-                )
+                try:
+                    subprocess.run(
+                        ["magick", bin_png, "-crop",
+                         f"{CONTEXT_W}x{CONTEXT_H}+{x0}+{y0}", "+repage", out_path],
+                        capture_output=True, check=False,
+                        timeout=60,
+                    )
+                except subprocess.TimeoutExpired:
+                    continue
                 if os.path.exists(out_path):
                     n_done += 1
         print(f"  {src}: {len(items)} contexts")
