@@ -23,7 +23,7 @@ Usage: reduce_to_lead.py <input.mxl> <output.musicxml>
 import argparse
 import sys
 from copy import deepcopy
-from music21 import converter, stream, harmony, clef, note, bar, expressions, layout, key, meter
+from music21 import converter, stream, harmony, clef, note, chord, bar, expressions, layout, key, meter
 
 
 # Storage-MIDI floor for the vocal part after the octave-down transpose.
@@ -36,34 +36,88 @@ from music21 import converter, stream, harmony, clef, note, bar, expressions, la
 VOCAL_FLOOR_MIDI = 52
 
 
-def _drop_subvocal_notes(part) -> int:
-    """Replace every Note in ``part`` whose ``pitch.midi`` is below
-    ``VOCAL_FLOOR_MIDI`` with a Rest of equal duration at the same
-    offset. Returns the number of notes dropped.
+def _drop_subvocal_notes(part) -> dict:
+    """Clean sub-vocal-range garbage out of ``part`` in place.
 
-    Operates in-place on the part. Iterates Measure containers (and any
-    Voice sub-containers) explicitly so we don't trip over the
-    activeSite-after-deepcopy gotcha that bit the dynamics purge below.
+    Three element kinds need handling, all of which can ship piano-LH
+    bleed-through from Audiveris's lossy staff separation:
+
+    * ``Note`` whose ``pitch.midi`` is below ``VOCAL_FLOOR_MIDI`` →
+      replace with a ``Rest`` of equal duration at the same offset.
+    * ``Chord`` (vertical stack) → reduce to its highest pitch and
+      replace with a single-Note element. In LCWTO production data, 34
+      of 51 Chord objects in the vocal part contain a vocal-range top
+      pitch over piano-triad lower pitches — collapsing to top recovers
+      the melody while shedding the piano voicing. If the top pitch is
+      itself below the floor, the Chord becomes a Rest just like a Note
+      would.
+    * ``Voice`` (sub-container inside a Measure) → recurse into it so
+      Notes/Chords directly inside Voice elements are also processed.
+
+    Returns a dict with:
+      ``count`` — total elements replaced (Note→Rest, Chord→Note, or
+                  Chord→Rest)
+      ``drops`` — list of ``(measure_number, offset, original_repr,
+                  replacement_repr)`` for each replacement, useful for
+                  debugging which bars had ghost-pitch content.
+
+    Operates in-place on the part. Iterates Measure containers and any
+    Voice sub-containers explicitly so we don't depend on
+    ``activeSite``-after-``deepcopy`` (the same gotcha the dynamics
+    purge below has to work around).
     """
-    dropped = 0
+    drops: list[tuple] = []
 
-    def _scan(container):
-        nonlocal dropped
+    def _replace_with_rest(container, el, m_num) -> None:
+        rest = note.Rest()
+        rest.duration = deepcopy(el.duration)
+        offset = el.offset
+        original = _repr(el)
+        container.remove(el)
+        container.insert(offset, rest)
+        drops.append((m_num, float(offset), original, "Rest"))
+
+    def _reduce_chord_to_top(container, ch, m_num) -> None:
+        top_pitch = max(ch.pitches, key=lambda p: p.midi)
+        offset = ch.offset
+        original = _repr(ch)
+        container.remove(ch)
+        if top_pitch.midi < VOCAL_FLOOR_MIDI:
+            rest = note.Rest()
+            rest.duration = deepcopy(ch.duration)
+            container.insert(offset, rest)
+            drops.append((m_num, float(offset), original, "Rest"))
+        else:
+            top_note = note.Note(top_pitch)
+            top_note.duration = deepcopy(ch.duration)
+            # Carry over lyrics so the vocal syllable stays attached.
+            top_note.lyrics = list(ch.lyrics) if getattr(ch, "lyrics", None) else []
+            container.insert(offset, top_note)
+            drops.append((m_num, float(offset), original, top_note.nameWithOctave))
+
+    def _repr(el) -> str:
+        if isinstance(el, chord.Chord):
+            return "Chord[" + ",".join(p.nameWithOctave for p in el.pitches) + "]"
+        if isinstance(el, note.Note):
+            return el.nameWithOctave
+        return el.__class__.__name__
+
+    def _scan(container, m_num: int) -> None:
         for el in list(container):
-            if isinstance(el, note.Note) and el.pitch.midi < VOCAL_FLOOR_MIDI:
-                rest = note.Rest()
-                rest.duration = el.duration
-                offset = el.offset
-                container.remove(el)
-                container.insert(offset, rest)
-                dropped += 1
-            elif hasattr(el, "voices") and el.voices:
-                for v in el.voices:
-                    _scan(v)
+            if isinstance(el, chord.Chord) and not isinstance(el, harmony.ChordSymbol):
+                # `chord.Chord` is the base class for harmony.ChordSymbol too;
+                # exclude chord SYMBOLS (the text labels above the staff) — we
+                # only want vertical melodic chords.
+                _reduce_chord_to_top(container, el, m_num)
+            elif isinstance(el, note.Note) and el.pitch.midi < VOCAL_FLOOR_MIDI:
+                _replace_with_rest(container, el, m_num)
+            elif isinstance(el, stream.Voice):
+                _scan(el, m_num)
 
     for m in part.getElementsByClass("Measure"):
-        _scan(m)
-    return dropped
+        _scan(m, m.number)
+
+    return {"count": len(drops), "drops": drops}
 
 
 def pick_vocal_part(score) -> int:
@@ -166,9 +220,11 @@ def reduce_score(
             n.octave = (n.octave or 4) - 1
 
     # Drop sub-vocal-range ghost notes that survive into the "vocal" part
-    # from Audiveris's lossy staff separation (piano LH bleed). See
-    # VOCAL_FLOOR_MIDI for the threshold rationale.
-    ghosts_dropped = _drop_subvocal_notes(new_part)
+    # from Audiveris's lossy staff separation (piano LH bleed). Also
+    # reduces vertical Chords (which never belong in a monophonic vocal
+    # part) to their top pitch. See VOCAL_FLOOR_MIDI for the threshold
+    # rationale.
+    ghost_stats = _drop_subvocal_notes(new_part)
 
     # Strip piano dynamics / hairpins. The Audiveris export sometimes attaches
     # piano-staff dynamic marks (mf, p, cresc.) to the vocal part. A jazz lead
@@ -391,7 +447,8 @@ def reduce_score(
         "chord_symbols_total": len(vocal_chord_keys),
         "chord_symbols_added_from_other_parts": added,
         "rehearsal_letters": letters_added,
-        "subvocal_ghost_notes_dropped": ghosts_dropped,
+        "subvocal_ghost_replacements": ghost_stats["count"],
+        "subvocal_ghost_drops": ghost_stats["drops"],
         "output": out_path,
     }
 
