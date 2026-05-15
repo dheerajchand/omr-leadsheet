@@ -19,7 +19,7 @@ __all__ = ["ChordClassifier"]
 
 
 class ChordClassifier:
-    def __init__(self, model_path: str):
+    def __init__(self, model_path: str, notation_style: str | None = None):
         import torch
         from PIL import Image  # noqa: F401  (proof Pillow is available)
 
@@ -27,8 +27,13 @@ class ChordClassifier:
         from omr_leadsheet.training.train import IMG_H, IMG_W, build_model
 
         self._torch = torch
-        self._format_chord = format_chord
         self._ChordFields = ChordFields
+        self._notation_style = (
+            notation_style
+            if notation_style is not None
+            else os.environ.get("NOTATION_STYLE", "symbolic")
+        )
+        self._format_chord = format_chord
 
         ckpt = torch.load(model_path, map_location="cpu", weights_only=False)
         self.roots = ckpt["roots"]
@@ -105,7 +110,7 @@ class ChordClassifier:
             extension=self.extensions[i_e],
             alteration=self.alterations[i_a],
         )
-        return self._format_chord(fields), conf
+        return self._format_chord(fields, style=self._notation_style), conf
 
     recognise_image = recognise  # alias
 

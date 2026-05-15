@@ -80,6 +80,11 @@ class Config:
     chord_vlm_model: str = "qwen2.5vl:7b"
     classifier_path: Path | None = None
     chord_sweep_enabled: bool = False
+    # Chord-symbol output style. Both produce MuseScore-parseable text;
+    # the displayed glyph depends on the MuseScore chord-style preset
+    # applied via `style_file` (Jazz → symbolic glyphs, Standard → text).
+    # See docs/chord-notation.md.
+    notation_style: str = "symbolic"  # one of: "symbolic", "textual"
 
     @classmethod
     def from_env(cls, book_dir: Path | str | None = None) -> "Config":
@@ -108,6 +113,7 @@ class Config:
             chord_vlm_model=os.environ.get("CHORD_VLM_MODEL", "qwen2.5vl:7b"),
             classifier_path=Path(classifier_env).expanduser() if classifier_env else None,
             chord_sweep_enabled=os.environ.get("CHORD_SWEEP_ENABLE") == "1",
+            notation_style=os.environ.get("NOTATION_STYLE", "symbolic"),
         )
 
     def to_env(self) -> dict[str, str]:
@@ -129,4 +135,5 @@ class Config:
             env["CHORD_VLM"] = "1"
         if self.chord_sweep_enabled:
             env["CHORD_SWEEP_ENABLE"] = "1"
+        env["NOTATION_STYLE"] = self.notation_style
         return env

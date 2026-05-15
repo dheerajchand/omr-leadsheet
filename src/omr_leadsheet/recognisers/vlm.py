@@ -245,15 +245,15 @@ class VLMClassifier:
             self._save_cached(h, "", 0.0)
             return "", 0.0
 
-        # Sanity-check the response looks like a chord
+        # Strip Unicode chord glyphs to MuseScore-parseable ASCII before
+        # both the regex check and downstream emission. MuseScore refuses
+        # Unicode chord input; see chord_ops.parser.normalize_for_musescore
+        # and docs/chord-notation.md.
+        from omr_leadsheet.chord_ops.parser import normalize_for_musescore
+        answer = normalize_for_musescore(answer)
         if not CHORD_REGEX.match(answer):
-            # Try unicode-accidental → ascii fixup
-            cleaned = answer.replace("♯", "#").replace("♭", "b").replace("°", "dim")
-            if CHORD_REGEX.match(cleaned):
-                answer = cleaned
-            else:
-                self._save_cached(h, "", 0.0)
-                return "", 0.0
+            self._save_cached(h, "", 0.0)
+            return "", 0.0
 
         self._save_cached(h, answer, 0.95)
         return answer, 0.95
