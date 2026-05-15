@@ -196,8 +196,10 @@ def test_notes_inside_voice_are_processed() -> None:
     part = m21_stream.Part()
     measure = m21_stream.Measure(number=1)
     voice = m21_stream.Voice()
-    good = m21_note.Note("E4"); good.quarterLength = 1.0
-    ghost = m21_note.Note("D3"); ghost.quarterLength = 1.0
+    good = m21_note.Note("E4")
+    good.quarterLength = 1.0
+    ghost = m21_note.Note("D3")
+    ghost.quarterLength = 1.0
     voice.append(good)
     voice.append(ghost)
     measure.insert(0, voice)
@@ -218,9 +220,12 @@ def test_drops_list_records_measure_offset_and_replacement() -> None:
     without re-walking the score after the fact."""
     part = m21_stream.Part()
     measure = m21_stream.Measure(number=42)
-    a = m21_note.Note("E4"); a.quarterLength = 1.0
-    b = m21_note.Note("D3"); b.quarterLength = 1.0
-    ch = m21_chord.Chord(["D3", "F#3", "A3"]); ch.quarterLength = 1.0
+    a = m21_note.Note("E4")
+    a.quarterLength = 1.0
+    b = m21_note.Note("D3")
+    b.quarterLength = 1.0
+    ch = m21_chord.Chord(["D3", "F#3", "A3"])
+    ch.quarterLength = 1.0
     measure.append(a)
     measure.append(b)
     measure.append(ch)
