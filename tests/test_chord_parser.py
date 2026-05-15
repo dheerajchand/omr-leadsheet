@@ -44,7 +44,7 @@ def test_parse_round_trip_textual(chord: str) -> None:
 # --- alias canonicalisation -----------------------------------------------
 
 @pytest.mark.parametrize(
-    "input,canonical_symbolic",
+    "raw,canonical_symbolic",
     [
         ("Bb", "A#"),                    # flat → sharp
         ("Ebdim", "D#o"),                # flat root + textual quality
@@ -60,9 +60,9 @@ def test_parse_round_trip_textual(chord: str) -> None:
         ("CM7", "Ct"),                   # textual M7 → bare t
     ],
 )
-def test_parser_canonicalises_aliases(input: str, canonical_symbolic: str) -> None:
+def test_parser_canonicalises_aliases(raw: str, canonical_symbolic: str) -> None:
     """All quality aliases reduce to the canonical symbolic form."""
-    assert format_chord(parse_chord(input), style="symbolic") == canonical_symbolic
+    assert format_chord(parse_chord(raw), style="symbolic") == canonical_symbolic
 
 
 # --- the 9-over-7 stacking preservation -----------------------------------

@@ -110,7 +110,9 @@ def parse_chord(label: str) -> ChordFields | None:
     extension = "none"
 
     # Half-diminished tokens (MS grammar: bare '0'; also accept m7b5 forms).
-    if rest in ("0", "h", "ø"):
+    # Unicode `ø` is already mapped to `0` by normalize_for_musescore above,
+    # so it doesn't need to appear in this tuple.
+    if rest in ("0", "h"):
         quality = "half-dim"
         rest = ""
     elif rest in ("m7b5", "-7b5", "m7(b5)"):
