@@ -26,6 +26,46 @@ from copy import deepcopy
 from music21 import converter, stream, harmony, clef, note, bar, expressions, layout, key, meter
 
 
+# Storage-MIDI floor for the vocal part after the octave-down transpose.
+# At MIDI 52 (E3 storage = E4 sounded under a treble-8vb clef) we are
+# already below the practical bottom of every standard vocal range; any
+# note that lands below this is almost certainly a piano-LH bleed-through
+# captured by Audiveris when the staff-separation in the .omr was lossy.
+# Replacing such notes with rests preserves the bar's metric integrity
+# while removing the audible/visual garbage.
+VOCAL_FLOOR_MIDI = 52
+
+
+def _drop_subvocal_notes(part) -> int:
+    """Replace every Note in ``part`` whose ``pitch.midi`` is below
+    ``VOCAL_FLOOR_MIDI`` with a Rest of equal duration at the same
+    offset. Returns the number of notes dropped.
+
+    Operates in-place on the part. Iterates Measure containers (and any
+    Voice sub-containers) explicitly so we don't trip over the
+    activeSite-after-deepcopy gotcha that bit the dynamics purge below.
+    """
+    dropped = 0
+
+    def _scan(container):
+        nonlocal dropped
+        for el in list(container):
+            if isinstance(el, note.Note) and el.pitch.midi < VOCAL_FLOOR_MIDI:
+                rest = note.Rest()
+                rest.duration = el.duration
+                offset = el.offset
+                container.remove(el)
+                container.insert(offset, rest)
+                dropped += 1
+            elif hasattr(el, "voices") and el.voices:
+                for v in el.voices:
+                    _scan(v)
+
+    for m in part.getElementsByClass("Measure"):
+        _scan(m)
+    return dropped
+
+
 def pick_vocal_part(score) -> int:
     """Return the index of the part most likely to be the melody.
 
@@ -124,6 +164,11 @@ def reduce_score(
     for n in new_part.recurse().notes:
         if isinstance(n, note.Note):
             n.octave = (n.octave or 4) - 1
+
+    # Drop sub-vocal-range ghost notes that survive into the "vocal" part
+    # from Audiveris's lossy staff separation (piano LH bleed). See
+    # VOCAL_FLOOR_MIDI for the threshold rationale.
+    ghosts_dropped = _drop_subvocal_notes(new_part)
 
     # Strip piano dynamics / hairpins. The Audiveris export sometimes attaches
     # piano-staff dynamic marks (mf, p, cresc.) to the vocal part. A jazz lead
@@ -346,6 +391,7 @@ def reduce_score(
         "chord_symbols_total": len(vocal_chord_keys),
         "chord_symbols_added_from_other_parts": added,
         "rehearsal_letters": letters_added,
+        "subvocal_ghost_notes_dropped": ghosts_dropped,
         "output": out_path,
     }
 
