@@ -376,6 +376,16 @@ def apply_alignment(audi_pairs: list, truth: list[str], all_notes: list, verse_n
     else:
         verse_range = (0, len(all_notes) - 1)
 
+    # Pickup/anacrusis tolerance: allow truth tokens whose alignment falls
+    # just outside the audi-attached lyric range to land on the immediately-
+    # adjacent pickup notes. Without this, a leading pickup syllable (e.g.
+    # "If" in "If we call the whole thing off") whose note Audiveris failed
+    # to attach a lyric to is permanently excluded from naked-note insertion
+    # because verse_range[0] starts at the first audi-aligned note. Two
+    # notes is enough to cover standard cut-time / 4-4 pickup patterns
+    # without reaching into adjacent verse territory.
+    PICKUP_TOLERANCE = 2
+
     for align_idx, (ai, ti) in enumerate(alignment):
         if ai is not None or ti is None:
             continue
@@ -383,9 +393,10 @@ def apply_alignment(audi_pairs: list, truth: list[str], all_notes: list, verse_n
         if not is_real_word(truth_tok):
             continue
         prev_note, next_note = neighboring_audi_positions(align_idx)
-        # Clamp to the verse's actual range to avoid inventing lyrics outside it
-        prev_note = max(prev_note, verse_range[0] - 1)
-        next_note = min(next_note, verse_range[1] + 1)
+        # Clamp to the verse's actual range (plus pickup tolerance on each
+        # side) to avoid inventing lyrics outside it.
+        prev_note = max(prev_note, verse_range[0] - 1 - PICKUP_TOLERANCE)
+        next_note = min(next_note, verse_range[1] + 1 + PICKUP_TOLERANCE)
         if prev_note + 1 >= next_note:
             continue
         naked = [
