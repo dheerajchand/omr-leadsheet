@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from music21 import note as m21_note
 
-from omr_leadsheet.pipeline.spell_check import apply_alignment
+from omr_leadsheet.pipeline.spell_check import apply_alignment, is_real_word
 
 
 def _make_note(lyric_text: str | None = None, verse: int = 1) -> m21_note.Note:
@@ -170,3 +170,52 @@ def test_no_insertion_when_truth_matches_audi() -> None:
     stats = apply_alignment(audi_pairs, truth, all_notes, verse_num=1)
 
     assert stats["inserted"] == 0
+
+
+# --- is_real_word single-char trust (issue #11) ---------------------------
+
+def test_legitimate_single_char_words_are_real() -> None:
+    """`a`, `i`, `o` are real single-char English words; trust them."""
+    assert is_real_word("a")
+    assert is_real_word("I")  # casing irrelevant
+    assert is_real_word("o")
+    # With trailing punctuation:
+    assert is_real_word("I,")
+    assert is_real_word("a.")
+
+
+def test_other_single_chars_not_trusted() -> None:
+    """Pre-fix, `is_real_word` returned True for every len<3 token,
+    which let OCR-truncated single-letter syllables (the→t, etc.) pass
+    NW-alignment without being replaced by the truth-aligned partner.
+    Now: single chars outside the SINGLE_CHAR_WORDS whitelist are NOT
+    treated as real, so NW replacement can fire.
+    """
+    assert not is_real_word("t"), "the OCR-truncation case from LCWTO m33"
+    assert not is_real_word("x")
+    assert not is_real_word("b")
+    assert not is_real_word("z")
+    # Empty token must also be rejected (previously short-circuited True)
+    assert not is_real_word("")
+
+
+def test_two_char_tokens_still_trusted() -> None:
+    """Two-char tokens are mostly legitimate (to, of, go, on, in, my, we,
+    he, by, do, ...). Trust them broadly — the false-positive rate is
+    much lower than at 1 char.
+    """
+    for tok in ("to", "of", "go", "on", "in", "my", "we", "he", "is", "no"):
+        assert is_real_word(tok), f"{tok!r} should be trusted"
+
+
+def test_dictionary_path_still_works() -> None:
+    """3+ char tokens still pass through the dictionary check.
+
+    (Note: `/usr/share/dict/words` is the 1913 web2 dict which lacks
+    many modern plurals like "things"; we test with words that are
+    in both the modern English set and web2.)
+    """
+    assert is_real_word("hello")
+    assert is_real_word("thing")
+    assert is_real_word("call")
+    assert not is_real_word("xkqz"), "non-word should be rejected"

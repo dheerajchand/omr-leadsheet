@@ -71,12 +71,37 @@ LYRIC_SYLLABLES |= MODERN_ENGLISH
 DICT |= LYRIC_SYLLABLES
 
 
+SINGLE_CHAR_WORDS = {"a", "i", "o"}  # legitimate single-char English words
+
+
 def is_real_word(tok: str) -> bool:
-    """True if the token looks like a real word that we should trust."""
+    """True if the token looks like a real word that we should trust.
+
+    Audi tokens that pass this gate are kept as-is during NW-alignment
+    pass-1, even if a more plausible truth-token aligns to them. So
+    being permissive here means OCR garbage stays. Being too strict
+    means good Audiveris reads get clobbered by noisy tesseract truth.
+
+    Length-based rule of thumb:
+
+    - 1-char tokens: only ``a``, ``i``, ``o`` are real English words.
+      Tesseract systematically truncates short syllables to single
+      letters (the→t, oh→o (which is fine), it→i, etc.), so trusting
+      every 1-char token causes the OCR-truncation class of bugs
+      (issue #11). Whitelist instead.
+    - 2-char tokens: lots of real two-letter words (to, of, go, on,
+      in, my, we, he, ...). Even when an OCR truncation is in this
+      range (oth→th), trusting them gives better outcomes on average
+      than rejecting them.
+    - 3+ chars: defer to the dictionary.
+    """
     t = tok.lower().strip(".,;:!?\"''()[]-_")
-    # Strip trailing punctuation remnants from OCR
-    if len(t) < 3:
-        return True  # short tokens (I, a, to, of, go, on...) - trust
+    if len(t) == 0:
+        return False
+    if len(t) == 1:
+        return t in SINGLE_CHAR_WORDS
+    if len(t) == 2:
+        return True  # mostly legitimate; see docstring
     if t in DICT:
         return True
     return False
