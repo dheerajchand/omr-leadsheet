@@ -153,9 +153,23 @@ def process(
         raise FileNotFoundError(f"not a file: {pdf}")
 
     song = pdf.stem
-    mxl_dir = config.book_dir / "MusicXML"
-    lyr_dir = config.book_dir / "Lyrics"
-    out_dir = config.book_dir / "LeadSheets" / song
+    # Songbook sub-directory layouts vary (snake_case vs TitleCase).
+    # Find existing dirs; create snake_case ones if none exist. See
+    # pipeline/_paths.py for the candidate sets. Bug #21: previously
+    # hardcoded TitleCase names caused process.py to miss the
+    # snake_case cache and re-run Audiveris every time.
+    from omr_leadsheet.pipeline._paths import (
+        LEADSHEETS_DIR_CANDIDATES,
+        LYRICS_DIR_CANDIDATES,
+        MXL_DIR_CANDIDATES,
+        find_subdir,
+    )
+    mxl_dir = find_subdir(config.book_dir, MXL_DIR_CANDIDATES, must_exist=False)
+    lyr_dir = find_subdir(config.book_dir, LYRICS_DIR_CANDIDATES, must_exist=False)
+    leadsheets_root = find_subdir(
+        config.book_dir, LEADSHEETS_DIR_CANDIDATES, must_exist=False,
+    )
+    out_dir = leadsheets_root / song
     for d in (mxl_dir, lyr_dir, out_dir):
         d.mkdir(parents=True, exist_ok=True)
 
