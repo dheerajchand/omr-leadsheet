@@ -154,6 +154,54 @@ def pick_vocal_part(score) -> int:
     return 0
 
 
+def _normalize_chord_text(part, style: str) -> int:
+    """Rewrite every ChordSymbol's displayed text in ``part`` to MuseScore-
+    grammar tokens in the chosen ``style`` ('symbolic' or 'textual').
+
+    Closes the PR #5 gap (#15): the CNN classifier path runs chord
+    output through ``format_chord``, but Audiveris-recognized chord
+    text (the common case -- ~64 of 115 chords on LCWTO) flows straight
+    from ``<chord-name value="...">`` through music21 to MusicXML and
+    bypasses the normalizer entirely. Running this pass after all
+    other chord-symbol manipulation in ``reduce_score`` ensures every
+    chord-symbol exiting reduce uses consistent MuseScore-parseable
+    grammar in the configured style.
+
+    Implementation: the ``ChordSymbol.figure`` setter re-parses through
+    music21's CHORD_TYPES table and rejects tokens like ``Ct`` or ``Eo``
+    that come out of the symbolic style. Instead we leave the structural
+    chordKind untouched and set ``chordKindStr`` -- music21 emits that
+    as ``<kind text="...">`` in MusicXML, which is exactly what
+    MuseScore reads as the displayed chord text (root glyph + this
+    suffix), so the structural kind stays available for any consumer
+    that prefers it.
+
+    Returns the number of ChordSymbols whose displayed suffix changed.
+    Skips any whose ``.figure`` doesn't parse (preserves unknown shapes
+    verbatim).
+    """
+    from omr_leadsheet.chord_ops.parser import format_chord, parse_chord
+
+    rewritten = 0
+    for cs in list(part.recurse().getElementsByClass(harmony.ChordSymbol)):
+        original = cs.figure
+        if not original:
+            continue
+        fields = parse_chord(original)
+        if fields is None:
+            continue  # preserve unrecognised shapes (e.g., 'N.C.', polychords)
+        new_figure = format_chord(fields, style=style)
+        # Strip the root prefix so only the chord-quality suffix lands in
+        # <kind text="...">. Roots in ``ChordFields`` are 1-2 chars
+        # ("C", "F#", "Bb"), so a startswith trim is sufficient.
+        suffix = new_figure[len(fields.root):] if new_figure.startswith(fields.root) else new_figure
+        if (cs.chordKindStr or "") == suffix:
+            continue
+        cs.chordKindStr = suffix
+        rewritten += 1
+    return rewritten
+
+
 def collect_chord_symbols(score):
     """Return a list of (measure_number, offset_in_measure, ChordSymbol) from all parts."""
     out = []
@@ -198,7 +246,11 @@ def reduce_score(
     keep_verse: bool = False,
     section_bars: int = 8,
     strip_lyrics: bool = False,
+    notation_style: str | None = None,
 ) -> dict:
+    import os
+    if notation_style is None:
+        notation_style = os.environ.get("NOTATION_STYLE", "symbolic")
     score = converter.parse(in_path)
     vocal_idx = pick_vocal_part(score)
     vocal = score.parts[vocal_idx]
@@ -421,6 +473,15 @@ def reduce_score(
         refrain_first_m = measures_list[refrain_start_new - 1]
         refrain_first_m.insert(0, key.KeySignature(refrain_sharps))
 
+    # Normalize every ChordSymbol's text to the configured MuseScore-grammar
+    # style (#15). Audiveris chord-name elements flow straight through music21
+    # to MusicXML without passing through format_chord, so without this pass
+    # they keep their raw input glyphs (m, maj7, dim, ø, ...) and never honour
+    # the configured notation_style. Running it here, after all chord-symbol
+    # collection/attachment is complete, catches every ChordSymbol that will
+    # actually be written out.
+    chord_symbols_normalized = _normalize_chord_text(new_part, style=notation_style)
+
     # Build new score
     lead = stream.Score()
     if score.metadata is not None:
@@ -449,6 +510,8 @@ def reduce_score(
         "rehearsal_letters": letters_added,
         "subvocal_ghost_replacements": ghost_stats["count"],
         "subvocal_ghost_drops": ghost_stats["drops"],
+        "chord_symbols_normalized": chord_symbols_normalized,
+        "notation_style": notation_style,
         "output": out_path,
     }
 
@@ -460,12 +523,19 @@ if __name__ == "__main__":
     ap.add_argument("--keep-verse", action="store_true", help="Keep the verse before the refrain")
     ap.add_argument("--section-bars", type=int, default=8, help="Bars between rehearsal letters")
     ap.add_argument("--strip-lyrics", action="store_true", help="Remove lyrics (default: keep them)")
+    ap.add_argument(
+        "--notation-style",
+        choices=("symbolic", "textual"),
+        default=None,
+        help="Chord-text style (default: $NOTATION_STYLE or 'symbolic')",
+    )
     args = ap.parse_args()
     result = reduce_score(
         args.input, args.output,
         keep_verse=args.keep_verse,
         section_bars=args.section_bars,
         strip_lyrics=args.strip_lyrics,
+        notation_style=args.notation_style,
     )
     for k, v in result.items():
         print(f"{k}: {v}")
