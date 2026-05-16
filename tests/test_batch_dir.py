@@ -45,3 +45,4 @@ def test_raises_when_none_exist(tmp_path: Path) -> None:
     msg = str(exc_info.value)
     assert "individual_songs" in msg
     assert "Individual Songs" in msg
+    assert "Individual_Songs" in msg
