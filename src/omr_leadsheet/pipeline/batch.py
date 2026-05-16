@@ -12,7 +12,11 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from omr_leadsheet.config import Config
-from omr_leadsheet.pipeline._paths import SONGS_DIR_CANDIDATES, find_subdir
+from omr_leadsheet.pipeline._paths import (
+    LEADSHEETS_DIR_CANDIDATES,
+    SONGS_DIR_CANDIDATES,
+    find_subdir,
+)
 from omr_leadsheet.pipeline.process import process
 
 __all__ = ["batch", "BatchResult", "find_songs_dir"]
@@ -50,7 +54,12 @@ def batch(
     exist (replaces the silent ``0 processed`` behavior pre-fix).
     """
     in_dir = find_songs_dir(config.book_dir)
-    lead_sheets = config.book_dir / "LeadSheets"
+    # Same dir process.py writes per-song outputs into; using the same
+    # discovery prevents the split-outputs failure where _batch.log
+    # lands in LeadSheets/ while song dirs sit under lead_sheets/.
+    lead_sheets = find_subdir(
+        config.book_dir, LEADSHEETS_DIR_CANDIDATES, must_exist=False,
+    )
     lead_sheets.mkdir(parents=True, exist_ok=True)
     log_path = lead_sheets / "_batch.log"
     log_path.write_text("")
