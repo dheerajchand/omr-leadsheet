@@ -14,7 +14,13 @@ from pathlib import Path
 from omr_leadsheet.config import Config
 from omr_leadsheet.pipeline.process import process
 
-__all__ = ["batch", "BatchResult"]
+__all__ = ["batch", "BatchResult", "find_songs_dir"]
+
+
+# Candidate sub-directory names for the song PDFs, tried in order. The
+# project convention is ``individual_songs`` (snake_case), but historic
+# layouts and other songbooks may use the title-case form.
+_SONGS_DIR_CANDIDATES = ("individual_songs", "Individual Songs", "Individual_Songs")
 
 
 @dataclass(frozen=True, slots=True)
@@ -24,6 +30,23 @@ class BatchResult:
     log_path: Path
 
 
+def find_songs_dir(book_dir: Path) -> Path:
+    """Return the first existing songs sub-directory under ``book_dir``.
+
+    Raises ``FileNotFoundError`` listing the candidates tried if none
+    exist. Pre-fix, batch silently looked at a non-existent
+    ``Individual Songs`` and reported ``0 processed`` with no error.
+    """
+    for name in _SONGS_DIR_CANDIDATES:
+        candidate = book_dir / name
+        if candidate.is_dir():
+            return candidate
+    raise FileNotFoundError(
+        f"No songs sub-directory found under {book_dir}. "
+        f"Tried: {', '.join(_SONGS_DIR_CANDIDATES)}."
+    )
+
+
 def batch(
     config: Config,
     *,
@@ -31,8 +54,13 @@ def batch(
     with_oemer: bool = False,
     only: str = "*.pdf",
 ) -> BatchResult:
-    """Process every PDF in ``<book_dir>/Individual Songs/`` matching ``only``."""
-    in_dir = config.book_dir / "Individual Songs"
+    """Process every PDF under ``<book_dir>/<songs_dir>/`` matching ``only``.
+
+    ``songs_dir`` is auto-detected from a small set of candidate names
+    via :func:`find_songs_dir`; raises ``FileNotFoundError`` if none
+    exist (replaces the silent ``0 processed`` behavior pre-fix).
+    """
+    in_dir = find_songs_dir(config.book_dir)
     lead_sheets = config.book_dir / "LeadSheets"
     lead_sheets.mkdir(parents=True, exist_ok=True)
     log_path = lead_sheets / "_batch.log"
