@@ -12,15 +12,10 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from omr_leadsheet.config import Config
+from omr_leadsheet.pipeline._paths import SONGS_DIR_CANDIDATES, find_subdir
 from omr_leadsheet.pipeline.process import process
 
 __all__ = ["batch", "BatchResult", "find_songs_dir"]
-
-
-# Candidate sub-directory names for the song PDFs, tried in order. The
-# project convention is ``individual_songs`` (snake_case), but historic
-# layouts and other songbooks may use the title-case form.
-_SONGS_DIR_CANDIDATES = ("individual_songs", "Individual Songs", "Individual_Songs")
 
 
 @dataclass(frozen=True, slots=True)
@@ -33,18 +28,12 @@ class BatchResult:
 def find_songs_dir(book_dir: Path) -> Path:
     """Return the first existing songs sub-directory under ``book_dir``.
 
+    Backwards-compat shim around the shared ``find_subdir`` helper.
     Raises ``FileNotFoundError`` listing the candidates tried if none
     exist. Pre-fix, batch silently looked at a non-existent
     ``Individual Songs`` and reported ``0 processed`` with no error.
     """
-    for name in _SONGS_DIR_CANDIDATES:
-        candidate = book_dir / name
-        if candidate.is_dir():
-            return candidate
-    raise FileNotFoundError(
-        f"No songs sub-directory found under {book_dir}. "
-        f"Tried: {', '.join(_SONGS_DIR_CANDIDATES)}."
-    )
+    return find_subdir(book_dir, SONGS_DIR_CANDIDATES)
 
 
 def batch(
