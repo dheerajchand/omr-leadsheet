@@ -250,6 +250,22 @@ def diff(omr: list[OMRChord], mxl: list[tuple[int, str]]) -> list[OMRChord]:
     return missing
 
 
+def _stacked_extension_display(top: str, bottom: str) -> str:
+    """Canonical MuseScore-grammar string for a stacked digit/digit suffix.
+
+    `9/7` -> `97` (the literal token MuseScore parses as the stacked dom-9
+    voicing; the slash form mis-parses as a slash-bass with different
+    playback -- see #13 and docs/chord-notation.md).
+
+    Other stacks fall back to the slash form for now; the only one observed
+    in production sheet music is `9/7`. Add new mappings here (and a test)
+    when more cases surface.
+    """
+    if (top, bottom) == ("9", "7"):
+        return "97"
+    return f"{top}/{bottom}"
+
+
 def insert_missing(musicxml_path: str, missing: list[OMRChord], out_path: str) -> int:
     score = converter.parse(musicxml_path)
     # Find the part with chord symbols (first with any)
@@ -329,14 +345,25 @@ def insert_missing(musicxml_path: str, missing: list[OMRChord], out_path: str) -
         # Detect stacked extension: digit slash digit at end (e.g., "9/7", "6/5").
         # Parse using the top digit only (music21 understands "F#9") and
         # override the chord-kind display text so MuseScore renders the
-        # full "9/7" stack. Setting .figure re-triggers parsing and fails;
+        # full stack. Setting .figure re-triggers parsing and fails;
         # chordKindStr just overrides display.
+        #
+        # For 9/7 specifically (#13): MuseScore's chord grammar parses the
+        # literal `97` (no slash) as the stacked-dom-9 voicing, but parses
+        # `9/7` as `9` over `/7` (slash-bass), which voices differently.
+        # Per docs/chord-notation.md and chord_ops.parser._SUFFIX, the
+        # canonical token for dom-9-over-7 is `97`. Other digit/digit
+        # stacks (e.g. `6/5` figured bass) keep their slash form for now;
+        # if any of those ever needs canonicalising, add the mapping here
+        # and back it with a test.
         m_stack = re.search(r"(\d)/(\d)$", figure)
         if m_stack:
             base_for_parse = figure[:m_stack.start()] + m_stack.group(1)
             try:
                 cs = harmony.ChordSymbol(base_for_parse)
-                cs.chordKindStr = f"{m_stack.group(1)}/{m_stack.group(2)}"
+                cs.chordKindStr = _stacked_extension_display(
+                    m_stack.group(1), m_stack.group(2),
+                )
             except (ValueError, KeyError, IndexError):
                 cs = None
         if cs is None:
