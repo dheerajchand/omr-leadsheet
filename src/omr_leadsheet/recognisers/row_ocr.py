@@ -38,6 +38,51 @@ CHORD_REGEX = re.compile(r"^[A-G][#b♯♭]?(?:maj|min|aug|dim|sus|m|M|b|#|\+|\-
 # Tight whitelist of characters that appear in chord symbols
 CHORD_CHARS = "ABCDEFGabdefgimsu#b+-0123456789"
 
+# Gated debug logging for #27 investigation. Set ROW_OCR_DEBUG=1 to trace
+# each chord glyph through tesseract -> regex filter -> conf floor ->
+# dedup -> classifier. Goal: identify exactly which step drops short
+# diatonic chords (G, C, D7) on busy chord rows. Off by default; cost
+# is zero when disabled.
+_DEBUG = os.environ.get("ROW_OCR_DEBUG") == "1"
+
+
+def _dbg(msg: str) -> None:
+    if _DEBUG:
+        print(f"[row_ocr] {msg}", file=sys.stderr)
+
+
+def _case_fix_root(text: str) -> str:
+    """If ``text`` starts with a lowercase A-G AND has a non-empty
+    suffix AND the uppercased candidate matches ``CHORD_REGEX``,
+    return the uppercased version. Otherwise return ``text`` unchanged.
+
+    Tesseract's chord-row OCR sometimes returns the root letter lowercase
+    on shapes where the glyph's serifs throw off case detection. On LCWTO
+    this accounted for 68 of the regex-rejected tokens at conf scores up
+    to 96 -- real chord glyphs, only the case was wrong.
+
+    Why we require a non-empty suffix (i.e. ``len(text) >= 2``):
+    bare single-letter tokens are the highest-false-positive shape -- a
+    lyric "a" article in a measure where Audiveris missed the chord row
+    boundary can OCR as ``'a'`` and would otherwise be promoted to chord
+    ``A``. Cross-song probe on songs 5/6/8 (#20) showed 20-43 spurious
+    ``A`` recoveries per song from this exact path. Multi-character
+    tokens like ``'g7'``, ``'dm7'``, ``'bm7'`` don't have this collision
+    risk because lyric tokens of that shape don't OCR as chord-suffix
+    grammar. The 23 bare-``A`` recoveries on LCWTO under the unguarded
+    rule remain out of reach until a strip-locality or confidence guard
+    is in place to distinguish "real bare-letter chord" from "lyric
+    article in the chord-row strip"; see #27 for that follow-up.
+    """
+    if len(text) < 2:
+        return text
+    first = text[0]
+    if "a" <= first <= "g":
+        candidate = first.upper() + text[1:]
+        if CHORD_REGEX.match(candidate):
+            return candidate
+    return text
+
 
 @dataclass
 class RowChord:
@@ -159,10 +204,19 @@ def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]
             text = parts[11].strip()
         except ValueError:
             continue
-        if not text or not CHORD_REGEX.match(text):
+        if not text:
+            continue
+        original = text
+        text = _case_fix_root(text)
+        if text != original:
+            _dbg(f"  tesseract psm{psm} x={x_offset+left}: case-fix {original!r} -> {text!r} (conf={conf:.0f})")
+        if not CHORD_REGEX.match(text):
+            _dbg(f"  tesseract psm{psm} x={x_offset+left}: rejected by regex: {text!r} (conf={conf:.0f})")
             continue
         if conf < 25:
+            _dbg(f"  tesseract psm{psm} x={x_offset+left}: rejected by conf floor: {text!r} (conf={conf:.0f} < 25)")
             continue
+        _dbg(f"  tesseract psm{psm} x={x_offset+left}: accepted {text!r} (conf={conf:.0f})")
         # Single-letter tokens (A, D, F, etc.) are kept here so the classifier
         # can try to upgrade them to multi-char chords (A → A7, D → Dm7, ...).
         # If the classifier doesn't upgrade them, they get rejected at the
@@ -214,14 +268,19 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
             x += step
         # Dedupe by proximity - within 25px, keep the longer/more-specific token
         results.sort()
+        _dbg(f"strip top={top} bottom={bottom} pre-dedup ({len(results)} tokens): {results}")
         deduped: list[tuple[int, str]] = []
         for xc, tok in results:
             if deduped and xc - deduped[-1][0] < 25:
                 # Prefer longer chord figures (A7 > A, D7 > D, Cmaj7 > Cmaj)
                 if len(tok) > len(deduped[-1][1]):
+                    _dbg(f"  dedup x={xc}: replacing {deduped[-1][1]!r} with longer {tok!r}")
                     deduped[-1] = (xc, tok)
+                else:
+                    _dbg(f"  dedup x={xc}: dropping {tok!r} (kept {deduped[-1][1]!r})")
                 continue
             deduped.append((xc, tok))
+        _dbg(f"strip top={top} post-dedup ({len(deduped)} tokens): {deduped}")
 
         # Optional: re-classify each token with a chord recogniser.
         # Two backends supported, in priority order:
@@ -276,8 +335,11 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
                     # signature is more distinctive.
                     threshold = 0.8 if len(chord_str) <= 2 else 0.6
                     if conf >= threshold:
+                        if chord_str != tok:
+                            _dbg(f"  classifier x={xc}: {tok!r} -> {chord_str!r} (conf={conf:.2f}, threshold={threshold})")
                         refined.append((xc, chord_str))
                     else:
+                        _dbg(f"  classifier x={xc}: kept {tok!r}, prediction {chord_str!r} below threshold (conf={conf:.2f} < {threshold})")
                         refined.append((xc, tok))
                 # Classifier-direct sweep: find chord glyphs tesseract
                 # missed entirely. Slide a 60-px window across the strip
