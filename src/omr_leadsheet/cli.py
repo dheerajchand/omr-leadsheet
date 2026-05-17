@@ -176,18 +176,27 @@ def dataset_clean(
 # --- helpers -----------------------------------------------------------------
 
 
-def _run_module(module: str, args: list[str]) -> None:
+def _run_module(module: str, args: list[str], *, timeout: float = 3600.0) -> None:
     """Run a sub-module's argparse main via ``python -m``.
 
     Used as a transition shim: the underlying scripts retain their CLI surface
     so external callers (tests, scripts) keep working while subcommands here
     expose a typer-shaped front door.
+
+    ``timeout`` is the seconds-ceiling enforced by ``subprocess.run``.
+    Default 3600 keeps the historical single-song safety cap (writing-code:15).
+    Caller-facing subcommands that know their workload (e.g. multi-hour
+    training jobs) should pass an explicit larger value rather than rely on
+    this default. See #3 for the longer-term plan of forwarding per-step
+    ceilings from each pipeline stage.
     """
     try:
-        result = subprocess.run([sys.executable, "-m", module, *args], timeout=3600)
+        result = subprocess.run(
+            [sys.executable, "-m", module, *args], timeout=timeout,
+        )
     except subprocess.TimeoutExpired:
         typer.secho(
-            f"error: 'python -m {module} {' '.join(args)}' exceeded 3600s timeout",
+            f"error: 'python -m {module} {' '.join(args)}' exceeded {timeout:g}s timeout",
             err=True, fg=typer.colors.RED,
         )
         raise typer.Exit(code=1)

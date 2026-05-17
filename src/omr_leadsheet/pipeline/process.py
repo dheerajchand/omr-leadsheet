@@ -212,31 +212,42 @@ def process(
         offset = -_intro_dropped(clean_xml)
 
         _step(log, song, f"recovering chord symbols from .omr (offset {offset})")
+        # Chord-symbol recovery walks every chord-name glyph in the .omr and
+        # row-OCRs the unrecognised ones; on a 50-bar Gershwin tune with the
+        # tesseract fallback engaged this can reach a few minutes, so we sit
+        # well below the global cap.
         _shell_module(
             "omr_leadsheet.chord_ops.diff",
             [str(omr), str(mxl),
              "--measure-offset", str(offset),
              "--insert-into", str(lead), "--out", str(lead_chords)],
             config=config,
+            timeout=900.0,
         )
 
         _step(log, song, "recovering note-heads from .omr")
         try:
+            # Head-recovery does in-process music21 manipulation; only the
+            # .omr unzip + xml.etree parse touch I/O.
             _shell_module(
                 "omr_leadsheet.pipeline.head_recovery",
                 [str(omr), str(lead_chords), str(lead_heads),
                  "--measure-offset", str(offset)],
                 config=config,
+                timeout=600.0,
             )
         except subprocess.CalledProcessError:
             shutil.copy2(lead_chords, lead_heads)
 
         if txt.is_file():
             _step(log, song, "NW-aligning lyrics against tesseract")
+            # Needleman-Wunsch over hundreds of lyric tokens is cheap; the
+            # 5 min ceiling here is a safety bound, not a working estimate.
             _shell_module(
                 "omr_leadsheet.pipeline.spell_check",
                 [str(lead_heads), str(txt), str(lead_corr)],
                 config=config,
+                timeout=300.0,
             )
         else:
             shutil.copy2(lead_heads, lead_corr)
@@ -268,8 +279,21 @@ def process(
     return mscz
 
 
-def _shell_module(module: str, args: list[str], *, config: Config) -> None:
-    """Run a sub-module as ``python -m`` so legacy argparse mains keep working."""
+def _shell_module(
+    module: str,
+    args: list[str],
+    *,
+    config: Config,
+    timeout: float = 3600.0,
+) -> None:
+    """Run a sub-module as ``python -m`` so legacy argparse mains keep working.
+
+    ``timeout`` is the per-invocation ceiling. The pipeline stage that knows
+    what is actually being run (Audiveris vs. OCR vs. chord-diff vs.
+    spell-check) is in the best position to pick a tight value; this default
+    only exists as the writing-code:15 safety cap for any caller that
+    forgets. See #3.
+    """
     import os
 
     env = dict(os.environ)
@@ -277,5 +301,5 @@ def _shell_module(module: str, args: list[str], *, config: Config) -> None:
     subprocess.run(
         [str(config.python_bin), "-m", module, *args],
         env=env, check=True,
-        timeout=3600,
+        timeout=timeout,
     )
