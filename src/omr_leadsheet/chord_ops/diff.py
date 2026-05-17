@@ -225,11 +225,22 @@ def normalize_chord(s: str) -> str:
 def diff(omr: list[OMRChord], mxl: list[tuple[int, str]]) -> list[OMRChord]:
     """Return OMR chord-names that have no matching entry in mxl for the same measure.
 
-    Coverage rule: a present chord covers the target only if it is at
-    least as specific (≥ length). So existing "Am7" covers an OMR
-    "Am" (less specific, skip), but existing "G7" does NOT cover an
-    OMR "G9/7" (more specific, insert and let insert_missing replace
-    the less-specific one).
+    Coverage rule: a present chord covers the target only when their
+    normalised text is identical. The earlier ``target in p`` substring
+    fallback was the source of the busy-bar drop bias (#12): in a bar
+    with three chords G, C7, Cmaj7, the short diatonic ``C`` at beat 3
+    would be filtered here because ``"c" in "cmaj7"`` is true, even
+    though the two chords sit at different beats and both belong on the
+    bar. ``insert_missing`` already has an offset-bounded substring
+    dedup (within 0.5 quarter-notes), which IS the right place for that
+    nuance because it has access to the actual offsets; doing it here
+    too would only re-introduce the cross-beat false positive.
+
+    The ``Am7`` covers ``Am`` case from the old docstring is still
+    handled correctly: ``insert_missing`` will skip an inserted ``Am``
+    if there's already an ``Am7`` within half a beat at the same offset
+    (its second-pass nearby-substring dedup), while letting an ``Am`` at
+    a different beat through.
     """
     by_meas: dict[int, list[str]] = {}
     for meas, fig in mxl:
@@ -241,11 +252,7 @@ def diff(omr: list[OMRChord], mxl: list[tuple[int, str]]) -> list[OMRChord]:
             continue
         present = by_meas.get(c.measure_global, [])
         target = normalize_chord(c.value)
-        matched = any(
-            target == p or (len(target) <= len(p) and target in p)
-            for p in present
-        )
-        if not matched:
+        if not any(target == p for p in present):
             missing.append(c)
     return missing
 
