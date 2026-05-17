@@ -154,6 +154,38 @@ def pick_vocal_part(score) -> int:
     return 0
 
 
+_CHORDKIND_TO_QUALITY = {
+    # music21's structured chordKind values -> our internal quality token
+    # (the keys that ``chord_ops.parser._SUFFIX`` indexes on).
+    "major": "major",
+    "minor": "minor",
+    "dominant": "7",
+    "dominant-seventh": "7",
+    "major-seventh": "maj7",
+    "minor-seventh": "m7",
+    "diminished": "dim",
+    "diminished-seventh": "dim7",
+    "augmented": "aug",
+    "augmented-seventh": "7",
+    "suspended-fourth": "sus",
+    "suspended-second": "sus",
+    "major-sixth": "6",
+    "minor-sixth": "m6",
+    "half-diminished": "half-dim",
+    # Extensions that lower the quality to its base form; the extension
+    # part of the ChordFields gets filled separately below.
+    "dominant-ninth": "7",
+    "minor-ninth": "m7",
+    "major-ninth": "maj7",
+}
+
+_CHORDKIND_TO_EXTENSION = {
+    "dominant-ninth": "9",
+    "minor-ninth": "9",
+    "major-ninth": "9",
+}
+
+
 def _normalize_chord_text(part, style: str) -> int:
     """Rewrite every ChordSymbol's displayed text in ``part`` to MuseScore-
     grammar tokens in the chosen ``style`` ('symbolic' or 'textual').
@@ -167,29 +199,49 @@ def _normalize_chord_text(part, style: str) -> int:
     chord-symbol exiting reduce uses consistent MuseScore-parseable
     grammar in the configured style.
 
-    Implementation: the ``ChordSymbol.figure`` setter re-parses through
-    music21's CHORD_TYPES table and rejects tokens like ``Ct`` or ``Eo``
-    that come out of the symbolic style. Instead we leave the structural
-    chordKind untouched and set ``chordKindStr`` -- music21 emits that
-    as ``<kind text="...">`` in MusicXML, which is exactly what
-    MuseScore reads as the displayed chord text (root glyph + this
-    suffix), so the structural kind stays available for any consumer
-    that prefers it.
+    Implementation: read the chord's quality from music21's structured
+    ``chordKind`` field, NOT from the figure text. The figure text
+    follows music21's flat-as-dash convention (``E-7`` means E-flat
+    dominant 7), which our parser would misinterpret as ``E minor 7``
+    -- the original PR #23 round-tripped Eb7 to Eb-7 because of exactly
+    this collision. Going through the structured ``chordKind`` avoids
+    the round-trip entirely: ``chordKind='dominant-seventh'`` maps
+    unambiguously to ``quality='7'`` regardless of how music21 spells
+    the root.
+
+    The structural ``chordKind`` is left untouched -- we only set
+    ``chordKindStr`` (which music21 emits as ``<kind text="...">``).
+    MuseScore reads that text attribute as the displayed chord-quality
+    glyph, and the structural kind stays available for any consumer
+    that prefers it (theory tools, analyzers, alternate renderers).
 
     Returns the number of ChordSymbols whose displayed suffix changed.
-    Skips any whose ``.figure`` doesn't parse (preserves unknown shapes
-    verbatim).
+    Skips any whose ``chordKind`` isn't in the known map (preserves
+    unknown / exotic shapes verbatim).
     """
-    from omr_leadsheet.chord_ops.parser import format_chord, parse_chord
+    from omr_leadsheet.chord_ops.parser import (
+        ChordFields,
+        format_chord,
+    )
 
     rewritten = 0
     for cs in list(part.recurse().getElementsByClass(harmony.ChordSymbol)):
-        original = cs.figure
-        if not original:
+        kind = cs.chordKind
+        if not kind:
             continue
-        fields = parse_chord(original)
-        if fields is None:
-            continue  # preserve unrecognised shapes (e.g., 'N.C.', polychords)
+        quality = _CHORDKIND_TO_QUALITY.get(kind)
+        if quality is None:
+            continue  # exotic / unknown kind; leave the existing text alone
+        # The root field is used only for the prefix-strip below; the
+        # actual letter doesn't affect the suffix. Pass any valid root
+        # so format_chord doesn't reject it.
+        fields = ChordFields(
+            root="C",
+            quality=quality,
+            extension=_CHORDKIND_TO_EXTENSION.get(kind, "none"),
+            alteration="none",
+            raw=cs.figure or "",
+        )
         new_figure = format_chord(fields, style=style)
         # Strip the root prefix so only the chord-quality suffix lands in
         # <kind text="...">. Roots in ``ChordFields`` are 1-2 chars
