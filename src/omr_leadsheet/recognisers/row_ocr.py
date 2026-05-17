@@ -51,30 +51,38 @@ def _dbg(msg: str) -> None:
         print(f"[row_ocr] {msg}", file=sys.stderr)
 
 
-def _case_fix_root(text: str) -> str:
-    """If ``text`` starts with a lowercase A-G AND has a non-empty
-    suffix AND the uppercased candidate matches ``CHORD_REGEX``,
-    return the uppercased version. Otherwise return ``text`` unchanged.
+def _case_fix_root(text: str, *, allow_bare: bool = False) -> str:
+    """If ``text`` starts with a lowercase A-G AND the uppercased
+    candidate matches ``CHORD_REGEX``, return the uppercased version.
+    Otherwise return ``text`` unchanged.
 
     Tesseract's chord-row OCR sometimes returns the root letter lowercase
     on shapes where the glyph's serifs throw off case detection. On LCWTO
     this accounted for 68 of the regex-rejected tokens at conf scores up
     to 96 -- real chord glyphs, only the case was wrong.
 
-    Why we require a non-empty suffix (i.e. ``len(text) >= 2``):
-    bare single-letter tokens are the highest-false-positive shape -- a
-    lyric "a" article in a measure where Audiveris missed the chord row
-    boundary can OCR as ``'a'`` and would otherwise be promoted to chord
-    ``A``. Cross-song probe on songs 5/6/8 (#20) showed 20-43 spurious
-    ``A`` recoveries per song from this exact path. Multi-character
-    tokens like ``'g7'``, ``'dm7'``, ``'bm7'`` don't have this collision
-    risk because lyric tokens of that shape don't OCR as chord-suffix
-    grammar. The 23 bare-``A`` recoveries on LCWTO under the unguarded
-    rule remain out of reach until a strip-locality or confidence guard
-    is in place to distinguish "real bare-letter chord" from "lyric
-    article in the chord-row strip"; see #27 for that follow-up.
+    The ``allow_bare`` flag controls promotion of bare single-letter
+    lowercase tokens (``'a'``, ``'g'``, etc.). Multi-character tokens
+    (``'g7'``, ``'dm7'``, ``'bm7'``) are promoted regardless because
+    lyric tokens don't OCR as chord-suffix grammar -- the false-positive
+    surface is empty for them. Bare single-letter tokens DO collide with
+    lyric content: a lyric ``a`` article in a strip that overlaps the
+    lyric row OCRs as ``'a'`` and would otherwise be promoted to chord
+    ``A``. Cross-song probe (#20 set: songs #05, #06, #08 -- Audiveris
+    detected 0 chord-name elements on each) showed 20-43 spurious ``A``
+    recoveries per song when bare promotion was unconditional.
+
+    The caller (``recover_chord_row_chords``) sets ``allow_bare=True``
+    only when the .omr already has at least one Audiveris-confirmed
+    ``<chord-name value=...>`` -- a per-song signal that a real chord
+    row exists on the page and a lowercase bare letter is more likely a
+    serif-noised chord letter than a lyric article. On songs where
+    Audiveris saw zero chords, the bare-letter rule is held back to
+    avoid the lyric-pollution failure mode.
     """
-    if len(text) < 2:
+    if not text:
+        return text
+    if len(text) < 2 and not allow_bare:
         return text
     first = text[0]
     if "a" <= first <= "g":
@@ -182,8 +190,20 @@ def _measure_for(
     return lst[-1][1], 0.99
 
 
-def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]]:
-    """Run tesseract in TSV mode. Returns [(x_center, token)]."""
+def _ocr_run(
+    img_path: str,
+    psm: int,
+    x_offset: int = 0,
+    *,
+    allow_bare_case_fix: bool = False,
+) -> list[tuple[int, str]]:
+    """Run tesseract in TSV mode. Returns [(x_center, token)].
+
+    ``allow_bare_case_fix`` is passed through to ``_case_fix_root``:
+    bare single-letter lowercase tokens are only promoted to uppercase
+    when the caller has separate evidence that a real chord row exists
+    (#27). Multi-character lowercase tokens are always promoted.
+    """
     proc = subprocess.run(
         ["tesseract", img_path, "-",
          "--psm", str(psm),
@@ -207,7 +227,7 @@ def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]
         if not text:
             continue
         original = text
-        text = _case_fix_root(text)
+        text = _case_fix_root(text, allow_bare=allow_bare_case_fix)
         if text != original:
             _dbg(f"  tesseract psm{psm} x={x_offset+left}: case-fix {original!r} -> {text!r} (conf={conf:.0f})")
         if not CHORD_REGEX.match(text):
@@ -225,7 +245,14 @@ def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]
     return out
 
 
-def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list[tuple[int, str]]:
+def _ocr_chord_row(
+    png_path: str,
+    top: int,
+    bottom: int,
+    img_width: int,
+    *,
+    allow_bare_case_fix: bool = False,
+) -> list[tuple[int, str]]:
     """OCR a horizontal strip multiple ways and merge. Chord rows are
     often crowded - a single PSM fails to segment. We combine:
       - PSM 6 (uniform block) over the full strip
@@ -233,6 +260,8 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
       - A sliding window with PSM 8 (single word) across the strip,
         catching crowded tokens that the whole-strip pass missed.
     Then dedupe by x-proximity.
+
+    ``allow_bare_case_fix`` is forwarded to ``_ocr_run`` -- see #27.
     """
     if bottom <= top:
         return []
@@ -249,7 +278,7 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
         results: list[tuple[int, str]] = []
         # Whole-strip passes
         for psm in (6, 11):
-            results.extend(_ocr_run(strip_path, psm))
+            results.extend(_ocr_run(strip_path, psm, allow_bare_case_fix=allow_bare_case_fix))
         # Sliding window: 140 px wide, step 60 px, PSM 8
         win_w = 140
         step = 60
@@ -264,7 +293,7 @@ def _ocr_chord_row(png_path: str, top: int, bottom: int, img_width: int) -> list
                 timeout=60,
             )
             if os.path.exists(win_path):
-                results.extend(_ocr_run(win_path, 8, x_offset=x))
+                results.extend(_ocr_run(win_path, 8, x_offset=x, allow_bare_case_fix=allow_bare_case_fix))
             x += step
         # Dedupe by proximity - within 25px, keep the longer/more-specific token
         results.sort()
@@ -552,6 +581,32 @@ def recover_chord_row_chords(omr_path: str) -> list[RowChord]:
             d for d in os.listdir(td)
             if os.path.isdir(os.path.join(td, d)) and d.startswith("sheet#")
         )
+
+        # Strip-locality guard for bare-letter case-fix (#27). If Audiveris
+        # detected at least one <chord-name value=...> across the whole
+        # song, a real chord row exists somewhere on the page and a
+        # lowercase bare letter in the tesseract OCR is more likely a
+        # serif-noised chord letter than a lyric article. On songs where
+        # Audiveris found zero chords (#20 set: #05, #06, #08), the
+        # chord-row strip we OCR may overlap the lyric row, and bare
+        # `a` reads are dominated by lyric "a" articles -- holding the
+        # bare-letter promotion back here avoids 20-43 spurious A
+        # recoveries per song. Multi-character case-fix runs regardless.
+        audiveris_chord_count = 0
+        for sd in sheet_dirs:
+            xml_path = os.path.join(td, sd, f"{sd}.xml")
+            if not os.path.exists(xml_path):
+                continue
+            try:
+                root_for_count = ET.parse(xml_path).getroot()
+            except ET.ParseError:
+                continue
+            for c in root_for_count.iter("chord-name"):
+                if c.get("value"):
+                    audiveris_chord_count += 1
+        allow_bare = audiveris_chord_count > 0
+        _dbg(f"recover_chord_row_chords: audiveris chord-name count={audiveris_chord_count}, allow_bare_case_fix={allow_bare}")
+
         for sd in sheet_dirs:
             sheet_idx = int(sd.split("#")[1])
             xml_path = os.path.join(td, sd, f"{sd}.xml")
@@ -587,7 +642,10 @@ def recover_chord_row_chords(omr_path: str) -> list[RowChord]:
                     continue
                 strip_top = max(0, int(top_y - 70))
                 strip_bottom = int(top_y - 10)
-                row_tokens = _ocr_chord_row(bin_png, strip_top, strip_bottom, img_width)
+                row_tokens = _ocr_chord_row(
+                    bin_png, strip_top, strip_bottom, img_width,
+                    allow_bare_case_fix=allow_bare,
+                )
                 for x_center, tok in row_tokens:
                     mid, frac = _measure_for(per_staff, staff_id, x_center)
                     out.append(RowChord(
