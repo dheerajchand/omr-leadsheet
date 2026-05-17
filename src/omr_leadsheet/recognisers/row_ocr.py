@@ -51,6 +51,39 @@ def _dbg(msg: str) -> None:
         print(f"[row_ocr] {msg}", file=sys.stderr)
 
 
+def _case_fix_root(text: str) -> str:
+    """If ``text`` starts with a lowercase A-G AND has a non-empty
+    suffix AND the uppercased candidate matches ``CHORD_REGEX``,
+    return the uppercased version. Otherwise return ``text`` unchanged.
+
+    Tesseract's chord-row OCR sometimes returns the root letter lowercase
+    on shapes where the glyph's serifs throw off case detection. On LCWTO
+    this accounted for 68 of the regex-rejected tokens at conf scores up
+    to 96 -- real chord glyphs, only the case was wrong.
+
+    Why we require a non-empty suffix (i.e. ``len(text) >= 2``):
+    bare single-letter tokens are the highest-false-positive shape -- a
+    lyric "a" article in a measure where Audiveris missed the chord row
+    boundary can OCR as ``'a'`` and would otherwise be promoted to chord
+    ``A``. Cross-song probe on songs 5/6/8 (#20) showed 20-43 spurious
+    ``A`` recoveries per song from this exact path. Multi-character
+    tokens like ``'g7'``, ``'dm7'``, ``'bm7'`` don't have this collision
+    risk because lyric tokens of that shape don't OCR as chord-suffix
+    grammar. The 23 bare-``A`` recoveries on LCWTO under the unguarded
+    rule remain out of reach until a strip-locality or confidence guard
+    is in place to distinguish "real bare-letter chord" from "lyric
+    article in the chord-row strip"; see #27 for that follow-up.
+    """
+    if len(text) < 2:
+        return text
+    first = text[0]
+    if "a" <= first <= "g":
+        candidate = first.upper() + text[1:]
+        if CHORD_REGEX.match(candidate):
+            return candidate
+    return text
+
+
 @dataclass
 class RowChord:
     sheet: int
@@ -173,6 +206,10 @@ def _ocr_run(img_path: str, psm: int, x_offset: int = 0) -> list[tuple[int, str]
             continue
         if not text:
             continue
+        original = text
+        text = _case_fix_root(text)
+        if text != original:
+            _dbg(f"  tesseract psm{psm} x={x_offset+left}: case-fix {original!r} -> {text!r} (conf={conf:.0f})")
         if not CHORD_REGEX.match(text):
             _dbg(f"  tesseract psm{psm} x={x_offset+left}: rejected by regex: {text!r} (conf={conf:.0f})")
             continue
