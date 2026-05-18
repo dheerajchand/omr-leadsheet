@@ -74,6 +74,27 @@ DICT |= LYRIC_SYLLABLES
 SINGLE_CHAR_WORDS = {"a", "i", "o"}  # legitimate single-char English words
 
 
+def _has_canonical_case(raw: str) -> bool:
+    """True if ``raw`` is all-lower, all-upper, or first-upper-rest-lower.
+
+    Filters out OCR-noise tokens like ``thIng`` (I/l/1 confusion in the
+    middle of a word) that still appear as a dictionary word when
+    lowercased. False-positive surface: legitimate inner-capital tokens
+    like ``McDonald`` -- rare in song lyrics and outside the scope of
+    this OCR-cleanup heuristic.
+    """
+    letters = [c for c in raw if c.isalpha()]
+    if not letters:
+        return True
+    if all(c.islower() for c in letters):
+        return True
+    if all(c.isupper() for c in letters):
+        return True
+    if letters[0].isupper() and all(c.islower() for c in letters[1:]):
+        return True
+    return False
+
+
 def is_real_word(tok: str) -> bool:
     """True if the token looks like a real word that we should trust.
 
@@ -93,16 +114,22 @@ def is_real_word(tok: str) -> bool:
       in, my, we, he, ...). Even when an OCR truncation is in this
       range (oth→th), trusting them gives better outcomes on average
       than rejecting them.
-    - 3+ chars: defer to the dictionary.
+    - 3+ chars: defer to the dictionary, but ALSO require canonical
+      capitalization. ``thIng`` lowercases to ``thing`` which is in
+      the dict, but the internal capital I betrays an OCR confusion
+      (I/l/1 in serif jazz fonts). Without this guard, pass-1 keeps
+      ``thIng`` verbatim instead of letting NW replace it with the
+      tesseract-OCR'd ``thing`` -- visible on LCWTO m25 v1.
     """
-    t = tok.lower().strip(".,;:!?\"''()[]-_")
+    raw = tok.strip(".,;:!?\"''()[]-_")
+    t = raw.lower()
     if len(t) == 0:
         return False
     if len(t) == 1:
         return t in SINGLE_CHAR_WORDS
     if len(t) == 2:
         return True  # mostly legitimate; see docstring
-    if t in DICT:
+    if t in DICT and _has_canonical_case(raw):
         return True
     return False
 
