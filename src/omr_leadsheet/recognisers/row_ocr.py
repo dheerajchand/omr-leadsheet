@@ -702,6 +702,31 @@ def recover_chord_row_chords(omr_path: str) -> list[RowChord]:
                             ))
                 except Exception as e:
                     print(f"  (blob-scan disabled: {e})", file=sys.stderr)
+
+    # Voice-part-label guard (#20). On songs where Audiveris detected
+    # zero chord-name elements (and so we have no positive evidence
+    # that a chord row exists), bare single-letter A-G outputs from
+    # row_ocr are almost certainly voice-part labels ("A" for alto, "S"
+    # for soprano) or section markers sitting in the page margin at the
+    # left of each staff system. Probe on songs #05/#06/#08 confirmed
+    # this: 20-43 bare "A" outputs per song clustered at small x values
+    # near the start of each system, all at conf >= 90. Multi-character
+    # tokens (G7, Am, Cmaj7) are kept because they don't have the
+    # voice-part-label collision risk. When Audiveris DID find chords
+    # (allow_bare=True), the song demonstrably has a chord row and bare
+    # letters can be trusted normally.
+    if not allow_bare:
+        filtered_out = [
+            c for c in out
+            if not (len(c.value) == 1 and c.value.isalpha() and "A" <= c.value <= "G")
+        ]
+        dropped = len(out) - len(filtered_out)
+        if dropped:
+            _dbg(
+                f"recover_chord_row_chords: dropped {dropped} bare-letter chords "
+                f"(Audiveris chord-count=0; voice-part-label guard)"
+            )
+        out = filtered_out
     return out
 
 

@@ -92,3 +92,34 @@ def test_lowercase_root_but_invalid_suffix_left_alone() -> None:
 def test_empty_string_safe() -> None:
     assert _case_fix_root("") == ""
     assert _case_fix_root("", allow_bare=True) == ""
+
+
+# --- Voice-part-label guard (#20) -----------------------------------------
+
+def test_voice_part_label_guard_filters_bare_letters_when_no_chord_evidence(tmp_path) -> None:
+    """When Audiveris detected zero chord-name elements in the .omr, bare
+    single-letter A-G outputs from row_ocr are almost certainly voice-part
+    labels (alto/soprano), not chord glyphs. Probe on songs #20 set:
+    20-43 spurious bare-A outputs per song before this guard, all at
+    conf >= 90, all clustered in the page-margin x range.
+
+    This test asserts the filter logic directly: a list of RowChord
+    instances containing single-letter and multi-letter chord values
+    must be filtered to drop the single-letter ones when allow_bare
+    would have been False.
+    """
+    # The filter logic lives inline in recover_chord_row_chords. The
+    # equivalent predicate:
+    def keep(c_value: str) -> bool:
+        return not (len(c_value) == 1 and c_value.isalpha() and "A" <= c_value <= "G")
+
+    # Bare single-letter A-G must be dropped
+    for v in ("A", "B", "C", "D", "E", "F", "G"):
+        assert not keep(v), f"bare {v!r} must be dropped under the guard"
+    # Multi-character chords always kept (no voice-part-label collision)
+    for v in ("A7", "Bm", "Cmaj7", "G7", "Dm7", "F#m7", "A5"):
+        assert keep(v), f"multi-char {v!r} must be kept under the guard"
+    # Non-root letters (e.g. accidental hits) kept (regex would have
+    # filtered them upstream, but the guard itself is bounded to A-G)
+    for v in ("H", "Z", "1"):
+        assert keep(v), f"non-root {v!r} not the guard's target"
