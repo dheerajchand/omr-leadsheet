@@ -159,7 +159,40 @@ class VLMClassifier:
             resp = json.load(r)
         return resp["content"][0]["text"].strip()
 
+    # qwen2.5-vl's image processor enforces a minimum dimension of 28 px on
+    # each axis (the SmartResize factor). Chord-symbol crops can land below
+    # that (e.g. a 23 px tall sliver from the chord-row strip) and trigger a
+    # server-side panic returning HTTP 500. Pad small images with white on
+    # the right/bottom so each dimension is at least the model factor before
+    # encoding. We pad rather than resize/upscale to avoid blurring the
+    # serif details the model needs to read accidentals and stacked digits.
+    _OLLAMA_MIN_SIDE_PX = 28
+
+    @classmethod
+    def _pad_to_min_size(cls, img_bytes: bytes) -> bytes:
+        try:
+            from PIL import Image
+        except ImportError:
+            return img_bytes
+        import io
+        try:
+            im = Image.open(io.BytesIO(img_bytes))
+            w, h = im.size
+        except Exception:
+            return img_bytes
+        new_w = max(w, cls._OLLAMA_MIN_SIDE_PX)
+        new_h = max(h, cls._OLLAMA_MIN_SIDE_PX)
+        if (new_w, new_h) == (w, h):
+            return img_bytes
+        bg = (255,) * (len(im.getbands()) if im.mode != "P" else 3)
+        canvas = Image.new(im.mode if im.mode != "P" else "RGB", (new_w, new_h), bg)
+        canvas.paste(im, (0, 0))
+        out = io.BytesIO()
+        canvas.save(out, "PNG")
+        return out.getvalue()
+
     def _call_ollama(self, img_bytes: bytes) -> str:
+        img_bytes = self._pad_to_min_size(img_bytes)
         b64 = base64.b64encode(img_bytes).decode("ascii")
         body = {
             "model": self.model,
