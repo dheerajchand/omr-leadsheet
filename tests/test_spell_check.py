@@ -316,3 +316,33 @@ def test_narrow_bracket_still_filled() -> None:
     stats = apply_alignment(audi_pairs, truth, all_notes, verse_num=1)
 
     assert stats["inserted"] == 4
+
+
+def test_internal_capital_rejected_so_nw_replacement_fires() -> None:
+    """LCWTO m25 v1 surfaced ``thIng`` (capital I mid-word, from I/l/1
+    OCR confusion in serif jazz fonts). is_real_word lowercased before
+    dict lookup, so ``thIng`` was treated as the real word ``thing``
+    and pass 1 kept it as-is. Result: the wrong-case form survived all
+    the way to the final output.
+
+    The canonical-case guard rejects ``thIng`` so NW replacement can
+    fire and replace it with the truth-OCR'd ``thing``.
+    """
+    # All these are real dictionary words when lowercased, but have
+    # internal capitals that betray OCR confusion.
+    for v in ("thIng", "wIth", "bOth", "Iove"):  # love spelled with I instead of l
+        assert not is_real_word(v), f"{v!r} (internal capital) must NOT be trusted"
+
+
+def test_canonical_case_words_still_trusted() -> None:
+    """Sanity: regular case patterns continue to pass (using words known
+    to be in the bundled dictionary)."""
+    for v in ("thing", "Thing", "THING", "with", "With", "WITH"):
+        assert is_real_word(v), f"{v!r} (canonical case) must be trusted"
+
+
+def test_two_char_words_unchanged_by_case_check() -> None:
+    """Two-char tokens bypass the case check entirely (length-rule
+    short-circuit). 'oh' and 'oH' are both trusted regardless of case."""
+    assert is_real_word("oh")
+    assert is_real_word("oH")  # length-2 short-circuits to True
