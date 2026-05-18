@@ -706,25 +706,43 @@ def recover_chord_row_chords(omr_path: str) -> list[RowChord]:
     # Voice-part-label guard (#20). On songs where Audiveris detected
     # zero chord-name elements (and so we have no positive evidence
     # that a chord row exists), bare single-letter A-G outputs from
-    # row_ocr are almost certainly voice-part labels ("A" for alto, "S"
-    # for soprano) or section markers sitting in the page margin at the
-    # left of each staff system. Probe on songs #05/#06/#08 confirmed
-    # this: 20-43 bare "A" outputs per song clustered at small x values
-    # near the start of each system, all at conf >= 90. Multi-character
-    # tokens (G7, Am, Cmaj7) are kept because they don't have the
-    # voice-part-label collision risk. When Audiveris DID find chords
-    # (allow_bare=True), the song demonstrably has a chord row and bare
-    # letters can be trusted normally.
+    # row_ocr CAN be voice-part labels ("A" for alto, "S" for soprano)
+    # or section markers sitting in the page margin at the left of each
+    # staff system -- but they can ALSO be legitimate chord-row glyphs
+    # at real measure positions. Distinguishing the two cases by x:
+    #
+    # On the Audiveris 200-DPI render, the system-start clef + key
+    # signature + voice-part-label cluster occupies roughly the
+    # leftmost ~280 px of each staff system. Tokens whose x falls
+    # within that margin AND that lack any other chord-row evidence are
+    # treated as voice-part labels and dropped. Tokens at x >= the
+    # margin threshold are at actual measure positions and kept; if
+    # they're noise they get filtered by chord_ops/diff dedup or by
+    # downstream pipeline stages.
+    #
+    # On the probe set (#05/#06/#08), the unguarded count was 24/16/9;
+    # the per-PR-#34 unconditional guard dropped to 3/2/0; this margin-
+    # only guard recovers the 13 multi-position bare-A's on #06 while
+    # still rejecting the 14 leftmost voice-label A's.
+    #
+    # When Audiveris DID find chords (allow_bare=True), the song
+    # demonstrably has a chord row, so the guard is bypassed entirely.
+    SYSTEM_START_MARGIN_PX = 280
     if not allow_bare:
         filtered_out = [
             c for c in out
-            if not (len(c.value) == 1 and c.value.isalpha() and "A" <= c.value <= "G")
+            if not (
+                len(c.value) == 1
+                and c.value.isalpha()
+                and "A" <= c.value <= "G"
+                and c.x < SYSTEM_START_MARGIN_PX
+            )
         ]
         dropped = len(out) - len(filtered_out)
         if dropped:
             _dbg(
-                f"recover_chord_row_chords: dropped {dropped} bare-letter chords "
-                f"(Audiveris chord-count=0; voice-part-label guard)"
+                f"recover_chord_row_chords: dropped {dropped} margin bare-letter "
+                f"chords (Audiveris chord-count=0; x<{SYSTEM_START_MARGIN_PX})"
             )
         out = filtered_out
     return out

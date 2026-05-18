@@ -96,30 +96,44 @@ def test_empty_string_safe() -> None:
 
 # --- Voice-part-label guard (#20) -----------------------------------------
 
-def test_voice_part_label_guard_filters_bare_letters_when_no_chord_evidence(tmp_path) -> None:
+def test_voice_part_label_guard_filters_margin_bare_letters_when_no_chord_evidence(tmp_path) -> None:
     """When Audiveris detected zero chord-name elements in the .omr, bare
-    single-letter A-G outputs from row_ocr are almost certainly voice-part
-    labels (alto/soprano), not chord glyphs. Probe on songs #20 set:
-    20-43 spurious bare-A outputs per song before this guard, all at
-    conf >= 90, all clustered in the page-margin x range.
+    single-letter A-G outputs that fall in the system-start margin (x <
+    SYSTEM_START_MARGIN_PX = 280 at 200 DPI) are voice-part labels
+    ("A" for alto, "S" for soprano) sitting in the page margin.
 
-    This test asserts the filter logic directly: a list of RowChord
-    instances containing single-letter and multi-letter chord values
-    must be filtered to drop the single-letter ones when allow_bare
-    would have been False.
+    Bare letters at x >= the margin threshold are at actual measure
+    positions and kept -- they may be real chord glyphs Audiveris
+    missed (#20: the original guard dropped ALL bare letters and lost
+    these real recoveries; the margin-only guard recovers them).
+
+    Probe on #06 Oh Bess: 14 leftmost bare-A's at x<280 (dropped as
+    voice labels) + 13 bare-A's at x in [442, 2268] (kept as potential
+    chord-row glyphs). LCWTO is unaffected because allow_bare=True
+    bypasses the guard entirely there.
     """
-    # The filter logic lives inline in recover_chord_row_chords. The
-    # equivalent predicate:
-    def keep(c_value: str) -> bool:
-        return not (len(c_value) == 1 and c_value.isalpha() and "A" <= c_value <= "G")
+    SYSTEM_START_MARGIN_PX = 280
 
-    # Bare single-letter A-G must be dropped
+    def keep(c_value: str, c_x: float) -> bool:
+        return not (
+            len(c_value) == 1
+            and c_value.isalpha()
+            and "A" <= c_value <= "G"
+            and c_x < SYSTEM_START_MARGIN_PX
+        )
+
+    # Bare A-G in the margin (x < 280) must be dropped
     for v in ("A", "B", "C", "D", "E", "F", "G"):
-        assert not keep(v), f"bare {v!r} must be dropped under the guard"
-    # Multi-character chords always kept (no voice-part-label collision)
+        for x in (50, 100, 200, 279):
+            assert not keep(v, x), f"bare {v!r} at margin x={x} must be dropped"
+    # Bare A-G outside the margin (x >= 280) must be kept
+    for v in ("A", "B", "C", "D", "E", "F", "G"):
+        for x in (280, 500, 1000, 2000):
+            assert keep(v, x), f"bare {v!r} at non-margin x={x} must be kept"
+    # Multi-character chords always kept (regardless of x)
     for v in ("A7", "Bm", "Cmaj7", "G7", "Dm7", "F#m7", "A5"):
-        assert keep(v), f"multi-char {v!r} must be kept under the guard"
-    # Non-root letters (e.g. accidental hits) kept (regex would have
-    # filtered them upstream, but the guard itself is bounded to A-G)
+        for x in (50, 280, 1000):
+            assert keep(v, x), f"multi-char {v!r} at x={x} must be kept"
+    # Non-root letters (e.g. accidental hits) kept (bounded outside the guard's scope)
     for v in ("H", "Z", "1"):
-        assert keep(v), f"non-root {v!r} not the guard's target"
+        assert keep(v, 50), f"non-root {v!r} not the guard's target"
