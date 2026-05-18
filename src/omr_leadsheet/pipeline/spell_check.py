@@ -411,6 +411,18 @@ def apply_alignment(audi_pairs: list, truth: list[str], all_notes: list, verse_n
     # without reaching into adjacent verse territory.
     PICKUP_TOLERANCE = 2
 
+    # Maximum audi-side bracket width that pass 2 will fill (#29). A
+    # truth-gap that spans more than this many notes between adjacent
+    # audi-aligned positions almost always means the verse simply doesn't
+    # sing through here -- this verse has a real silence in the middle.
+    # Filling a 6+ note gap with truth tokens that aligned to nothing
+    # invents lyrics where none belong (visible on LCWTO m33 v2: 5 chorus-
+    # phrase tokens got inserted across a bracket where v2 has no sung
+    # content). Capping at 4 lets pass 2 still rescue 1-4 missed lyrics
+    # in a continuous lyric run while refusing to fill larger gaps.
+    BRACKET_NOTE_CAP = 4
+
+    from music21.note import Lyric
     for align_idx, (ai, ti) in enumerate(alignment):
         if ai is not None or ti is None:
             continue
@@ -424,6 +436,10 @@ def apply_alignment(audi_pairs: list, truth: list[str], all_notes: list, verse_n
         next_note = min(next_note, verse_range[1] + 1 + PICKUP_TOLERANCE)
         if prev_note + 1 >= next_note:
             continue
+        # Bracket-size cap: refuse to insert into wide truth-gap brackets
+        # where the verse probably doesn't sing. See BRACKET_NOTE_CAP.
+        if next_note - prev_note - 1 > BRACKET_NOTE_CAP:
+            continue
         naked = [
             i for i in range(prev_note + 1, next_note)
             if not any(
@@ -432,8 +448,14 @@ def apply_alignment(audi_pairs: list, truth: list[str], all_notes: list, verse_n
         ]
         if not naked:
             continue
-        target = naked[len(naked) // 2]
-        from music21.note import Lyric
+        # Leftmost naked note (#29). Iterating the alignment in order
+        # means truth tokens reach this loop in truth-stream order; the
+        # leftmost-naked rule preserves that order in the output. The
+        # previous "middle of naked" pick scrambled multi-token brackets
+        # (visible on LCWTO m33 v2: 5 truth tokens landed in alignment
+        # order 1,2,3,4,5 but on notes 137,138,136,139,135 -- read top-
+        # to-bottom as E,C,A,B,D).
+        target = naked[0]
         new_lyr = Lyric(text=truth_tok)
         new_lyr.number = verse_num
         all_notes[target].lyrics.append(new_lyr)

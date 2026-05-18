@@ -219,3 +219,100 @@ def test_dictionary_path_still_works() -> None:
     assert is_real_word("thing")
     assert is_real_word("call")
     assert not is_real_word("xkqz"), "non-word should be rejected"
+
+
+def test_multi_token_same_bracket_preserves_truth_stream_order() -> None:
+    """Regression for #29 v2 word-order. When multiple truth tokens fall
+    in the same audi-side bracket, pass 2 used to pick the middle of
+    naked-list per iteration, which scrambled the visual order on the
+    staff (LCWTO m33 v2: tokens E1..E5 landed on notes 137,138,136,139,135
+    -- read top-to-bottom as E,C,A,B,D, not E1..E5).
+
+    With leftmost-first, multi-token same-bracket inserts preserve the
+    alignment-order (which corresponds to truth-stream order). 3 truth
+    tokens in a 4-naked-note bracket land on notes 0,1,2 in order.
+    """
+    # 4 naked notes with no audi lyrics, bracketed by 2 audi-aligned
+    # notes at the start and end. verse_range will be (0, 5) because of
+    # the leading audi.
+    all_notes = (
+        [_make_note("start")]
+        + [_make_note(None) for _ in range(4)]
+        + [_make_note("end")]
+    )
+    audi_pairs = [
+        (0, all_notes[0], all_notes[0].lyrics[0]),
+        (5, all_notes[5], all_notes[5].lyrics[0]),
+    ]
+    # Truth has 3 extra words between "start" and "end" that all fall
+    # in the single audi-side gap between notes 0 and 5.
+    truth = ["start", "alpha", "beta", "gamma", "end"]
+
+    stats = apply_alignment(audi_pairs, truth, all_notes, verse_num=1)
+
+    assert stats["inserted"] == 3
+    # Read the naked notes in order; they must appear in truth-stream
+    # order, not in some scrambled middle-of-naked rotation.
+    inserted_texts = [
+        all_notes[i].lyrics[0].text
+        for i in range(1, 5)
+        if all_notes[i].lyrics
+    ]
+    assert inserted_texts == ["alpha", "beta", "gamma"], (
+        f"truth-stream order broken: {inserted_texts}"
+    )
+
+
+def test_wide_bracket_rejected_to_avoid_inventing_lyrics() -> None:
+    """Regression for #29 v2 over-insertion. When the audi-side gap
+    between adjacent audi-aligned tokens spans more notes than
+    BRACKET_NOTE_CAP, pass 2 refuses to insert -- the gap most likely
+    means the verse simply doesn't sing through here (LCWTO m33 v2 had
+    a 6-note bracket where v2 has no sung content, but pass 2 filled
+    it with 5 chorus-phrase tokens that belong elsewhere in the song).
+
+    Cap is 4 notes; this test uses a 6-note bracket and asserts pass 2
+    inserts nothing.
+    """
+    # 6 naked notes between two audi-aligned notes (bracket size = 6).
+    all_notes = (
+        [_make_note("start")]
+        + [_make_note(None) for _ in range(6)]
+        + [_make_note("end")]
+    )
+    audi_pairs = [
+        (0, all_notes[0], all_notes[0].lyrics[0]),
+        (7, all_notes[7], all_notes[7].lyrics[0]),
+    ]
+    # Words are multi-char so they clear is_real_word's single-char gate.
+    truth = ["start", "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "end"]
+
+    stats = apply_alignment(audi_pairs, truth, all_notes, verse_num=1)
+
+    # Bracket is too wide -- pass 2 must not insert anything in it.
+    assert stats["inserted"] == 0, stats
+    for i in range(1, 7):
+        assert not all_notes[i].lyrics, (
+            f"note {i} should remain naked in wide-bracket case"
+        )
+
+
+def test_narrow_bracket_still_filled() -> None:
+    """Boundary check: a 4-note bracket (= cap) DOES get filled.
+    Pins the lower bound of the cap so a future tightening to 3
+    notes fails this test loudly."""
+    all_notes = (
+        [_make_note("start")]
+        + [_make_note(None) for _ in range(4)]
+        + [_make_note("end")]
+    )
+    audi_pairs = [
+        (0, all_notes[0], all_notes[0].lyrics[0]),
+        (5, all_notes[5], all_notes[5].lyrics[0]),
+    ]
+    # Multi-char tokens so is_real_word accepts each.
+    truth = ["start", "alpha", "beta", "gamma", "delta", "end"]
+
+    stats = apply_alignment(audi_pairs, truth, all_notes, verse_num=1)
+
+    assert stats["inserted"] == 4
