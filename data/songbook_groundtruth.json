@@ -132,6 +132,28 @@
       "tempo_marking": "Con anima",
       "lyrics_present": true,
       "comment": "F major. Chord row uses Bb explicit + many chromatic naturals (D7, A7, Dm, Eb9 in PDF). Filter targets B->Bb where the pipeline lost the flat; chromatic letters left alone."
+    },
+    "09 - A Woman Is A Sometime Thing": {
+      "key_fifths": -2,
+      "key_name": "Bb major (G minor centred)",
+      "expected_flat_letters": ["B", "E"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "F", "G"],
+      "page_count": 5,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Bb major (G minor centred). Chord row uses many Eb-rooted chords explicit in the PDF (Eb, Eb7, Ebmaj7) plus Bb7, B+, C#dim. Chromatic naturals on A, C, D, F. Filter targets B and E where pipeline lost the flat."
+    },
+    "15 - Shall We Dance": {
+      "key_fifths": -1,
+      "key_name": "F major (verse opens in C major)",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "F", "G"],
+      "page_count": 4,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Two key areas: verse in C major (chord row uses natural-letter chords C, Em, F6, G7, B7, F#7sus4), modulates up by semitone into F-major refrain (Bb6, Bbmaj7, Eb7, Abmaj7, Db7, Gb explicit). Audiveris detected the song as F major. Filter targets B->Bb in refrain; chromatic list is broad to keep the verse natural chords intact."
     }
   }
 }
