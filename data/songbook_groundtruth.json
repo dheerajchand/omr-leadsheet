@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "description": "Per-song ground-truth observations extracted from PDF reading. Used by key-aware-flat-filter as cross-reference to mitigate risk of wrongly flattening chromatic chords. Filter applies ONLY when pipeline-detected key matches the GT key for that song. Updated incrementally as more PDFs are read.",
+  "field_definitions": {
+    "key_fifths": "Integer matching MusicXML <fifths>. -3 = Eb major, +2 = D major, etc. null = key not visible / not yet read.",
+    "expected_flat_letters": "Root letters that should be flatted by default in this key when the PDF shows them without an explicit natural. E.g. Eb major => ['B','E','A'] (Bb, Eb, Ab).",
+    "expected_sharp_letters": "Mirror for sharp keys.",
+    "chromatic_root_notes": "Root letters that DO appear as naturals in the chord row despite the key signature (e.g. 'A' in Eb major as a chromatic mediant). The filter MUST NOT flatten these.",
+    "page_count": "From pdfinfo, structural metadata only.",
+    "tempo_marking": "Italian tempo word from the score for cross-check.",
+    "lyrics_present": "Whether the PDF contains lyrics (false for piano-solo arrangements like Promenade).",
+    "comment": "Free-form observation."
+  },
+  "songs": {
+    "03 - I Got Plenty O' Nuttin'": {
+      "key_fifths": 1,
+      "key_name": "G major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": ["Bb"],
+      "page_count": 6,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Sharp key (control). One Bb appears in the coda as a chromatic chord — keep it natural-Bb (root-alter -1) when seen but don't apply the filter."
+    },
+    "04 - It Ain't Necessarily So": {
+      "key_fifths": -1,
+      "key_name": "F major",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["Db", "Eb", "F#", "A", "Gb"],
+      "page_count": 6,
+      "tempo_marking": "Moderato scherzoso",
+      "lyrics_present": true,
+      "comment": "F major / Gm. Many chromatic roots in the chord row (Db7, Eb7, F#m, A7, Gb). Filter only flattens B->Bb when natural is missing."
+    },
+    "11 - Slap That Bass": {
+      "key_fifths": -3,
+      "key_name": "Eb major",
+      "expected_flat_letters": ["B", "E", "A"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["B", "C", "D", "F#"],
+      "page_count": 5,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Eb major. Chord row dominated by Ebm/Gb/Abm/Bb7/Cb/Db. A few chromatic naturals appear: B7 / B9-7 / Cb (= B), F#m, D-stem chords. Filter must verify explicit natural sign before declining to flatten."
+    },
+    "13 - Let's Call The Whole Thing Off": {
+      "key_fifths": 2,
+      "key_name": "D major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F", "C"],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": "Allegretto",
+      "lyrics_present": true,
+      "comment": "Sharp key (control). No flat-glyph blindness expected. Stacked 9-over-7 (G⁹⁷, F#⁹⁷) appears — verified working through VLM blob-scan."
+    },
+    "24 - Love Walked In": {
+      "key_fifths": -3,
+      "key_name": "Eb major",
+      "expected_flat_letters": ["B", "E", "A"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["B", "C", "D", "F", "G", "A"],
+      "page_count": 4,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Eb major. Verse modulates briefly: Bb7, Am7, D7, Gmaj7 (= D-major land) before returning. Many naturals are intentional. Filter for B/E/A only when no natural sign AND chord is in primary key area."
+    },
+    "27 - They Can't Take That Away From Me": {
+      "key_fifths": -3,
+      "key_name": "Eb major",
+      "expected_flat_letters": ["B", "E", "A"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["B", "C", "D", "F", "G", "A"],
+      "page_count": 4,
+      "tempo_marking": "Moderato (lightly)",
+      "lyrics_present": true,
+      "comment": "Eb major. Verse uses E♮dim (with natural sign on E), B7, F7 chromatic dominant. Bridge to D7 area. Filter applies to remaining bare A/B/E roots."
+    }
+  }
+}
