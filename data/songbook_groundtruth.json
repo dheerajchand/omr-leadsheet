@@ -154,6 +154,39 @@
       "tempo_marking": "Moderato",
       "lyrics_present": true,
       "comment": "Two key areas: verse in C major (chord row uses natural-letter chords C, Em, F6, G7, B7, F#7sus4), modulates up by semitone into F-major refrain (Bb6, Bbmaj7, Eb7, Abmaj7, Db7, Gb explicit). Audiveris detected the song as F major. Filter targets B->Bb in refrain; chromatic list is broad to keep the verse natural chords intact."
+    },
+    "06 - Oh Bess, Oh Where's My Bess": {
+      "key_fifths": -3,
+      "key_name": "Eb major",
+      "expected_flat_letters": ["B", "E", "A"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": [],
+      "page_count": 5,
+      "tempo_marking": "Andantino con molto calore",
+      "lyrics_present": true,
+      "comment": "Source PDF has NO chord-row labels printed. Pipeline correctly produces near-zero chord-symbols here; filter is moot."
+    },
+    "19 - The Jolly Tar and The Milk Maid": {
+      "key_fifths": -1,
+      "key_name": "F major",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "G"],
+      "page_count": 4,
+      "tempo_marking": "Allegretto scherzando",
+      "lyrics_present": true,
+      "comment": "F major. Chord row dominated by Am/D/E7/A/A6 (chromatic naturals diatonic to A minor area) + Bb6 explicit + Db, Db+ chromatic dominants. Filter targets B->Bb where the pipeline lost the flat; keeps the many natural letter chords intact."
+    },
+    "26 - For You, For Me, For Evermore": {
+      "key_fifths": -3,
+      "key_name": "Eb major",
+      "expected_flat_letters": ["B", "E", "A"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["G", "F", "D"],
+      "page_count": 4,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Strongly Eb-major centric. Chord row mostly diatonic (Eb, Ab, Bb, Cm, Fm, Gm) with chromatic G/G+/G7 and F7/F9 plus Db. Filter on B/E/A applies broadly; chromatic_root_notes is narrow because the song stays close to Eb-major centre."
     }
   }
 }
