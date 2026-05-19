@@ -67,14 +67,23 @@ def expected_sharp_letters_for_fifths(fifths: int) -> set[str]:
 
 def load_groundtruth(path: Path | str) -> dict[str, Any]:
     """Load the songbook ground-truth JSON. Returns the parsed dict or
-    an empty stub if the file is missing or malformed."""
+    an empty stub if the file is missing, malformed, or has the wrong
+    top-level shape (non-object JSON).
+
+    UTF-8 is explicit so cross-platform reads stay deterministic --
+    songbook titles include curly apostrophes that decode differently
+    under the default locale on some systems.
+    """
     p = Path(path)
     if not p.exists():
         return {"schema_version": 0, "songs": {}}
     try:
-        return json.loads(p.read_text())
-    except (json.JSONDecodeError, OSError):
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
         return {"schema_version": 0, "songs": {}}
+    if not isinstance(data, dict):
+        return {"schema_version": 0, "songs": {}}
+    return data
 
 
 def _score_fifths(score) -> int | None:

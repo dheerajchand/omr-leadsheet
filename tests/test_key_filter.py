@@ -76,9 +76,11 @@ def _score_with_chords(
         rest = fig[1:]
         alter = 0
         if rest.startswith("b") or rest.startswith("-"):
-            alter = -1; rest = rest[1:]
+            alter = -1
+            rest = rest[1:]
         elif rest.startswith("#"):
-            alter = 1; rest = rest[1:]
+            alter = 1
+            rest = rest[1:]
         # Map kind suffix to MusicXML kind value.
         if rest == "":
             kind = "major"
@@ -274,3 +276,13 @@ def test_load_groundtruth_malformed_json_returns_empty_stub(tmp_path: Path) -> N
     p.write_text("{not valid json")
     gt = load_groundtruth(p)
     assert gt == {"schema_version": 0, "songs": {}}
+
+
+def test_load_groundtruth_non_object_top_level_returns_empty_stub(tmp_path: Path) -> None:
+    """Valid JSON but the top-level is a list / string / number / null --
+    downstream .get('songs', ...) would fail. Coerce to empty stub."""
+    for content in ("[]", '"string"', "42", "null"):
+        p = tmp_path / f"bad_{hash(content)}.json"
+        p.write_text(content)
+        gt = load_groundtruth(p)
+        assert gt == {"schema_version": 0, "songs": {}}, content
