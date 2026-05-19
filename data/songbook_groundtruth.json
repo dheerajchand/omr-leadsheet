@@ -110,6 +110,28 @@
       "tempo_marking": "Moderato",
       "lyrics_present": true,
       "comment": "F major. Chord row uses many Bb-rooted chords already flatted in the PDF (Bbmaj7, Bbm6, Bb7, Bb6) plus chromatic Db+, Eb7, Ebm6, E7, F#dim. Filter targets B->Bb when pipeline lost the flat."
+    },
+    "08 - There's A Boat Dat's Leavin' Soon For New York": {
+      "key_fifths": -2,
+      "key_name": "Bb major",
+      "expected_flat_letters": ["B", "E"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": "Moderato (Tempo di Blues)",
+      "lyrics_present": true,
+      "comment": "Source PDF has NO chord-row labels printed (blues feel with chromatic piano voicings throughout). Pipeline correctly produces near-zero chord-symbols; filter is moot."
+    },
+    "23 - Love Is Here To Stay": {
+      "key_fifths": -1,
+      "key_name": "F major",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "F", "G"],
+      "page_count": 4,
+      "tempo_marking": "Con anima",
+      "lyrics_present": true,
+      "comment": "F major. Chord row uses Bb explicit + many chromatic naturals (D7, A7, Dm, Eb9 in PDF). Filter targets B->Bb where the pipeline lost the flat; chromatic letters left alone."
     }
   }
 }
