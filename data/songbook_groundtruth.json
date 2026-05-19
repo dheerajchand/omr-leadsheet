@@ -76,7 +76,40 @@
       "page_count": 4,
       "tempo_marking": "Moderato (lightly)",
       "lyrics_present": true,
-      "comment": "Eb major. Verse uses E♮dim (with natural sign on E), B7, F7 chromatic dominant. Bridge to D7 area. Filter applies to remaining bare A/B/E roots."
+      "comment": "Eb major. Verse uses E natural-dim, B7 and F7 chromatic dominants. Bridge to D7 area. Filter applies to remaining bare A/B/E roots."
+    },
+    "02 - Bess You Is My Woman": {
+      "key_fifths": -1,
+      "key_name": "F major (modulates to D, F#)",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "F", "G"],
+      "page_count": 8,
+      "tempo_marking": "Moderato, poco allargando",
+      "lyrics_present": true,
+      "comment": "F major opening then modulates to D major mid-song, then to F#/B major for the duet finale. Many root letters appear as naturals because of the modulations. The score's primary <fifths> drives the filter so cross-key sections are out of scope."
+    },
+    "05 - My Man's Gone Now": {
+      "key_fifths": -1,
+      "key_name": "F major (D minor centred)",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": [],
+      "page_count": 6,
+      "tempo_marking": "Allegretto ben ritmato",
+      "lyrics_present": true,
+      "comment": "D-minor centred recitative aria. Source PDF has NO chord-row labels printed at all. Pipeline correctly produces near-zero chord-symbols here; filter is moot."
+    },
+    "17 - A Foggy Day": {
+      "key_fifths": -1,
+      "key_name": "F major",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "F", "G"],
+      "page_count": 4,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "F major. Chord row uses many Bb-rooted chords already flatted in the PDF (Bbmaj7, Bbm6, Bb7, Bb6) plus chromatic Db+, Eb7, Ebm6, E7, F#dim. Filter targets B->Bb when pipeline lost the flat."
     }
   }
 }
