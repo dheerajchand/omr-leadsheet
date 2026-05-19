@@ -225,6 +225,31 @@ def process(
             timeout=900.0,
         )
 
+        # Apply the key-aware flat-root filter to recover chord-symbols
+        # whose root letter was OCR'd correctly but whose flat accidental
+        # was missed (qwen2.5vl's known small-glyph blindness). Reads the
+        # per-song GT from data/songbook_groundtruth.json; no-op if the
+        # song lacks a GT entry or the score's detected key disagrees
+        # with GT. See chord_ops/key_filter.py for the safety contract.
+        try:
+            from music21 import converter as _conv
+            from omr_leadsheet.chord_ops.key_filter import apply_key_aware_flatten
+            _gt = Path(__file__).resolve().parents[3] / "data" / "songbook_groundtruth.json"
+            _score = _conv.parse(str(lead_chords))
+            _stats = apply_key_aware_flatten(
+                _score, song_name=song, groundtruth_path=_gt,
+            )
+            if _stats["chords_flattened"] > 0:
+                _score.write("musicxml", fp=str(lead_chords), makeNotation=False)
+            _step(
+                log, song,
+                f"key-aware flatten: {_stats['chords_flattened']} flatted, "
+                f"{_stats['chromatic_skipped']} chromatic skipped, "
+                f"key_match={_stats['key_match']}, reason={_stats['reason_skipped'] or 'applied'}",
+            )
+        except Exception as _e:
+            _step(log, song, f"key-aware flatten skipped (error: {_e})")
+
         _step(log, song, "recovering note-heads from .omr")
         try:
             # Head-recovery does in-process music21 manipulation; only the

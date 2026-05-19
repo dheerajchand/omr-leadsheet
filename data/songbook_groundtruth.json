@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "description": "Per-song ground-truth observations extracted from PDF reading. Used by key-aware-flat-filter as cross-reference to mitigate risk of wrongly flattening chromatic chords. Filter applies ONLY when pipeline-detected key matches the GT key for that song. Updated incrementally as more PDFs are read.",
+  "field_definitions": {
+    "key_fifths": "Integer matching MusicXML <fifths>. -3 = Eb major, +2 = D major, etc. null = key not visible / not yet read.",
+    "expected_flat_letters": "Root letters that should be flatted by default in this key when the PDF shows them without an explicit natural. E.g. Eb major => ['B','E','A'] (Bb, Eb, Ab).",
+    "expected_sharp_letters": "Mirror for sharp keys.",
+    "chromatic_root_notes": "Root letters that DO appear as naturals in the chord row despite the key signature (e.g. 'A' in Eb major as a chromatic mediant). The filter MUST NOT flatten these.",
+    "page_count": "From pdfinfo, structural metadata only.",
+    "tempo_marking": "Italian tempo word from the score for cross-check.",
+    "lyrics_present": "Whether the PDF contains lyrics (false for piano-solo arrangements like Promenade).",
+    "comment": "Free-form observation."
+  },
+  "songs": {
+    "03 - I Got Plenty O' Nuttin'": {
+      "key_fifths": 1,
+      "key_name": "G major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": ["Bb"],
+      "page_count": 6,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Sharp key (control). One Bb appears in the coda as a chromatic chord — keep it natural-Bb (root-alter -1) when seen but don't apply the filter."
+    },
+    "04 - It Ain't Necessarily So": {
+      "key_fifths": -1,
+      "key_name": "F major",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["Db", "Eb", "F#", "A", "Gb"],
+      "page_count": 6,
+      "tempo_marking": "Moderato scherzoso",
+      "lyrics_present": true,
+      "comment": "F major / Gm. Many chromatic roots in the chord row (Db7, Eb7, F#m, A7, Gb). Filter only flattens B->Bb when natural is missing."
+    },
+    "11 - Slap That Bass": {
+      "key_fifths": -3,
+      "key_name": "Eb major",
+      "expected_flat_letters": ["B", "E", "A"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["B", "C", "D", "F#"],
+      "page_count": 5,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Eb major. Chord row dominated by Ebm/Gb/Abm/Bb7/Cb/Db. A few chromatic naturals appear: B7 / B9-7 / Cb (= B), F#m, D-stem chords. Filter must verify explicit natural sign before declining to flatten."
+    },
+    "13 - Let's Call The Whole Thing Off": {
+      "key_fifths": 2,
+      "key_name": "D major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F", "C"],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": "Allegretto",
+      "lyrics_present": true,
+      "comment": "Sharp key (control). No flat-glyph blindness expected. Stacked 9-over-7 (G⁹⁷, F#⁹⁷) appears — verified working through VLM blob-scan."
+    },
+    "24 - Love Walked In": {
+      "key_fifths": -3,
+      "key_name": "Eb major",
+      "expected_flat_letters": ["B", "E", "A"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["B", "C", "D", "F", "G", "A"],
+      "page_count": 4,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Eb major. Verse modulates briefly: Bb7, Am7, D7, Gmaj7 (= D-major land) before returning. Many naturals are intentional. Filter for B/E/A only when no natural sign AND chord is in primary key area."
+    },
+    "27 - They Can't Take That Away From Me": {
+      "key_fifths": -3,
+      "key_name": "Eb major",
+      "expected_flat_letters": ["B", "E", "A"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["B", "C", "D", "F", "G", "A"],
+      "page_count": 4,
+      "tempo_marking": "Moderato (lightly)",
+      "lyrics_present": true,
+      "comment": "Eb major. Verse uses E natural-dim, B7 and F7 chromatic dominants. Bridge to D7 area. Filter applies to remaining bare A/B/E roots."
+    },
+    "02 - Bess You Is My Woman": {
+      "key_fifths": -1,
+      "key_name": "F major (modulates to D, F#)",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "F", "G"],
+      "page_count": 8,
+      "tempo_marking": "Moderato, poco allargando",
+      "lyrics_present": true,
+      "comment": "F major opening then modulates to D major mid-song, then to F#/B major for the duet finale. Many root letters appear as naturals because of the modulations. The score's primary <fifths> drives the filter so cross-key sections are out of scope."
+    },
+    "05 - My Man's Gone Now": {
+      "key_fifths": -1,
+      "key_name": "F major (D minor centred)",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": [],
+      "page_count": 6,
+      "tempo_marking": "Allegretto ben ritmato",
+      "lyrics_present": true,
+      "comment": "D-minor centred recitative aria. Source PDF has NO chord-row labels printed at all. Pipeline correctly produces near-zero chord-symbols here; filter is moot."
+    },
+    "17 - A Foggy Day": {
+      "key_fifths": -1,
+      "key_name": "F major",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "F", "G"],
+      "page_count": 4,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "F major. Chord row uses many Bb-rooted chords already flatted in the PDF (Bbmaj7, Bbm6, Bb7, Bb6) plus chromatic Db+, Eb7, Ebm6, E7, F#dim. Filter targets B->Bb when pipeline lost the flat."
+    },
+    "08 - There's A Boat Dat's Leavin' Soon For New York": {
+      "key_fifths": -2,
+      "key_name": "Bb major",
+      "expected_flat_letters": ["B", "E"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": "Moderato (Tempo di Blues)",
+      "lyrics_present": true,
+      "comment": "Source PDF has NO chord-row labels printed (blues feel with chromatic piano voicings throughout). Pipeline correctly produces near-zero chord-symbols; filter is moot."
+    },
+    "23 - Love Is Here To Stay": {
+      "key_fifths": -1,
+      "key_name": "F major",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "F", "G"],
+      "page_count": 4,
+      "tempo_marking": "Con anima",
+      "lyrics_present": true,
+      "comment": "F major. Chord row uses Bb explicit + many chromatic naturals (D7, A7, Dm, Eb9 in PDF). Filter targets B->Bb where the pipeline lost the flat; chromatic letters left alone."
+    },
+    "09 - A Woman Is A Sometime Thing": {
+      "key_fifths": -2,
+      "key_name": "Bb major (G minor centred)",
+      "expected_flat_letters": ["B", "E"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "F", "G"],
+      "page_count": 5,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Bb major (G minor centred). Chord row uses many Eb-rooted chords explicit in the PDF (Eb, Eb7, Ebmaj7) plus Bb7, B+, C#dim. Chromatic naturals on A, C, D, F. Filter targets B and E where pipeline lost the flat."
+    },
+    "15 - Shall We Dance": {
+      "key_fifths": -1,
+      "key_name": "F major (verse opens in C major)",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "F", "G"],
+      "page_count": 4,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Two key areas: verse in C major (chord row uses natural-letter chords C, Em, F6, G7, B7, F#7sus4), modulates up by semitone into F-major refrain (Bb6, Bbmaj7, Eb7, Abmaj7, Db7, Gb explicit). Audiveris detected the song as F major. Filter targets B->Bb in refrain; chromatic list is broad to keep the verse natural chords intact."
+    },
+    "06 - Oh Bess, Oh Where's My Bess": {
+      "key_fifths": -3,
+      "key_name": "Eb major",
+      "expected_flat_letters": ["B", "E", "A"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": [],
+      "page_count": 5,
+      "tempo_marking": "Andantino con molto calore",
+      "lyrics_present": true,
+      "comment": "Source PDF has NO chord-row labels printed. Pipeline correctly produces near-zero chord-symbols here; filter is moot."
+    },
+    "19 - The Jolly Tar and The Milk Maid": {
+      "key_fifths": -1,
+      "key_name": "F major",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "G"],
+      "page_count": 4,
+      "tempo_marking": "Allegretto scherzando",
+      "lyrics_present": true,
+      "comment": "F major. Chord row dominated by Am/D/E7/A/A6 (chromatic naturals diatonic to A minor area) + Bb6 explicit + Db, Db+ chromatic dominants. Filter targets B->Bb where the pipeline lost the flat; keeps the many natural letter chords intact."
+    },
+    "26 - For You, For Me, For Evermore": {
+      "key_fifths": -3,
+      "key_name": "Eb major",
+      "expected_flat_letters": ["B", "E", "A"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["G", "F", "D"],
+      "page_count": 4,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Strongly Eb-major centric. Chord row mostly diatonic (Eb, Ab, Bb, Cm, Fm, Gm) with chromatic G/G+/G7 and F7/F9 plus Db. Filter on B/E/A applies broadly; chromatic_root_notes is narrow because the song stays close to Eb-major centre."
+    }
+  }
+}
