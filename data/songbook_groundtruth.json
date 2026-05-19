@@ -187,6 +187,160 @@
       "tempo_marking": "Moderato",
       "lyrics_present": true,
       "comment": "Strongly Eb-major centric. Chord row mostly diatonic (Eb, Ab, Bb, Cm, Fm, Gm) with chromatic G/G+/G7 and F7/F9 plus Db. Filter on B/E/A applies broadly; chromatic_root_notes is narrow because the song stays close to Eb-major centre."
+    },
+    "28 - By Strauss": {
+      "key_fifths": -1,
+      "key_name": "F major (verse centred on Am)",
+      "expected_flat_letters": ["B"],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "C", "D", "E", "G"],
+      "page_count": 5,
+      "tempo_marking": "Tempo di Valse Viennoise",
+      "lyrics_present": true,
+      "comment": "F major waltz. Verse centred on Am with many natural-letter chords (Dm6, E7, Am, Cm6, D7, C, G7). Refrain explicit flats: Bb, Bbm, Bbm6, Db, Db7, Eb7, Abm. Filter targets B->Bb where pipeline lost the flat; chromatic_root_notes broad to preserve verse natural letters."
+    },
+    "29 - Sophia": {
+      "key_fifths": 0,
+      "key_name": "C major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": ["A", "B", "D", "E"],
+      "page_count": 5,
+      "tempo_marking": "Tempo di valse moderato",
+      "lyrics_present": true,
+      "comment": "C major (no flats / no sharps). Chord row uses C, C7, G7, Dm7, Em, Em7, Cmaj7, F + chromatic Ab7, Bb, Db, Eb (all explicit flats in the PDF). Filter is a no-op because expected_flat_letters is empty in C major."
+    },
+    "01 - The Real American Folk Song": {
+      "key_fifths": null,
+      "key_name": "unknown (Audiveris did not detect a stable key signature)",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": [],
+      "page_count": 5,
+      "tempo_marking": null,
+      "lyrics_present": true,
+      "comment": "Audiveris reports no <fifths> for this score. Chord row on p1 includes A, Fm6, C, Cmaj7, Am7, Cdim suggesting C-major / A-minor territory. Filter is a no-op (key_match cannot be satisfied without a score key)."
+    },
+    "07 - Summertime": {
+      "key_fifths": 1,
+      "key_name": "G major (A minor centred)",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": null,
+      "lyrics_present": true,
+      "comment": "Sharp key. Famously A-minor centred but notated with one sharp. Filter is a no-op because expected_flat_letters is empty."
+    },
+    "10 - Just Another Rhumba": {
+      "key_fifths": 1,
+      "key_name": "G major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": [],
+      "page_count": 8,
+      "tempo_marking": "Moderato (Rhumba rhythm)",
+      "lyrics_present": true,
+      "comment": "Sharp key. Chord row includes A, Em, A9, G, Gdim, D7, D7+ — diatonic to G plus secondary dominants. Filter is a no-op."
+    },
+    "12 - (I've Got) Beginner's Luck": {
+      "key_fifths": 2,
+      "key_name": "D major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F", "C"],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": null,
+      "lyrics_present": true,
+      "comment": "Sharp key (control). Filter is a no-op."
+    },
+    "14 - Promenade (Piano Solo)": {
+      "key_fifths": 1,
+      "key_name": "G major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": "Allegretto moderato",
+      "lyrics_present": false,
+      "comment": "Piano solo arrangement, no lyrics and no chord-row labels expected. Filter is moot."
+    },
+    "16 - They All Laughed": {
+      "key_fifths": 1,
+      "key_name": "G major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": [],
+      "page_count": 5,
+      "tempo_marking": "Moderato (gracefully)",
+      "lyrics_present": true,
+      "comment": "Sharp key. Chord row uses G-major diatonic plus stacked alterations like A7(b9). Filter is a no-op."
+    },
+    "18 - I Can't Be Bothered Now": {
+      "key_fifths": 1,
+      "key_name": "G major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": "Moderato con spirito",
+      "lyrics_present": true,
+      "comment": "Sharp key. Chord row mixes diatonic (D7, Gmaj7, G6, A+) with chromatic Bb7, Bb, F, Eb on the way to bridge. Filter is a no-op because expected_flat_letters is empty in a sharp key."
+    },
+    "20 - Nice Work If You Can Get It": {
+      "key_fifths": 1,
+      "key_name": "G major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": null,
+      "lyrics_present": true,
+      "comment": "Sharp key. Filter is a no-op."
+    },
+    "21 - I Love To Rhyme": {
+      "key_fifths": 1,
+      "key_name": "G major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": null,
+      "lyrics_present": true,
+      "comment": "Sharp key. Filter is a no-op."
+    },
+    "22 - I Was Doing All Right": {
+      "key_fifths": 1,
+      "key_name": "G major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": null,
+      "lyrics_present": true,
+      "comment": "Sharp key. Filter is a no-op."
+    },
+    "25 - The Back Bay Polka": {
+      "key_fifths": null,
+      "key_name": "unknown (Audiveris did not detect a stable key signature)",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": [],
+      "chromatic_root_notes": [],
+      "page_count": 4,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Audiveris reports no <fifths>. Chord row on p1 shows C, G7 in the refrain — C-major territory. Filter is a no-op (key_match cannot be satisfied without a score key)."
+    },
+    "30 - All The Livelong Day": {
+      "key_fifths": 1,
+      "key_name": "G major",
+      "expected_flat_letters": [],
+      "expected_sharp_letters": ["F"],
+      "chromatic_root_notes": [],
+      "page_count": 6,
+      "tempo_marking": "Moderato",
+      "lyrics_present": true,
+      "comment": "Sharp key. Filter is a no-op."
     }
   }
 }
