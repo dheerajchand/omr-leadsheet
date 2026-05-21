@@ -24,15 +24,15 @@
       "comment": "Sharp key (control). One Bb appears in the coda as a chromatic chord — keep it natural-Bb (root-alter -1) when seen but don't apply the filter."
     },
     "04 - It Ain't Necessarily So": {
-      "key_fifths": -1,
-      "key_name": "F major",
-      "expected_flat_letters": ["B"],
+      "key_fifths": -2,
+      "key_name": "Bb major (G minor centred)",
+      "expected_flat_letters": ["B", "E"],
       "expected_sharp_letters": [],
-      "chromatic_root_notes": ["Db", "Eb", "F#", "A", "Gb"],
+      "chromatic_root_notes": ["D", "A", "F#", "Db", "Gb"],
       "page_count": 6,
       "tempo_marking": "Moderato scherzoso",
       "lyrics_present": true,
-      "comment": "F major / Gm. Many chromatic roots in the chord row (Db7, Eb7, F#m, A7, Gb). Filter only flattens B->Bb when natural is missing."
+      "comment": "G minor centred (Bb major key signature, -2). Earlier GT incorrectly listed -1 (F major); corrected after Audiveris consistently detected -2 and the song's harmonic centre on Gm. Chord row uses Gm (i), C (V/V), D7 (V), Eb (VI), F (V of Bb), A7 (V/D), plus chromatic Db7 / F#m / Gb. Filter flattens B->Bb and E->Eb when natural is missing; D and A are chromatic naturals (secondary dominants) that must stay natural."
     },
     "11 - Slap That Bass": {
       "key_fifths": -3,
