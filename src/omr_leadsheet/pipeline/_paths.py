@@ -1,35 +1,26 @@
 """Songbook layout discovery.
 
-The gershwin-songbook (and similar songbook directories this pipeline
-operates on) doesn't enforce a single naming convention for its
-sub-directories. Snake-case is the project convention going forward
-(``individual_songs``, ``music_xml``, ``lyrics``, ``lead_sheets``) but
-historic / hand-managed layouts may use Title Case forms with or
-without spaces (``Individual Songs``, ``MusicXML``, ``LeadSheets``).
+Snake-case is the project convention for songbook sub-directories
+(``individual_songs``, ``music_xml``, ``lyrics``, ``lead_sheets``).
+Earlier songbooks carried hand-managed Title Case duplicates
+(``Individual Songs``, ``MusicXML``, ``LeadSheets``) that were
+tolerated as fallback candidates here; those have been removed from
+disk, so the candidate lists now only carry the canonical names.
 
-The pipeline previously hardcoded specific names per call site, which
-caused several silent failures:
-
-* batch processed 0 songs because it looked at ``Individual Songs``
-  while the cache was under ``individual_songs`` (#18)
-* process re-ran Audiveris for every song because it looked at
-  ``MusicXML`` while the cache was under ``music_xml`` (#21)
-
-This module centralises the candidate-name lookup so all entry points
-share one source of truth and we don't repeat the bug per call site.
+This module centralises the lookup so all entry points share one
+source of truth — previously each call site hardcoded a name, which
+caused silent failures when the disk layout used a different form
+(#18, #21).
 """
 from __future__ import annotations
 
 from pathlib import Path
 
 
-# Per-sub-directory candidate lists, in priority order (snake-case
-# project convention first). Add additional aliases as needed when new
-# songbooks surface.
-SONGS_DIR_CANDIDATES = ("individual_songs", "Individual Songs", "Individual_Songs")
-MXL_DIR_CANDIDATES = ("music_xml", "MusicXML", "Music_XML")
-LYRICS_DIR_CANDIDATES = ("lyrics", "Lyrics")
-LEADSHEETS_DIR_CANDIDATES = ("lead_sheets", "LeadSheets", "Lead_Sheets")
+SONGS_DIR_CANDIDATES = ("individual_songs",)
+MXL_DIR_CANDIDATES = ("music_xml",)
+LYRICS_DIR_CANDIDATES = ("lyrics",)
+LEADSHEETS_DIR_CANDIDATES = ("lead_sheets",)
 
 
 def find_subdir(
