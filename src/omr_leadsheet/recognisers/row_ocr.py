@@ -38,6 +38,57 @@ CHORD_REGEX = re.compile(r"^[A-G][#b♯♭]?(?:maj|min|aug|dim|sus|m|M|b|#|\+|\-
 # Tight whitelist of characters that appear in chord symbols
 CHORD_CHARS = "ABCDEFGabdefgimsu#b+-0123456789"
 
+# Common performance / structural markings the chord-row OCR mis-reads
+# as chord-symbols. Exact-match denylist (not prefix) so legitimate
+# chords whose root prefix collides (F vs Fine, D vs D.C., C vs Coda)
+# stay accepted. #48.
+_OCR_NON_CHORD_DENYLIST = frozenset({
+    # ornaments
+    "tr", "Tr",
+    # dynamics (single-letter and combos)
+    "mf", "mp", "pp", "ff", "fp", "sf", "sfz", "rfz",
+    # tempo / structural markers
+    "Fine", "D.C.", "D.S.", "D.C.alFine", "D.S.alFine", "D.S.alCoda",
+    "Coda", "rit", "rit.", "ritard", "accel", "accel.", "cresc",
+    "cresc.", "decresc", "decresc.",
+})
+
+
+# Permits slash-bass chord-symbols (``C/G``, ``Dm7/F``) that the main
+# ``CHORD_REGEX`` doesn't model. Slash-bass chords are ~5% of harmonies
+# across the songbook (150 of 2984 in the May batch), so the #48
+# token filter must accept them. Body matches the main chord; the
+# trailing ``/[A-G][...]?`` is the optional bass note.
+_SLASH_BASS_REGEX = re.compile(
+    r"^[A-G][#b♯♭]?(?:maj|min|aug|dim|sus|m|M|b|#|\+|\-|[0-9])*"
+    r"/[A-G][#b♯♭]?$"
+)
+
+
+def _is_plausible_chord_token(s: str) -> bool:
+    """True iff ``s`` looks like a real chord-symbol the row-OCR
+    could have picked up (vs an ornament, dynamic, ending marker,
+    or punctuation noise).
+
+    Two-stage gate: must match either the structural ``CHORD_REGEX``
+    or the slash-bass variant, AND must not be on the exact denylist
+    of common OCR false positives.
+
+    Used as the final filter in ``recover_chord_row_chords`` to drop
+    tokens that would otherwise propagate as ``OMRChord`` entries and
+    appear in MuseScore as bogus chord-symbols (the #48 symptom:
+    ``2-c;`` and ``tr`` rendering on the #13 LCWTO ending).
+    """
+    if not s:
+        return False
+    if s in _OCR_NON_CHORD_DENYLIST:
+        return False
+    if CHORD_REGEX.match(s) is not None:
+        return True
+    if _SLASH_BASS_REGEX.match(s) is not None:
+        return True
+    return False
+
 # Gated debug logging for #27 investigation. Set ROW_OCR_DEBUG=1 to trace
 # each chord glyph through tesseract -> regex filter -> conf floor ->
 # dedup -> classifier. Goal: identify exactly which step drops short
@@ -745,6 +796,19 @@ def recover_chord_row_chords(omr_path: str) -> list[RowChord]:
                 f"chords (Audiveris chord-count=0; x<{SYSTEM_START_MARGIN_PX})"
             )
         out = filtered_out
+
+    # #48: drop tokens that obviously aren't chord-symbols (trill "tr",
+    # dynamic "mf", ending markers "Fine"/"D.C.", and punctuation noise
+    # like "2-c;" that the OCR scrapes from second-ending boxes and
+    # ornament glyphs near the chord row).
+    plausible_out = [c for c in out if _is_plausible_chord_token(c.value)]
+    implausible_dropped = len(out) - len(plausible_out)
+    if implausible_dropped:
+        _dbg(
+            f"recover_chord_row_chords: dropped {implausible_dropped} "
+            f"implausible-chord tokens (#48 filter)"
+        )
+    out = plausible_out
     return out
 
 
