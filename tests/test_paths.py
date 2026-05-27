@@ -19,21 +19,8 @@ from omr_leadsheet.pipeline._paths import (
 )
 
 
-def test_finds_snake_case_first(tmp_path: Path) -> None:
+def test_finds_snake_case(tmp_path: Path) -> None:
     (tmp_path / "music_xml").mkdir()
-    assert find_subdir(tmp_path, MXL_DIR_CANDIDATES) == tmp_path / "music_xml"
-
-
-def test_falls_back_to_title_case(tmp_path: Path) -> None:
-    (tmp_path / "MusicXML").mkdir()
-    assert find_subdir(tmp_path, MXL_DIR_CANDIDATES) == tmp_path / "MusicXML"
-
-
-def test_snake_wins_over_title_when_both_exist(tmp_path: Path) -> None:
-    (tmp_path / "music_xml").mkdir()
-    (tmp_path / "MusicXML").mkdir()
-    # On macOS case-insensitive FS music_xml/MusicXML resolve differently
-    # because the underscore makes them distinct names.
     assert find_subdir(tmp_path, MXL_DIR_CANDIDATES) == tmp_path / "music_xml"
 
 
@@ -53,10 +40,11 @@ def test_must_exist_false_returns_snake_case_default(tmp_path: Path) -> None:
     assert not result.exists()  # caller's job to create
 
 
-def test_candidate_sets_lead_with_snake_case() -> None:
-    """All four candidate sets must put the snake-case form first.
-    This is the project convention; the helper assumes it for tie-break."""
-    assert SONGS_DIR_CANDIDATES[0] == "individual_songs"
-    assert MXL_DIR_CANDIDATES[0] == "music_xml"
-    assert LYRICS_DIR_CANDIDATES[0] == "lyrics"
-    assert LEADSHEETS_DIR_CANDIDATES[0] == "lead_sheets"
+def test_candidate_sets_are_snake_case_only() -> None:
+    """All four candidate sets carry the snake-case form only. Earlier
+    Title Case duplicates were dropped after the legacy directories
+    were removed from disk."""
+    assert SONGS_DIR_CANDIDATES == ("individual_songs",)
+    assert MXL_DIR_CANDIDATES == ("music_xml",)
+    assert LYRICS_DIR_CANDIDATES == ("lyrics",)
+    assert LEADSHEETS_DIR_CANDIDATES == ("lead_sheets",)
