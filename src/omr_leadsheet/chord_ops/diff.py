@@ -219,7 +219,16 @@ def extract_mxl_chords(mxl_path: str) -> list[tuple[int, str]]:
 
 
 def normalize_chord(s: str) -> str:
-    return re.sub(r"\s+", "", s.lower())
+    """Canonical form for dedup comparison: lowercase, no whitespace,
+    no parentheses. The paren stripping (added for #49) unifies
+    parenthetical-wrapped alterations with their unwrapped forms so
+    that ``E(b7)`` and ``Eb7``, ``C7(b9)`` and ``C7b9``, ``Cm7(b5)``
+    and ``Cm7b5`` deduplicate against each other -- otherwise the
+    parenthetical Audiveris reading and the unparenthetical row-OCR
+    reading of the same printed glyph end up stacked at the same
+    beat in the rendered output.
+    """
+    return re.sub(r"\s+|[()]", "", s.lower())
 
 
 def diff(omr: list[OMRChord], mxl: list[tuple[int, str]]) -> list[OMRChord]:
