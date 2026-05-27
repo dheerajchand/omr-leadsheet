@@ -257,6 +257,25 @@ def diff(omr: list[OMRChord], mxl: list[tuple[int, str]]) -> list[OMRChord]:
     return missing
 
 
+def _to_music21_figure(s: str) -> str:
+    """Translate a leading root-letter flat from "b" to music21's "-".
+
+    music21's ChordSymbol parser treats lowercase ``b`` as a chord-quality
+    abbreviation, not as a flat accidental, so common chord-row spellings
+    like ``Bb``, ``Bbm6``, ``Bbm`` fail with ValueError. The parser's
+    own flat marker is hyphen-minus: ``B-``, ``B-m6``. The regex is
+    anchored to the leading character so any ``b`` inside parenthetical
+    alterations (e.g. ``Cm7(b5)``) is preserved.
+
+    Side benefit beyond #47's TextExpression fallback: figures like
+    ``Bb6`` that previously "parsed" but with the wrong kind
+    (``major`` and root B-natural instead of ``major-sixth`` and root
+    B-flat) now parse correctly because ``B-6`` resolves to
+    ``major-sixth``.
+    """
+    return re.sub(r"^([A-G])b", r"\1-", s)
+
+
 def _stacked_extension_display(top: str, bottom: str) -> str:
     """Canonical MuseScore-grammar string for a stacked digit/digit suffix.
 
@@ -362,7 +381,7 @@ def insert_missing(
         # music21 parsing but force the visible figure to the full
         # original text. That gives a real ChordSymbol with full
         # rendering, not just a text overlay.
-        figure = c.value
+        figure = _to_music21_figure(c.value)
         cs = None
         # Detect stacked extension: digit slash digit at end (e.g., "9/7", "6/5").
         # Parse using the top digit only (music21 understands "F#9") and
