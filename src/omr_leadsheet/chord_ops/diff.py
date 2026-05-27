@@ -273,7 +273,22 @@ def _stacked_extension_display(top: str, bottom: str) -> str:
     return f"{top}/{bottom}"
 
 
-def insert_missing(musicxml_path: str, missing: list[OMRChord], out_path: str) -> int:
+def insert_missing(
+    musicxml_path: str,
+    missing: list[OMRChord],
+    out_path: str,
+    all_omr: list[OMRChord] | None = None,
+) -> int:
+    """Insert chord-symbols that ``diff`` flagged as missing from the
+    target, then write the corrected score.
+
+    ``all_omr`` is the full chord-name list extracted from the .omr
+    (i.e. the list that ``diff`` was called against). When provided,
+    a post-insertion redistribute pass uses each OMRChord's
+    ``measure_frac`` to re-anchor harmonies that share an offset
+    within a measure -- the #43 fix. Without it the pass is skipped
+    and the function behaves as it did before.
+    """
     score = converter.parse(musicxml_path)
     # Find the part with chord symbols (first with any)
     target_part = None
@@ -394,8 +409,94 @@ def insert_missing(musicxml_path: str, missing: list[OMRChord], out_path: str) -
             te.style.fontStyle = "italic"
             target_m.insert(offset, te)
         inserted += 1
+    if all_omr is not None:
+        _redistribute_same_offset_harmonies(target_part, m_by_num, all_omr)
     score.write("musicxml", fp=out_path, makeNotation=False)
     return inserted
+
+
+def _redistribute_same_offset_harmonies(
+    target_part,
+    m_by_num: dict,
+    all_omr: list[OMRChord],
+) -> int:
+    """Issue #43: when a measure ends up with two or more chord-symbols
+    sharing an offset, look each one up in the OMR's x-coordinate-
+    derived ``measure_frac`` data and rewrite the offset so each chord
+    lands on the beat the printed page actually shows.
+
+    Audiveris's .omr emits `<chord-name>` glyphs with their pixel
+    x-coordinates intact -- the row-OCR step already converts those to
+    a fractional position within the measure. When Audiveris's own
+    rhythmic snapping collapses several glyphs to offset=0, those
+    measure_frac values are the ground truth that lets us undo the
+    collapse.
+
+    Returns the number of harmonies whose offset was rewritten.
+    """
+    # Build per-measure index: normalized figure -> list of OMRChord
+    by_measure: dict[int, dict[str, list[OMRChord]]] = {}
+    for c in all_omr:
+        mg = c.measure_global
+        if mg is None or c.measure_frac is None:
+            continue
+        by_measure.setdefault(mg, {}).setdefault(
+            normalize_chord(c.value), []
+        ).append(c)
+
+    rewritten = 0
+    for mn, measure in m_by_num.items():
+        harmonies = list(
+            measure.recurse().getElementsByClass(harmony.ChordSymbol)
+        )
+        if len(harmonies) < 2:
+            continue
+        # Group by current offset within the measure
+        from collections import defaultdict
+        by_offset: dict[float, list] = defaultdict(list)
+        for h in harmonies:
+            by_offset[float(h.offset)].append(h)
+        stacked = [(off, hs) for off, hs in by_offset.items() if len(hs) > 1]
+        if not stacked:
+            continue
+        omr_for_measure = by_measure.get(mn, {})
+        # Already-occupied offsets in this measure (so we don't redistribute
+        # one stacked harmony onto another existing harmony's offset).
+        existing_offsets = {float(h.offset) for h in harmonies}
+        dur = measure.duration.quarterLength or 4.0
+        for _orig_off, stacked_hs in stacked:
+            # For each stacked harmony, look up its OMRChord by figure.
+            # Pick the OMRChord whose snapped offset differs from the
+            # current (stacked) offset by the smallest amount but is
+            # still distinct -- that's the most plausible reassignment.
+            for h in stacked_hs:
+                fig_key = normalize_chord(h.figure)
+                candidates = omr_for_measure.get(fig_key, [])
+                if not candidates:
+                    continue
+                best_new_off: float | None = None
+                for cand in candidates:
+                    snapped = round(cand.measure_frac * dur * 4) / 4
+                    if snapped == float(h.offset):
+                        continue
+                    if snapped in existing_offsets:
+                        continue
+                    if best_new_off is None or abs(snapped - float(h.offset)) < abs(
+                        best_new_off - float(h.offset)
+                    ):
+                        best_new_off = snapped
+                if best_new_off is None:
+                    continue
+                site = h.activeSite
+                if site is None:
+                    continue
+                old_off = float(h.offset)
+                site.remove(h)
+                site.insert(best_new_off, h)
+                existing_offsets.discard(old_off)
+                existing_offsets.add(best_new_off)
+                rewritten += 1
+    return rewritten
 
 
 def main() -> None:
@@ -434,7 +535,7 @@ def main() -> None:
         if not args.out:
             print("--out is required with --insert-into", file=sys.stderr)
             sys.exit(2)
-        n = insert_missing(args.insert_into, missing, args.out)
+        n = insert_missing(args.insert_into, missing, args.out, all_omr=omr)
         print(f"\nInserted {n} chord symbols into {args.out}")
 
 
