@@ -386,6 +386,18 @@ def insert_missing(
                 cs.chordKindStr = _stacked_extension_display(
                     m_stack.group(1), m_stack.group(2),
                 )
+                # #42: when the override is "97" (stacked dom-9-over-7),
+                # also force chordKind to "other". Without this, music21
+                # emits <kind text="97">dominant-ninth</kind>, and
+                # MuseScore parses the dominant-ninth kind through its
+                # internal chord-symbol grammar and renders the canonical
+                # "9" glyph -- the 7 is lost. With kind="other", MuseScore
+                # has no canonical glyph to fall back to and uses the
+                # text="97" override directly. The structural "this is a
+                # dominant 9" annotation is lost; the lead-sheet
+                # typography is preserved, which is the priority.
+                if cs.chordKindStr == "97":
+                    cs.chordKind = "other"
             except (ValueError, KeyError, IndexError):
                 cs = None
         if cs is None:
