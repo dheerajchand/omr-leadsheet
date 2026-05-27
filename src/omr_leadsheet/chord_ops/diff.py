@@ -379,6 +379,14 @@ def insert_missing(musicxml_path: str, missing: list[OMRChord], out_path: str) -
             except (ValueError, KeyError, IndexError):
                 cs = None
         if cs is not None:
+            # music21 emits <kind>augmented</kind> with no display
+            # override when it parses "Caug" / "C aug", so MuseScore
+            # falls back to its default "aug" glyph. The project style
+            # uses "+" for compactness on dense rows (#41), so set the
+            # override explicitly here. Stacked-extension overrides
+            # (e.g. "97") were set above and are untouched.
+            if cs.chordKind == "augmented" and not cs.chordKindStr:
+                cs.chordKindStr = "+"
             target_m.insert(offset, cs)
         else:
             from music21 import expressions
