@@ -111,6 +111,40 @@ def test_phantom_pitch_matches_previous_note() -> None:
     )
 
 
+def test_phantom_cap_shared_across_verses() -> None:
+    """#75: when the same measure has a truth-gap in BOTH v1 and v2,
+    the cap should fire across the shared set so only one phantom
+    lands in that measure (not one per verse)."""
+    from music21 import stream, note as m21note
+    from omr_leadsheet.pipeline.spell_check import (
+        apply_alignment, audiveris_tokens,
+    )
+    sc = stream.Score()
+    p = stream.Part()
+    m1 = stream.Measure(number=1)
+    n = m21note.Note("A3", quarterLength=1.0)
+    n.addLyric("Some", lyricNumber=1)
+    n.addLyric("Some", lyricNumber=2)
+    m1.append(n)
+    m2 = stream.Measure(number=2)
+    m2.append(m21note.Rest(quarterLength=2.0))
+    p.append(m1)
+    p.append(m2)
+    sc.append(p)
+
+    _, all_notes, by_verse = audiveris_tokens(sc)
+    truth_v1 = ["Some", "done"]
+    truth_v2 = ["Some", "done"]
+    # Share the cap as the production main() does.
+    cap: set = set()
+    s1 = apply_alignment(by_verse[1], truth_v1, all_notes, 1, phantom_measures_used=cap)
+    s2 = apply_alignment(by_verse[2], truth_v2, all_notes, 2, phantom_measures_used=cap)
+    assert s1["phantom_inserted"] + s2["phantom_inserted"] == 1, (
+        f"only one phantom should land in m2 across both verses; "
+        f"got v1={s1['phantom_inserted']} v2={s2['phantom_inserted']}"
+    )
+
+
 def test_phantom_one_per_measure_cap() -> None:
     """If multiple truth-gaps would target the same measure, only
     one phantom gets inserted there."""
