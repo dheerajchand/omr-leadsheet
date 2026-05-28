@@ -36,7 +36,12 @@ from difflib import SequenceMatcher
 from music21 import converter, note
 
 
-WORD = re.compile(r"[A-Za-z][A-Za-z'']*")
+# Tokenizer accepts both straight (0x27) and curly (U+2019) apostrophes.
+# Tesseract OCR of typeset jazz fonts often emits the curly variant for
+# contractions ("I'll", "don't"); without the curly here _line_to_tokens
+# truncates at the apostrophe and downstream NW alignment loses the rest
+# of the contraction (#68: v2 lost "'ll" from "I'll").
+WORD = re.compile(r"[A-Za-z][A-Za-z'’]*")
 
 
 # Load system dict
@@ -121,7 +126,9 @@ def is_real_word(tok: str) -> bool:
       ``thIng`` verbatim instead of letting NW replace it with the
       tesseract-OCR'd ``thing`` -- visible on LCWTO m25 v1.
     """
-    raw = tok.strip(".,;:!?\"''()[]-_")
+    # Normalise curly apostrophe to straight so dict lookups succeed
+    # for OCR'd contractions like "I'll" (U+2019).
+    raw = tok.replace("’", "'").strip(".,;:!?\"''()[]-_")
     t = raw.lower()
     if len(t) == 0:
         return False
@@ -175,7 +182,9 @@ def nw_align(audi: list[str], truth: list[str], gap: float = 0.6) -> list[tuple[
 
 
 def _line_to_tokens(line: str) -> list[str]:
-    line = line.replace(" - ", " ").replace("_", " ")
+    # Normalise curly apostrophe (U+2019) to straight before tokenising so
+    # downstream comparisons and dict lookups all see the same form (#68).
+    line = line.replace("’", "'").replace(" - ", " ").replace("_", " ")
     out: list[str] = []
     for piece in re.split(r"[-\s]+", line):
         m = WORD.match(piece)
