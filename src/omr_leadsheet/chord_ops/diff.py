@@ -43,6 +43,11 @@ class OMRChord:
     # Fractional position within the measure (0.0 = start, 1.0 = end), computed
     # from the measure's x-range.
     measure_frac: float | None = None
+    # "audi" if from Audiveris <chord-name>, "row" if from tesseract row-OCR.
+    # Used by the bare-root dedup pass (#80c) to drop tesseract noise like
+    # the spurious "A" before a real "A7" without touching Audiveris's
+    # high-confidence detections.
+    source: str = "audi"
 
 
 def parse_sheet(xml_path: str, sheet_idx: int) -> tuple[list[OMRChord], int]:
@@ -203,7 +208,38 @@ def extract_omr_chords(omr_path: str) -> list[OMRChord]:
             x=rc.x, y=rc.y,
             measure_local=rc.measure, measure_global=gmeas,
             measure_frac=frac,
+            source="row",
         ))
+
+    # #80c: drop tesseract row-OCR "bare root" duplicates. When the same
+    # chord row produces both a bare-root chord ("A") and an extended-form
+    # ("A7") with the same root within ~200px and the same measure, the
+    # bare-root is almost always tesseract noise (the leading letter of
+    # the next chord glyph picked up as a separate read). Apply ONLY to
+    # row-OCR-sourced chords -- Audiveris's high-grade chord-name
+    # detections are trusted as-is, since legitimate jazz progressions
+    # like "A | A7" do exist and Audiveris is more likely to be right.
+    BARE_ROOT_RE = re.compile(r"^[A-G][b#]?$")
+    BARE_DEDUP_X_PIXELS = 200
+    keep_mask = [True] * len(out)
+    for i, ci in enumerate(out):
+        if ci.source != "row":
+            continue
+        if not BARE_ROOT_RE.match(ci.value or ""):
+            continue
+        for j, cj in enumerate(out):
+            if i == j or cj.source != "row":
+                continue
+            if cj.measure_global != ci.measure_global:
+                continue
+            if not cj.value or cj.value == ci.value:
+                continue
+            if not cj.value.startswith(ci.value):
+                continue
+            if abs(cj.x - ci.x) <= BARE_DEDUP_X_PIXELS:
+                keep_mask[i] = False
+                break
+    out = [c for c, k in zip(out, keep_mask) if k]
     return out
 
 
