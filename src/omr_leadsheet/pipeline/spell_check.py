@@ -191,9 +191,12 @@ def _line_to_tokens(line: str) -> list[str]:
     line = line.replace("’", "'").replace(" - ", " ").replace("_", " ")
     out: list[str] = []
     for piece in re.split(r"[-\s]+", line):
-        m = WORD.match(piece)
-        if m:
-            tok = m.group(0)
+        # Use findall (not match) so a piece like "pass,Our" with embedded
+        # punctuation yields BOTH words. Pre-fix tesseract would emit
+        # "pret-ty pass,Our ro-mance" with a glued comma, and .match only
+        # picked up the leading "pass" (#81 case: "Our" never reached NW
+        # alignment so the syllable was dropped from the lead sheet).
+        for tok in WORD.findall(piece):
             # OCR garble cleanup (#85): jazz syllables like "sas'" sometimes
             # come through tesseract as "sa's'" -- the trailing-apostrophe
             # mark gets misread as an internal apostrophe too. Real
@@ -619,6 +622,62 @@ def apply_alignment(
 
     PICKUP_FLOOR = _pickup_floor(verse_range[0]) if verse_note_indices else 0
 
+    def _pickup_ceiling(idx_at_end: int) -> int:
+        """Highest note index allowed by trailing pickup tolerance. Mirror
+        of _pickup_floor: always allows the rest of verse_range[1]'s
+        measure, plus into the immediately-following measure only when
+        it is short enough (<= PICKUP_TOLERANCE notes) to be a
+        plausible tail anacrusis. Without this guard, a v2 verse whose
+        last audi token is at m45 can let v1-only "For we" truth
+        tokens land on m47's notes via the trailing tolerance
+        (#81 LCWTO m47 v2 leakage)."""
+        if idx_at_end < 0 or idx_at_end >= len(all_notes) - 1:
+            return idx_at_end
+        end_meas = all_notes[idx_at_end].activeSite
+        end_mn = (
+            int(end_meas.number)
+            if end_meas is not None
+            and hasattr(end_meas, "number")
+            and end_meas.number is not None
+            else None
+        )
+        if end_mn is None:
+            return min(idx_at_end + PICKUP_TOLERANCE, len(all_notes) - 1)
+        # Always allow the rest of the same measure as verse_range[1].
+        ceiling = idx_at_end
+        for j in range(idx_at_end + 1, len(all_notes)):
+            m = all_notes[j].activeSite
+            mn = (
+                int(m.number)
+                if m is not None and hasattr(m, "number") and m.number is not None
+                else None
+            )
+            if mn == end_mn:
+                ceiling = j
+            else:
+                break
+        # Optionally extend into the next measure if it's short.
+        next_mn = end_mn + 1
+        next_indices = []
+        for j in range(ceiling + 1, len(all_notes)):
+            m = all_notes[j].activeSite
+            mn = (
+                int(m.number)
+                if m is not None and hasattr(m, "number") and m.number is not None
+                else None
+            )
+            if mn == next_mn:
+                next_indices.append(j)
+            elif mn is None:
+                return min(idx_at_end + PICKUP_TOLERANCE, len(all_notes) - 1)
+            else:
+                break
+        if 0 < len(next_indices) <= PICKUP_TOLERANCE:
+            ceiling = max(next_indices)
+        return ceiling
+
+    PICKUP_CEILING = _pickup_ceiling(verse_range[1]) if verse_note_indices else len(all_notes) - 1
+
     # Maximum audi-side bracket width that pass 2 will fill (#29). A
     # truth-gap that spans more than this many notes between adjacent
     # audi-aligned positions almost always means the verse simply doesn't
@@ -643,7 +702,7 @@ def apply_alignment(
         # how far back the lower-side tolerance can reach: only same- or
         # adjacent-measure pickup notes count (#82).
         prev_note = max(prev_note, PICKUP_FLOOR - 1)
-        next_note = min(next_note, verse_range[1] + 1 + PICKUP_TOLERANCE)
+        next_note = min(next_note, PICKUP_CEILING + 1)
         if prev_note + 1 >= next_note:
             continue
         # Bracket-size cap: refuse to insert into wide truth-gap brackets
