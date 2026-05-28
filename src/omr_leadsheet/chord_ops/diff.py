@@ -310,6 +310,12 @@ def _to_music21_figure(s: str) -> str:
     s = re.sub(r"\(([#b]?\d{1,2}|add\d{1,2})\)", r"\1", s)
     # Collapse only mm -> m (the OCR pattern observed in #11).
     s = re.sub(r"mm+", "m", s)
+    # Trailing '+' on numeric extension: "G9+" -> "G+9" so music21
+    # parses it as augmented-dominant-ninth (#66). Limited to the
+    # plain root+digit+ form because music21 rejects "Gm+9" /
+    # "Cmaj+7" too, so the swap wouldn't help when a quality letter
+    # is present.
+    s = re.sub(r"^([A-G][#b\-]?)(\d+)\+$", r"\1+\2", s)
     return s
 
 

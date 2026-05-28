@@ -53,3 +53,20 @@ def test_clean_figures_unchanged() -> None:
     assert _to_music21_figure("C") == "C"
     assert _to_music21_figure("G7") == "G7"
     assert _to_music21_figure("F#m7") == "F#m7"
+
+
+def test_trailing_plus_swapped_for_music21() -> None:
+    """#66: 'G9+' (trailing augmented marker on numeric extension)
+    is swapped to 'G+9' so music21 parses it as
+    augmented-dominant-ninth. Only fires on the plain root+digit+
+    form; the quality-letter cases (Gm9+, Cmaj7+) stay verbatim
+    because music21 rejects them too."""
+    assert _to_music21_figure("G9+") == "G+9"
+    assert _to_music21_figure("F7+") == "F+7"
+    assert _to_music21_figure("Bb9+") == "B-+9"
+    # No swap when quality letter is between root and digit
+    assert _to_music21_figure("Gm9+") == "Gm9+"
+    assert _to_music21_figure("Cmaj7+") == "Cmaj7+"
+    # No swap when '+' isn't trailing
+    assert _to_music21_figure("G+9") == "G+9"
+    assert _to_music21_figure("G+") == "G+"
