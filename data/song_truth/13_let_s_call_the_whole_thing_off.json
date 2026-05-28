@@ -2,7 +2,10 @@
   "song": "13 - Let's Call The Whole Thing Off",
   "key_fifths": 2,
   "time_signature": "2/2",
-  "comment": "Coverage: page 1 line 2 (our m1-m4), page 1 line 3 (our m5-m8), page 2 line 1 (our m9-m13). These are the measures where the chord-attribution shift on sheet 2 staff 1 surfaces. Refrain measures and beyond are not transcribed yet -- focus is the diagnostic.",
+  "comment": "Coverage: page 1 line 2 (m1-m4), page 1 line 3 (m5-m8), page 2 line 1 (m9-m13). Merge m9+m10 (Audiveris over-segmented the 'Good-ness knows what the end will be' measure). After merge, m9 carries 8 syllables and 5 chord changes; subsequent measures renumber down by 1.",
+  "merge_measures": [
+    {"measures": [9, 10]}
+  ],
   "measures": {
     "1": {
       "lyrics_v1": ["Things", "have", "come", "to", "a"],
@@ -37,12 +40,8 @@
       "chords": ["A+"]
     },
     "9": {
-      "lyrics_v1": ["Good", "ness", "knows", "what", "the", "end", "will", "be,"],
-      "chords": ["D", "B7", "Em", "D", "A7"]
-    },
-    "10": {
-      "lyrics_v1": ["Oh,", "I"],
-      "chords": ["D"]
+      "lyrics_v1": ["Good", "ness", "knows", "what", "the", "end", "will", "be,", "Oh,", "I"],
+      "chords": ["D", "B7", "Em", "D", "A7", "D"]
     },
     "11": {
       "lyrics_v1": ["don't", "know", "where", "I'm"],

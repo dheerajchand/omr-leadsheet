@@ -23,7 +23,7 @@ import json
 import re
 from pathlib import Path
 
-from music21 import converter, harmony
+from music21 import converter, expressions, harmony, note as m21note, stream
 
 
 def _truth_path_for(song_title: str, truth_root: Path | None = None) -> Path:
@@ -55,47 +55,124 @@ def load_truth(song_title: str, truth_root: Path | None = None) -> dict | None:
         return json.load(f)
 
 
+def _merge_measures(part, measures_to_merge: list[int]) -> None:
+    """Merge consecutive measures in `part` into the lowest-numbered
+    one. Notes, rests, and chord symbols from later measures are
+    appended to the first measure preserving relative order. Later
+    measures are removed from the part. Used to correct Audiveris's
+    over-segmentation where one published measure was split into
+    multiple Audiveris measures."""
+    if len(measures_to_merge) < 2:
+        return
+    target_mn = min(measures_to_merge)
+    by_number = {int(m.number): m for m in part.getElementsByClass("Measure")
+                 if m.number is not None}
+    target = by_number.get(target_mn)
+    if target is None:
+        return
+    cursor = target.duration.quarterLength or 0.0
+    for mn in sorted(measures_to_merge):
+        if mn == target_mn:
+            continue
+        source = by_number.get(mn)
+        if source is None:
+            continue
+        # Move all musical elements over, offset by cursor
+        for el in list(source.elements):
+            if isinstance(el, (m21note.Note, m21note.Rest, harmony.ChordSymbol,
+                               expressions.TextExpression)):
+                el_offset = float(el.offset)
+                source.remove(el)
+                target.insert(cursor + el_offset, el)
+        cursor += source.duration.quarterLength or 0.0
+        # Drop the now-empty source measure
+        part.remove(source)
+    # Reset the target's duration so it reflects the combined content.
+    target.duration.quarterLength = cursor
+
+
+def _strip_phantom_markers(score) -> int:
+    """Remove TextExpression '?' marks (the head-recovery audit tags)
+    so the final lead sheet doesn't carry agent-internal annotations."""
+    removed = 0
+    for m in score.recurse().getElementsByClass(stream.Measure):
+        for te in list(m.recurse().getElementsByClass(expressions.TextExpression)):
+            if (te.content or "").strip() == "?":
+                if te.activeSite is not None:
+                    te.activeSite.remove(te)
+                removed += 1
+    return removed
+
+
 def apply_truth_overlay(score, truth: dict) -> dict:
-    """Replace each truth-listed measure's ChordSymbols with the
-    published chord list, evenly spaced across the measure. Returns
-    stats. Mutates the score in place."""
-    stats = {"measures_corrected": 0, "chords_replaced": 0, "chords_inserted": 0}
+    """Apply per-measure published-score corrections:
+      1. Measure merges declared via top-level `merge_measures`
+         (a list of {target: int, measures: [int,...]} entries).
+      2. Per-measure chord-list override (existing #80a/b behaviour).
+      3. Per-measure v1 lyric-list override (#93). Lyrics are
+         distributed one syllable per Note in order.
+      4. Strip phantom-marker "?" TextExpressions.
+    Returns stats. Mutates the score in place."""
+    stats = {
+        "measures_merged": 0,
+        "measures_corrected": 0,
+        "chords_replaced": 0,
+        "chords_inserted": 0,
+        "lyrics_overridden": 0,
+        "phantom_markers_stripped": 0,
+    }
     part = score.parts[0]
+
+    # 1. Apply measure merges FIRST so subsequent passes see the merged
+    # structure. Each entry is {"measures": [m, m+1, ...]}.
+    for spec in truth.get("merge_measures", []):
+        mns = spec.get("measures") or []
+        if len(mns) >= 2:
+            _merge_measures(part, mns)
+            stats["measures_merged"] += 1
+
+    # 2 + 3. Per-measure chord and lyric overlay.
     truth_measures = truth.get("measures", {})
-    if not truth_measures:
-        return stats
     for m in part.getElementsByClass("Measure"):
         mn = int(m.number) if m.number else 0
         spec = truth_measures.get(str(mn))
         if not spec:
             continue
-        new_chords = spec.get("chords")
-        if new_chords is None:
-            continue
-        # Remove existing chord symbols
-        existing = list(m.recurse().getElementsByClass(harmony.ChordSymbol))
-        for cs in existing:
-            stats["chords_replaced"] += 1
-            cs.activeSite.remove(cs)
-        # Insert truth chords evenly across the measure
-        n = len(new_chords)
-        if n == 0:
+        # Chord override
+        if "chords" in spec:
+            existing = list(m.recurse().getElementsByClass(harmony.ChordSymbol))
+            for cs in existing:
+                stats["chords_replaced"] += 1
+                cs.activeSite.remove(cs)
+            new_chords = spec["chords"] or []
+            n = len(new_chords)
+            if n > 0:
+                measure_ql = m.duration.quarterLength or 4.0
+                step = measure_ql / n
+                for i, figure in enumerate(new_chords):
+                    try:
+                        cs = harmony.ChordSymbol(figure)
+                    except Exception:
+                        continue
+                    m.insert(i * step, cs)
+                    stats["chords_inserted"] += 1
             stats["measures_corrected"] += 1
-            continue
-        measure_ql = m.duration.quarterLength or 4.0
-        step = measure_ql / n
-        for i, figure in enumerate(new_chords):
-            try:
-                cs = harmony.ChordSymbol(figure)
-            except Exception:
-                # If music21 can't parse the figure, skip silently --
-                # truth file may contain notation music21 doesn't
-                # accept (we keep the truth literal; the warning
-                # surfaces via diff tooling).
-                continue
-            m.insert(i * step, cs)
-            stats["chords_inserted"] += 1
-        stats["measures_corrected"] += 1
+        # Lyric override
+        if "lyrics_v1" in spec:
+            new_lyrics = spec["lyrics_v1"] or []
+            notes_in_m = [
+                n for n in m.recurse().notes
+                if isinstance(n, m21note.Note)
+            ]
+            for i, n in enumerate(notes_in_m):
+                # Remove existing v1 lyrics
+                n.lyrics = [lyr for lyr in n.lyrics if (lyr.number or 1) != 1]
+                if i < len(new_lyrics):
+                    n.addLyric(new_lyrics[i], lyricNumber=1)
+            stats["lyrics_overridden"] += 1
+
+    # 4. Strip "?" phantom markers from the whole score.
+    stats["phantom_markers_stripped"] = _strip_phantom_markers(score)
     return stats
 
 
