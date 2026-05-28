@@ -543,6 +543,94 @@ def apply_alignment(audi_pairs: list, truth: list[str], all_notes: list, verse_n
         all_notes[target].lyrics.append(new_lyr)
         stats["inserted"] += 1
 
+    # Pass 3 (#73): phantom-note insertion for surviving truth-gaps.
+    # When pass 2 found no naked note in the bracket but a Rest is
+    # available in the previous-or-following measure, replace that
+    # rest with a phantom pitched note carrying the truth syllable.
+    # Pitch is copied from the previous audi-aligned note. The
+    # phantom is marked with a "?" TextExpression so the user audits.
+    #
+    # Different bracket logic than pass 2: pass 2 needed a NAKED
+    # NOTE in [prev_note+1, next_note); pass 3 needs a REST in the
+    # measure of prev_note or the next 1-2 measures. Rests aren't
+    # in all_notes (which is just Note instances), so we walk the
+    # part's measures directly.
+    from music21 import expressions
+    stats["phantom_inserted"] = 0
+    phantom_measures_used: set = set()
+    for align_idx, (ai, ti) in enumerate(alignment):
+        if ai is not None or ti is None:
+            continue
+        truth_tok = truth[ti]
+        if not is_real_word(truth_tok):
+            continue
+        # Locate the previous audi-aligned note; without one we have
+        # no anchor for measure or pitch.
+        prev_ai = None
+        for k in range(align_idx - 1, -1, -1):
+            a, t = alignment[k]
+            if a is not None and t is not None:
+                prev_ai = a
+                break
+        if prev_ai is None:
+            continue
+        prev_audi_n = audi_pairs[prev_ai][1]
+        prev_measure = prev_audi_n.activeSite
+        if prev_measure is None:
+            continue
+        part = prev_measure.activeSite
+        if part is None:
+            continue
+        # Did pass 2 already handle this gap? Look at any note in the
+        # prev-or-following measures that now carries this lyric for
+        # this verse.
+        measures_in_part = list(part.getElementsByClass("Measure"))
+        try:
+            start_idx = measures_in_part.index(prev_measure)
+        except ValueError:
+            continue
+        scan_measures = measures_in_part[start_idx:start_idx + 2]
+        already_inserted = any(
+            (lyr.number or 1) == verse_num and lyr.text == truth_tok
+            for m_obj in scan_measures
+            for n_obj in m_obj.recurse().notes
+            for lyr in n_obj.lyrics
+        )
+        if already_inserted:
+            continue
+        # Pick the first Rest in a measure we haven't already used.
+        target_rest = None
+        target_measure = None
+        target_m_num = None
+        for m_obj in scan_measures:
+            m_num = int(m_obj.number) if m_obj.number else 0
+            if m_num in phantom_measures_used:
+                continue
+            for r in m_obj.recurse().getElementsByClass(note.Rest):
+                target_rest = r
+                target_measure = m_obj
+                target_m_num = m_num
+                break
+            if target_rest is not None:
+                break
+        if target_rest is None:
+            continue
+        # Build phantom note: same duration as the rest, pitch copied
+        # from the previous audi note.
+        phantom = note.Note(prev_audi_n.pitch.nameWithOctave)
+        phantom.duration = target_rest.duration
+        ph_lyr = Lyric(text=truth_tok)
+        ph_lyr.number = verse_num
+        phantom.lyrics.append(ph_lyr)
+        rest_offset = target_rest.offset
+        target_measure.remove(target_rest)
+        target_measure.insert(rest_offset, phantom)
+        marker = expressions.TextExpression("?")
+        marker.placement = "above"
+        target_measure.insert(rest_offset, marker)
+        stats["phantom_inserted"] += 1
+        phantom_measures_used.add(target_m_num)
+
     return stats
 
 
