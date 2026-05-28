@@ -209,6 +209,16 @@ def process(
         _step(log, song, "reducing to lead sheet")
         reduce_score(str(clean_xml), str(lead), keep_verse=True)
 
+        # Audiveris occasionally emits vocal-staff notes without the
+        # <alter> implied by the key signature (#84: m19 'ee-ther' came
+        # through as F-natural in a G-major score where the published
+        # has no accidental, i.e. F#). Apply key sig to any note whose
+        # step is altered by the active key but which carries no
+        # explicit accidental.
+        from omr_leadsheet.pipeline.key_aware_pitch import process_file as _kap_apply
+        n_kap = _kap_apply(str(lead), str(lead))
+        _step(log, song, f"key-aware pitch: applied alteration to {n_kap} note(s)")
+
         offset = -_intro_dropped(clean_xml)
 
         _step(log, song, f"recovering chord symbols from .omr (offset {offset})")
