@@ -1,0 +1,60 @@
+{
+  "song": "13 - Let's Call The Whole Thing Off",
+  "key_fifths": 2,
+  "time_signature": "2/2",
+  "comment": "Coverage: page 1 line 2 (our m1-m4), page 1 line 3 (our m5-m8), page 2 line 1 (our m9-m13). These are the measures where the chord-attribution shift on sheet 2 staff 1 surfaces. Refrain measures and beyond are not transcribed yet -- focus is the diagnostic.",
+  "measures": {
+    "1": {
+      "lyrics_v1": ["Things", "have", "come", "to", "a"],
+      "chords": ["D"]
+    },
+    "2": {
+      "lyrics_v1": ["pret", "ty", "pass", "Our", "ro"],
+      "chords": ["B7", "Em", "D", "A7"]
+    },
+    "3": {
+      "lyrics_v1": ["mance", "is", "grow", "ing"],
+      "chords": ["D"]
+    },
+    "4": {
+      "lyrics_v1": ["flat,", "For"],
+      "chords": ["G9"]
+    },
+    "5": {
+      "lyrics_v1": ["you", "like", "this", "and", "the"],
+      "chords": ["C#+", "F#9"]
+    },
+    "6": {
+      "lyrics_v1": ["oth", "er", "While"],
+      "chords": ["B7"]
+    },
+    "7": {
+      "lyrics_v1": ["I", "go", "for", "this", "and"],
+      "chords": ["D", "E7", "A7"]
+    },
+    "8": {
+      "lyrics_v1": ["that."],
+      "chords": ["A+"]
+    },
+    "9": {
+      "lyrics_v1": ["Good", "ness", "knows", "what", "the", "end", "will", "be,"],
+      "chords": ["D", "B7", "Em", "D", "A7"]
+    },
+    "10": {
+      "lyrics_v1": ["Oh,", "I"],
+      "chords": ["D"]
+    },
+    "11": {
+      "lyrics_v1": ["don't", "know", "where", "I'm"],
+      "chords": ["G9"]
+    },
+    "12": {
+      "lyrics_v1": ["at..."],
+      "chords": ["A"]
+    },
+    "13": {
+      "lyrics_v1": ["It", "looks", "as", "if", "we"],
+      "chords": ["F#m6"]
+    }
+  }
+}
