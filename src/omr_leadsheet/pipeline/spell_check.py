@@ -385,7 +385,14 @@ def polish(tok: str) -> str:
     return " ".join(parts)
 
 
-def apply_alignment(audi_pairs: list, truth: list[str], all_notes: list, verse_num: int) -> dict:
+def apply_alignment(
+    audi_pairs: list,
+    truth: list[str],
+    all_notes: list,
+    verse_num: int,
+    *,
+    phantom_measures_used: set | None = None,
+) -> dict:
     """audi_pairs: [(note_index_in_all, note, lyric)]; truth: tesseract tokens."""
     tokens = [(lp[2].text or "") for lp in audi_pairs]
     alignment = nw_align(tokens, truth)
@@ -557,7 +564,11 @@ def apply_alignment(audi_pairs: list, truth: list[str], all_notes: list, verse_n
     # part's measures directly.
     from music21 import expressions
     stats["phantom_inserted"] = 0
-    phantom_measures_used: set = set()
+    # Allow the caller to share the cap across multiple verses (#75) --
+    # without this, v1 and v2 each get their own cap and the same
+    # measure can absorb two phantoms.
+    if phantom_measures_used is None:
+        phantom_measures_used = set()
     for align_idx, (ai, ti) in enumerate(alignment):
         if ai is not None or ti is None:
             continue
@@ -687,9 +698,15 @@ def main(in_path: str, tess_path: str, out_path: str) -> None:
         "lone_v2_swapped_to_v1": lone_v2_swapped,
         "verses": {},
     }
+    # Share the phantom-insertion cap across both verses (#75) so the
+    # same measure can't absorb two phantoms (one from v1, one from v2).
+    phantom_measures_used: set = set()
     for vnum, audi in by_verse.items():
         truth = v1_truth if vnum == 1 else v2_truth if v2_truth else v1_truth
-        stats = apply_alignment(audi, truth, all_notes, vnum)
+        stats = apply_alignment(
+            audi, truth, all_notes, vnum,
+            phantom_measures_used=phantom_measures_used,
+        )
         report["verses"][vnum] = {"audi": len(audi), **stats}
     score.write("musicxml", fp=out_path, makeNotation=False)
     for k, v in report.items():
