@@ -626,9 +626,21 @@ def apply_alignment(
                 break
         if target_rest is None:
             continue
-        # Build phantom note: same duration as the rest, pitch copied
-        # from the previous audi note.
-        phantom = note.Note(prev_audi_n.pitch.nameWithOctave)
+        # Build phantom note: same duration as the rest. Phantoms that
+        # land at the end of a phrase (no further aligned audi notes
+        # after this point) almost always resolve one whole step down
+        # from the prior melody note; mid-phrase phantoms hold pitch.
+        # We use "no further audi anchor" as the phrase-end proxy
+        # because the WORD tokenizer (line 44) strips terminal
+        # punctuation, so truth_tok itself can't carry the cue.
+        has_later_anchor = any(
+            a is not None for a, _t in alignment[align_idx + 1:]
+        )
+        if not has_later_anchor:
+            phantom_pitch_obj = prev_audi_n.pitch.transpose(-2)
+            phantom = note.Note(phantom_pitch_obj.nameWithOctave)
+        else:
+            phantom = note.Note(prev_audi_n.pitch.nameWithOctave)
         phantom.duration = target_rest.duration
         ph_lyr = Lyric(text=truth_tok)
         ph_lyr.number = verse_num
