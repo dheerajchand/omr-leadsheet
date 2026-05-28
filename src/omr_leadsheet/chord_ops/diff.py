@@ -220,15 +220,27 @@ def extract_mxl_chords(mxl_path: str) -> list[tuple[int, str]]:
 
 def normalize_chord(s: str) -> str:
     """Canonical form for dedup comparison: lowercase, no whitespace,
-    no parentheses. The paren stripping (added for #49) unifies
-    parenthetical-wrapped alterations with their unwrapped forms so
-    that ``E(b7)`` and ``Eb7``, ``C7(b9)`` and ``C7b9``, ``Cm7(b5)``
-    and ``Cm7b5`` deduplicate against each other -- otherwise the
-    parenthetical Audiveris reading and the unparenthetical row-OCR
-    reading of the same printed glyph end up stacked at the same
-    beat in the rendered output.
+    no parentheses, leading-flat unified to music21's hyphen marker.
+
+    Paren stripping (#49) unifies ``E(b7)`` vs ``Eb7``, ``C7(b9)``
+    vs ``C7b9``, ``Cm7(b5)`` vs ``Cm7b5``.
+
+    Leading-flat translation (#59) unifies the lay spelling ``Bb``,
+    ``Eb`` with music21's reconstructed figures ``B-``, ``E-``.
+    Without it, an Audiveris-recovered chord-symbol (whose figure
+    music21 reconstructs as ``E-7``) doesn't dedup against a row-OCR
+    insertion that arrives as ``Eb7`` -- the two normalised keys
+    differ (``e-7`` vs ``eb7``) and a stack survives.
     """
-    return re.sub(r"\s+|[()]", "", s.lower())
+    # Lowercase FIRST so the leading-flat translation works on any
+    # caller-provided case ("Eb7" or "eb7" both reduce the same).
+    # Then strip parens so "E(b7)" -> "Eb7" exposes the leading flat
+    # to the next translation. Then translate "eb" -> "e-". Whitespace
+    # cleanup last.
+    s = s.lower()
+    s = re.sub(r"[()]", "", s)
+    s = re.sub(r"^([a-g])b", r"\1-", s)
+    return re.sub(r"\s+", "", s)
 
 
 def diff(omr: list[OMRChord], mxl: list[tuple[int, str]]) -> list[OMRChord]:

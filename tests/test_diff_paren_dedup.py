@@ -29,8 +29,11 @@ from omr_leadsheet.chord_ops.diff import (
 
 
 def test_normalize_strips_parens() -> None:
-    assert normalize_chord("E(b7)") == "eb7"
-    assert normalize_chord("Eb7") == "eb7"
+    # #59: lay-flat "Eb" now translates to music21-flat "E-" so both
+    # spellings share the dedup key. The canonical form is the
+    # hyphen form.
+    assert normalize_chord("E(b7)") == "e-7"
+    assert normalize_chord("Eb7") == "e-7"
     assert normalize_chord("C7(b9)") == "c7b9"
     assert normalize_chord("C7b9") == "c7b9"
     assert normalize_chord("Cm7(b5)") == "cm7b5"
@@ -45,7 +48,8 @@ def test_normalize_still_strips_whitespace_and_lowercases() -> None:
 def test_normalize_non_paren_unchanged() -> None:
     assert normalize_chord("Cmaj7") == "cmaj7"
     assert normalize_chord("F#dim") == "f#dim"
-    assert normalize_chord("Eb7") == "eb7"
+    # #59: Eb7 now normalises to "e-7" (canonical hyphen-flat form)
+    assert normalize_chord("Eb7") == "e-7"
 
 
 def _omr(value: str, measure: int) -> OMRChord:
