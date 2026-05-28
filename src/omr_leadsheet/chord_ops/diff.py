@@ -451,8 +451,88 @@ def insert_missing(
         inserted += 1
     if all_omr is not None:
         _redistribute_same_offset_harmonies(target_part, m_by_num, all_omr)
+    _drop_degree_form_when_clean_sibling_exists(target_part)
     score.write("musicxml", fp=out_path, makeNotation=False)
     return inserted
+
+
+def _drop_degree_form_when_clean_sibling_exists(target_part) -> int:
+    """#52: when two ChordSymbols at the same beat anchor share the
+    same root letter (ignoring accidental) and one carries
+    ``<degree>`` structural alterations while the other doesn't,
+    remove the one with degrees -- it's almost certainly an
+    Audiveris parens-form mis-read of the same printed glyph the
+    clean-form chord-symbol already represents.
+
+    Example: at one beat we have ``<harmony> root=E kind=major
+    <degree>add-7(-1)</degree></harmony>`` (Audiveris read "Eb7"
+    as "E plus add-flat-7") sitting next to ``<harmony> root=E-flat
+    kind=dominant </harmony>`` (the row-OCR's clean Eb7). Same beat,
+    same root letter, one has degree → drop the degree-form, keep
+    the clean form.
+
+    Returns the count of harmonies removed.
+    """
+    removed = 0
+    for measure in target_part.getElementsByClass("Measure"):
+        harmonies = list(
+            measure.recurse().getElementsByClass(harmony.ChordSymbol)
+        )
+        if len(harmonies) < 2:
+            continue
+        from collections import defaultdict
+        by_offset: dict[float, list] = defaultdict(list)
+        for h in harmonies:
+            by_offset[float(h.offset)].append(h)
+        for offset, group in by_offset.items():
+            if len(group) < 2:
+                continue
+            # Pairwise comparison within the group.
+            to_remove = []
+            for i, h_i in enumerate(group):
+                if h_i in to_remove:
+                    continue
+                for h_j in group[i + 1:]:
+                    if h_j in to_remove:
+                        continue
+                    if not _share_root_letter(h_i, h_j):
+                        continue
+                    i_has_mods = bool(_step_mods(h_i))
+                    j_has_mods = bool(_step_mods(h_j))
+                    if i_has_mods and not j_has_mods:
+                        to_remove.append(h_i)
+                    elif j_has_mods and not i_has_mods:
+                        to_remove.append(h_j)
+                    # Both-have-mods or neither: leave alone
+            for h in to_remove:
+                site = h.activeSite
+                if site is not None:
+                    site.remove(h)
+                    removed += 1
+    return removed
+
+
+def _share_root_letter(h_a, h_b) -> bool:
+    """True iff two ChordSymbols share the same root letter ignoring
+    accidental. ``E`` and ``E-flat`` share letter 'E'; ``E`` and ``F``
+    do not. Returns False if either root is unavailable."""
+    try:
+        ra = h_a.root()
+        rb = h_b.root()
+    except Exception:
+        return False
+    if ra is None or rb is None:
+        return False
+    return ra.name[0] == rb.name[0]
+
+
+def _step_mods(cs) -> list:
+    """Return the list of structural alterations on a ChordSymbol
+    (``<degree>`` elements in MusicXML). Empty list if none."""
+    try:
+        return list(cs.getChordStepModifications() or [])
+    except Exception:
+        return []
 
 
 def _redistribute_same_offset_harmonies(
