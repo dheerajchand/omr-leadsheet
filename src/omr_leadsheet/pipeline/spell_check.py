@@ -193,7 +193,17 @@ def _line_to_tokens(line: str) -> list[str]:
     for piece in re.split(r"[-\s]+", line):
         m = WORD.match(piece)
         if m:
-            out.append(m.group(0))
+            tok = m.group(0)
+            # OCR garble cleanup (#85): jazz syllables like "sas'" sometimes
+            # come through tesseract as "sa's'" -- the trailing-apostrophe
+            # mark gets misread as an internal apostrophe too. Real
+            # contractions have exactly one apostrophe ("I'll", "don't");
+            # two or more is OCR noise. Collapse to a single trailing
+            # apostrophe so downstream dict lookup of the stripped form
+            # ("sas" in GERSHWIN_SYLLABLES) succeeds.
+            if tok.count("'") > 1:
+                tok = tok.replace("'", "") + "'"
+            out.append(tok)
     return out
 
 
