@@ -289,6 +289,25 @@ def process(
 
         cleanup_xml(lead_corr, lead_final)
 
+        # Apply per-song truth overlay if a truth file exists for this
+        # song. Corrects chord-attribution mismatches that Audiveris's
+        # barline detection produced (the "page 2 chord shift" class of
+        # bugs on #13 LCWTO that surfaces as wrong measures for D, B7,
+        # Em, etc.). Only measures listed in the truth file are touched.
+        from omr_leadsheet.pipeline.truth_overlay import (
+            load_truth,
+            apply_truth_overlay,
+        )
+        truth = load_truth(song)
+        if truth is not None:
+            from music21 import converter as _converter
+            score = _converter.parse(str(lead_final))
+            overlay_stats = apply_truth_overlay(score, truth)
+            score.write("musicxml", fp=str(lead_final), makeNotation=False)
+            _step(log, song, f"truth overlay: {overlay_stats}")
+        else:
+            _step(log, song, "truth overlay: no truth file for this song")
+
         _export_mscz(config, lead_final, lead_corr, mscz, out_dir, song, log)
         if not mscz.is_file():
             raise RuntimeError(f"MuseScore failed to produce {mscz}")
