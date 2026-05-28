@@ -778,15 +778,39 @@ def apply_alignment(
         truth_tok = truth[ti]
         if not is_real_word(truth_tok):
             continue
+        # Refuse single-character truth tokens (#81): tokens like "I",
+        # "a", "o" recur many times across a typical song and aligning
+        # them ambiguously means a stray "I" can phantom-insert into
+        # the wrong measure (LCWTO m26 got a phantom G3 "I" where the
+        # published "I" actually belongs at m28). Phantom-insertion is
+        # high-cost (it adds a note to the score) so the bar for it
+        # must be higher than a single ambiguous letter.
+        stripped_truth = (
+            truth_tok.replace("’", "'").strip(".,;:!?\"''()[]-_")
+        )
+        if len(stripped_truth) <= 1:
+            continue
         # Locate the previous audi-aligned note; without one we have
         # no anchor for measure or pitch.
         prev_ai = None
+        prev_ti = None
         for k in range(align_idx - 1, -1, -1):
             a, t = alignment[k]
             if a is not None and t is not None:
                 prev_ai = a
+                prev_ti = t
                 break
         if prev_ai is None:
+            continue
+        # Phantom-insert only when this truth token immediately follows
+        # the previous audi-aligned truth token (#81). If many truth
+        # tokens align elsewhere between prev and now, this gap is
+        # almost certainly not a missed syllable -- it's just truth
+        # text from a different part of the song that NW couldn't
+        # place. The m17 "done" case has prev_ti=("be") and ti=("done")
+        # adjacent. The m26 spurious "say"/"I" case has prev_ti=("off")
+        # but ti is many tokens later. Refuse the latter.
+        if prev_ti is not None and ti - prev_ti > 1:
             continue
         prev_audi_n = audi_pairs[prev_ai][1]
         prev_measure = prev_audi_n.activeSite
