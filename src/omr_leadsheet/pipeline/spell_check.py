@@ -500,6 +500,61 @@ def apply_alignment(
     # without reaching into adjacent verse territory.
     PICKUP_TOLERANCE = 2
 
+    # Cross-measure pickup-tolerance guard (#82). PICKUP_TOLERANCE alone
+    # is too permissive when v2's first audi token sits several measures
+    # past a v1-only passage: the tolerance reaches back into v1
+    # territory and lands v2 truth-gaps onto v1-only measure notes.
+    # Symptom on #13 LCWTO m16: "have"/"come" (from the song's opening
+    # v1 line) landed on m16's last two notes because v2's first audi
+    # token at idx 63 (m19) put PICKUP_TOLERANCE=2 within reach of m16
+    # idx 61-62.
+    #
+    # A real pickup is a 1-2-note anacrusis. The previous measure must
+    # be a SHORT measure (<= PICKUP_TOLERANCE notes) AND its notes must
+    # carry no existing v-audi lyrics for THIS verse. A 4-note v1-only
+    # measure like m16 is not a pickup measure for v2 -- it's a regular
+    # measure of a section v2 doesn't sing through.
+    def _pickup_floor(idx_at_start: int) -> int:
+        """Lowest note index allowed by pickup tolerance. Only reaches
+        into the previous measure when that measure is short enough
+        (<= PICKUP_TOLERANCE notes) to be a plausible anacrusis. When
+        notes lack measure context (synthetic tests), fall back to the
+        unconditional PICKUP_TOLERANCE window."""
+        if idx_at_start <= 0 or idx_at_start >= len(all_notes):
+            return idx_at_start
+        start_meas = all_notes[idx_at_start].activeSite
+        start_mn = (
+            int(start_meas.number)
+            if start_meas is not None
+            and hasattr(start_meas, "number")
+            and start_meas.number is not None
+            else None
+        )
+        if start_mn is None:
+            # No measure structure -- fall back to the original behavior.
+            return max(idx_at_start - PICKUP_TOLERANCE, 0)
+        prev_mn = start_mn - 1
+        prev_indices = []
+        for j in range(idx_at_start - 1, -1, -1):
+            m = all_notes[j].activeSite
+            mn = (
+                int(m.number)
+                if m is not None and hasattr(m, "number") and m.number is not None
+                else None
+            )
+            if mn == prev_mn:
+                prev_indices.append(j)
+            elif mn is None:
+                # Mixed measure context -- treat as fallback.
+                return max(idx_at_start - PICKUP_TOLERANCE, 0)
+            else:
+                break
+        if 0 < len(prev_indices) <= PICKUP_TOLERANCE:
+            return min(prev_indices)
+        return idx_at_start
+
+    PICKUP_FLOOR = _pickup_floor(verse_range[0]) if verse_note_indices else 0
+
     # Maximum audi-side bracket width that pass 2 will fill (#29). A
     # truth-gap that spans more than this many notes between adjacent
     # audi-aligned positions almost always means the verse simply doesn't
@@ -520,8 +575,10 @@ def apply_alignment(
             continue
         prev_note, next_note = neighboring_audi_positions(align_idx)
         # Clamp to the verse's actual range (plus pickup tolerance on each
-        # side) to avoid inventing lyrics outside it.
-        prev_note = max(prev_note, verse_range[0] - 1 - PICKUP_TOLERANCE)
+        # side) to avoid inventing lyrics outside it. PICKUP_FLOOR caps
+        # how far back the lower-side tolerance can reach: only same- or
+        # adjacent-measure pickup notes count (#82).
+        prev_note = max(prev_note, PICKUP_FLOOR - 1)
         next_note = min(next_note, verse_range[1] + 1 + PICKUP_TOLERANCE)
         if prev_note + 1 >= next_note:
             continue
