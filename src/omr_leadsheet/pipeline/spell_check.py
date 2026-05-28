@@ -199,27 +199,45 @@ def _is_lyric_line(s: str) -> bool:
 def tesseract_verse_streams(path: str) -> tuple[list[str], list[str]]:
     """Return (v1_tokens, v2_tokens).
 
-    Heuristic: consecutive lyric lines that share >= 60% of their tokens
-    (by first-letter prefix similarity) are treated as a v1/v2 pair - the
-    first line goes to v1, the second to v2. Unpaired lines go to both.
+    Heuristic: consecutive lyric lines pair as verse 1 / verse 2 of
+    the same passage if they share most of their FIRST FEW tokens.
+    Verses of the same passage start with the same melody phrase --
+    "So if you ..." in both verse 1 and verse 2 of a refrain row --
+    but diverge later (``pa-ja-mas`` vs ``oyst-ers``). Anchoring the
+    pair signal at the start (#55, #56) catches pairings that the
+    earlier full-line-overlap rule missed; lines whose openings
+    differ are still treated as unpaired and go to both verses.
+
+    Also requires the two lines to be reasonably similar in length
+    (no more than 2x apart in token count) so that a long verse-2
+    line isn't paired with a short fragment that just happens to
+    share a few opening tokens.
     """
     with open(path) as f:
         raw = [l.rstrip() for l in f if _is_lyric_line(l.rstrip())]
 
-    # compute pair signal between consecutive lines
     def first_letters(line: str, k: int = 2) -> list[str]:
         return [t[:k].lower() for t in _line_to_tokens(line) if len(t) >= k]
 
-    def overlap(a: list[str], b: list[str]) -> float:
-        if not a or not b:
+    def first_n_overlap(a: list[str], b: list[str], n: int = 5) -> float:
+        """Fraction of the first ``n`` tokens of A and B that match
+        (multiset). 0.0 if either side has fewer than n/2 tokens."""
+        a_head = a[:n]
+        b_head = b[:n]
+        if len(a_head) < max(2, n // 2) or len(b_head) < max(2, n // 2):
             return 0.0
-        sa = list(a)
+        sa = list(a_head)
         matches = 0
-        for t in b:
+        for t in b_head:
             if t in sa:
                 sa.remove(t)
                 matches += 1
-        return matches / max(len(a), len(b))
+        return matches / max(len(a_head), len(b_head))
+
+    def lengths_close(a: list[str], b: list[str]) -> bool:
+        if not a or not b:
+            return False
+        return 0.5 <= len(a) / len(b) <= 2.0
 
     v1_tokens: list[str] = []
     v2_tokens: list[str] = []
@@ -229,7 +247,10 @@ def tesseract_verse_streams(path: str) -> tuple[list[str], list[str]]:
         if i + 1 < len(raw):
             sig_i = first_letters(line_i)
             sig_j = first_letters(raw[i + 1])
-            if overlap(sig_i, sig_j) >= 0.6:
+            if (
+                first_n_overlap(sig_i, sig_j, n=5) >= 0.6
+                and lengths_close(sig_i, sig_j)
+            ):
                 # Treat as v1/v2 pair
                 v1_tokens.extend(_line_to_tokens(line_i))
                 v2_tokens.extend(_line_to_tokens(raw[i + 1]))

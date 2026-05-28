@@ -17,7 +17,11 @@ pdftoppm -r 400 -png "$IN" "$TMP/page"
 RAW="$TMP/raw.txt"
 : > "$RAW"
 for p in "$TMP"/page-*.png; do
-    tesseract "$p" - --psm 6 2>/dev/null >> "$RAW"
+    # PSM 4 ("single column of text of variable sizes") preserves the
+    # vertical separation between stacked verse 1 and verse 2 of a
+    # refrain row better than PSM 6 ("single uniform block"), which
+    # tends to concatenate them onto one OCR line. See #55, #56.
+    tesseract "$p" - --psm 4 2>/dev/null >> "$RAW"
     echo >> "$RAW"
 done
 
