@@ -62,13 +62,15 @@ def test_to_music21_figure_translates_leading_flat() -> None:
     assert _to_music21_figure("Abm7") == "A-m7"
 
 
-def test_to_music21_figure_preserves_inner_b() -> None:
-    """The ``b`` inside parenthetical alterations is preserved -- only
-    the leading root-letter flat is translated."""
-    assert _to_music21_figure("Cm7(b5)") == "Cm7(b5)"
-    assert _to_music21_figure("G7(b9)") == "G7(b9)"
-    # Leading flat AND inner b: only the leading one translates.
-    assert _to_music21_figure("Bbm7(b5)") == "B-m7(b5)"
+def test_to_music21_figure_preserves_inner_b_but_strips_parens() -> None:
+    """The leading root-letter flat is translated; parens around
+    alterations are also stripped (#63), so the inner ``b`` survives
+    as a music21-parseable alteration token."""
+    assert _to_music21_figure("Cm7(b5)") == "Cm7b5"
+    assert _to_music21_figure("G7(b9)") == "G7b9"
+    # Leading flat AND parenthetical inner alteration:
+    # leading 'Bb' -> 'B-' AND '(b5)' -> 'b5'.
+    assert _to_music21_figure("Bbm7(b5)") == "B-m7b5"
 
 
 def test_to_music21_figure_leaves_non_flat_roots_alone() -> None:
