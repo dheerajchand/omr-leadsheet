@@ -332,9 +332,17 @@ def split_merged(tok: str, min_piece: int = 2) -> str:
     """Try to split a merged-word token into dict-matchable pieces.
     Uses simple DP: find a segmentation into dict words if one exists.
     Returns the space-joined split, or the original token if no split found.
-    Preserves leading/trailing punctuation and capitalization."""
-    # Separate punctuation
-    m = re.match(r"([^A-Za-z]*)([A-Za-z]+)([^A-Za-z]*)", tok)
+    Preserves leading/trailing punctuation and capitalization.
+
+    Apostrophes are part of the alphabetic core so contractions in the
+    DICT ("don't", "I'm", etc.) can match as single pieces during
+    segmentation (#83 LCWTO m11 case: "don'tknowwhereIm" needs to
+    split as "don't / know / where / I'm" rather than failing to
+    segment at all)."""
+    # Separate punctuation. Apostrophe is treated as alphabetic so the
+    # core can include contractions; the DP below allows pieces that
+    # contain apostrophes.
+    m = re.match(r"([^A-Za-z']*)([A-Za-z'][A-Za-z']*)([^A-Za-z']*)", tok)
     if not m:
         return tok
     lead, core, trail = m.group(1), m.group(2), m.group(3)
@@ -385,6 +393,20 @@ def fix_contraction(tok: str) -> str:
 
 def polish(tok: str) -> str:
     """Apply word-splitting + contraction repair to one token."""
+    # Normalize curly apostrophe and common typeset ligatures so the
+    # downstream regex-based split/contraction logic can see ASCII
+    # letters end-to-end (#83). Audiveris OCR on serif jazz fonts emits
+    # both: "don’tknowwhereﬁn" carries U+2019 and the "fi" ligature
+    # U+FB01, which together break split_merged's [A-Za-z]+ core match
+    # so the whole token stays merged.
+    tok = (
+        tok.replace("’", "'")
+        .replace("ﬀ", "ff")
+        .replace("ﬁ", "fi")
+        .replace("ﬂ", "fl")
+        .replace("ﬃ", "ffi")
+        .replace("ﬄ", "ffl")
+    )
     # First try to fix a known contraction
     fixed = fix_contraction(tok)
     # Then try to split merged runs
@@ -456,6 +478,15 @@ def apply_alignment(
                 lyr.text = polished
                 stats["replaced"] += 1
                 continue
+            # Even when we keep the audi token, fix known contractions
+            # like "Im" -> "I'm" or "dont" -> "don't". The 2-char
+            # is_real_word path is permissive enough to admit these
+            # OCR-truncated contractions; CONTRACTION_FIX is the
+            # authoritative repair table (#83).
+            contracted = fix_contraction(lyr.text or "")
+            if contracted != (lyr.text or ""):
+                lyr.text = contracted
+                stats["contracted"] += 1
             stats["kept_dict"] += 1
             continue
         candidate = truth_tok
@@ -463,7 +494,30 @@ def apply_alignment(
             candidate = audi_tok
         polished = polish(candidate)
         if polished != audi_tok:
-            lyr.text = polished
+            # When polish split a merged truth token into multiple
+            # dict words ("dontknowwhere" -> "don't know where"), the
+            # current note can only carry the first word; distribute
+            # the rest onto the immediately-following naked notes for
+            # this verse so the lyric line stays in sync with the
+            # melody (#83).
+            parts = polished.split()
+            lyr.text = parts[0]
+            note_idx = audi_pairs[ai][0]
+            extras = parts[1:]
+            j = note_idx + 1
+            from music21.note import Lyric as _Lyric
+            search_window = 4
+            while extras and j < len(all_notes) and (j - note_idx) <= search_window:
+                n_next = all_notes[j]
+                has_v_lyric = any(
+                    (l.number or 1) == verse_num for l in n_next.lyrics
+                )
+                if not has_v_lyric:
+                    new_lyr = _Lyric(text=extras.pop(0))
+                    new_lyr.number = verse_num
+                    n_next.lyrics.append(new_lyr)
+                    stats["inserted"] += 1
+                j += 1
             if polished != candidate:
                 stats["split" if " " in polished else "contracted"] += 1
             else:
@@ -612,10 +666,33 @@ def apply_alignment(
         # order 1,2,3,4,5 but on notes 137,138,136,139,135 -- read top-
         # to-bottom as E,C,A,B,D).
         target = naked[0]
-        new_lyr = Lyric(text=truth_tok)
+        # Polish the truth token before inserting so OCR'd "Im" becomes
+        # "I'm" and merged tokens get split (#83). When polish produces
+        # multiple words, only the first goes on the chosen target;
+        # extras spill onto subsequent naked notes in the bracket.
+        polished_tok = polish(truth_tok)
+        parts = polished_tok.split()
+        new_lyr = Lyric(text=parts[0])
         new_lyr.number = verse_num
         all_notes[target].lyrics.append(new_lyr)
         stats["inserted"] += 1
+        for extra in parts[1:]:
+            j = target + 1
+            while j < next_note:
+                n_next = all_notes[j]
+                has_v_lyric = any(
+                    (l.number or 1) == verse_num for l in n_next.lyrics
+                )
+                if not has_v_lyric:
+                    extra_lyr = Lyric(text=extra)
+                    extra_lyr.number = verse_num
+                    n_next.lyrics.append(extra_lyr)
+                    stats["inserted"] += 1
+                    target = j
+                    break
+                j += 1
+            else:
+                break
 
     # Pass 3 (#73): phantom-note insertion for surviving truth-gaps.
     # When pass 2 found no naked note in the bracket but a Rest is
