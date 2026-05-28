@@ -279,22 +279,38 @@ def diff(omr: list[OMRChord], mxl: list[tuple[int, str]]) -> list[OMRChord]:
 
 
 def _to_music21_figure(s: str) -> str:
-    """Translate a leading root-letter flat from "b" to music21's "-".
+    """Translate OMR-emitted chord figures into music21-parseable form.
 
-    music21's ChordSymbol parser treats lowercase ``b`` as a chord-quality
-    abbreviation, not as a flat accidental, so common chord-row spellings
-    like ``Bb``, ``Bbm6``, ``Bbm`` fail with ValueError. The parser's
-    own flat marker is hyphen-minus: ``B-``, ``B-m6``. The regex is
-    anchored to the leading character so any ``b`` inside parenthetical
-    alterations (e.g. ``Cm7(b5)``) is preserved.
+    Three transformations, applied in order:
 
-    Side benefit beyond #47's TextExpression fallback: figures like
-    ``Bb6`` that previously "parsed" but with the wrong kind
-    (``major`` and root B-natural instead of ``major-sixth`` and root
-    B-flat) now parse correctly because ``B-6`` resolves to
-    ``major-sixth``.
+    1. **Leading root-letter flat** (#47): ``Bb`` -> ``B-``,
+       ``Eb7`` -> ``E-7``. music21's flat marker is hyphen-minus,
+       not lowercase b. Anchored to the leading character so a ``b``
+       inside an alteration is unaffected by this step.
+
+    2. **Strip parens around alterations** (#63): ``(b5)`` -> ``b5``,
+       ``(#11)`` -> ``#11``. music21 rejects literal parens in
+       chord-symbol figures ("Cm7(b5)" raises ValueError; "Cm7b5"
+       parses). Some chord-row OCR emits the parenthesized form.
+
+    3. **Collapse doubled-m OCR mangling** (#63):
+       ``mm`` -> ``m``. Row-OCR sometimes reads a single ``m`` as
+       ``mm`` when a stem or beam neighbours the glyph. ``Emm7`` ->
+       ``Em7``; ``E-mm7`` -> ``E-m7``. Scoped to ``m`` only
+       because other doubled letters appear legitimately in chord
+       modifiers (``add`` has ``dd``); broader collapsing would
+       mangle real notation.
+
+    Side benefit from (1): figures like ``Bb6`` that previously
+    "parsed" but with the wrong kind (major + root B-natural)
+    now parse to ``major-sixth`` + root B-flat (#47 PR #50).
     """
-    return re.sub(r"^([A-G])b", r"\1-", s)
+    s = re.sub(r"^([A-G])b", r"\1-", s)
+    # Strip parens around alterations: (b5), (#11), (b9), (add9)...
+    s = re.sub(r"\(([#b]?\d{1,2}|add\d{1,2})\)", r"\1", s)
+    # Collapse only mm -> m (the OCR pattern observed in #11).
+    s = re.sub(r"mm+", "m", s)
+    return s
 
 
 def _stacked_extension_display(top: str, bottom: str) -> str:
