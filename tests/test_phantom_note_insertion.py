@@ -94,9 +94,10 @@ def test_no_phantom_when_no_rest_in_bracket() -> None:
     assert stats.get("phantom_inserted", 0) == 0
 
 
-def test_phantom_pitch_matches_previous_note() -> None:
-    """The phantom pitch is copied from the previous audi-aligned
-    note (continuation/held interpretation)."""
+def test_phantom_pitch_descends_at_phrase_end() -> None:
+    """Phrase-end phantoms (no later aligned audi anchor) resolve one
+    whole step down from the prior melody note (#77). m17 'done' on
+    #13 LCWTO: prior note E3 -> phantom D3."""
     sc = _build_score_with_4notes_and_a_rest()
     _, all_notes, by_verse = audiveris_tokens(sc)
     truth = ["Some", "thing", "must", "be", "done"]
@@ -105,9 +106,51 @@ def test_phantom_pitch_matches_previous_note() -> None:
     measures = list(sc.parts[0].getElementsByClass("Measure"))
     m2 = measures[1]
     phantom = list(m2.recurse().notes)[0]
-    # The previous note was E3 (the "be" syllable).
+    # Previous aligned note was E3 ("be"). No truth tokens after "done"
+    # -> phrase-end -> descend M2 -> D3.
+    assert phantom.pitch.nameWithOctave == "D3", (
+        f"phrase-end phantom should descend to D3; got {phantom.pitch.nameWithOctave}"
+    )
+
+
+def test_phantom_pitch_holds_mid_phrase() -> None:
+    """When an aligned audi anchor follows the phantom in the same
+    alignment, treat it as a continuation (hold the previous pitch)."""
+    # Same score, but add a 5th aligned audi note in m2 (after the
+    # rest) so the phantom for "done" is no longer the last anchor.
+    from music21 import stream, note as m21note
+    sc = stream.Score()
+    p = stream.Part()
+    m1 = stream.Measure(number=1)
+    for step, syll in zip(["A", "G", "F", "E"], ["Some", "thing", "must", "be"]):
+        n = m21note.Note(step + "3", quarterLength=1.0)
+        n.addLyric(syll, lyricNumber=1)
+        m1.append(n)
+    m2 = stream.Measure(number=2)
+    m2.append(m21note.Rest(quarterLength=1.0))
+    n_after = m21note.Note("C3", quarterLength=1.0)
+    n_after.addLyric("now", lyricNumber=1)
+    m2.append(n_after)
+    p.append(m1)
+    p.append(m2)
+    sc.append(p)
+
+    _, all_notes, by_verse = audiveris_tokens(sc)
+    # "done" is the truth-gap; "now" anchors after it.
+    truth = ["Some", "thing", "must", "be", "done", "now"]
+    apply_alignment(by_verse[1], truth, all_notes, verse_num=1)
+
+    measures = list(sc.parts[0].getElementsByClass("Measure"))
+    m2 = measures[1]
+    notes_in_m2 = list(m2.recurse().notes)
+    # Find the phantom (the one carrying "done").
+    phantom = next(
+        n for n in notes_in_m2
+        if any(lyr.text == "done" for lyr in n.lyrics)
+    )
+    # Anchor "now" follows -> continuation -> hold E3.
     assert phantom.pitch.nameWithOctave == "E3", (
-        f"phantom pitch should match previous note E3; got {phantom.pitch.nameWithOctave}"
+        f"mid-phrase phantom should hold E3; got {phantom.pitch.nameWithOctave}"
     )
 
 
