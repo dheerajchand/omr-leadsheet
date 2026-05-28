@@ -512,14 +512,57 @@ def apply_alignment(audi_pairs: list, truth: list[str], all_notes: list, verse_n
     return stats
 
 
+def _swap_lone_v2_measures_to_v1(score) -> int:
+    """Re-label verse-2 lyrics as verse-1 in measures where NO note
+    carries any verse-1 lyric (#61).
+
+    Audiveris classifies lyrics by their vertical position relative
+    to the staff. In a 1st-ending bracketed block that contains only
+    verse 1's text (typical for ABA-form songs where the 1st ending
+    is a single-verse passage), the lyric line sometimes lands at the
+    y-coordinate where verse 2 would normally appear in a 2-verse
+    refrain. Audiveris then assigns the lyric verse=2, and spell_check
+    has no v1 anchor to align the tesseract-recovered v1 text against.
+
+    The heuristic: real verses progress in parallel -- when one note
+    has v2 lyrics, a nearby note in the same measure typically has
+    v1 lyrics. A measure where v1 is completely absent but v2 exists
+    is almost certainly the mis-classification pattern, not a
+    legitimate v2-only passage.
+
+    Returns the count of lyrics re-labeled.
+    """
+    swapped = 0
+    for p in score.parts:
+        for m in p.getElementsByClass("Measure"):
+            v1_count = 0
+            v2_lyrs = []
+            for n in m.recurse().notes:
+                if not isinstance(n, note.Note) or not n.lyrics:
+                    continue
+                for lyr in n.lyrics:
+                    v = lyr.number or 1
+                    if v == 1:
+                        v1_count += 1
+                    elif v == 2:
+                        v2_lyrs.append(lyr)
+            if v1_count == 0 and v2_lyrs:
+                for lyr in v2_lyrs:
+                    lyr.number = 1
+                    swapped += 1
+    return swapped
+
+
 def main(in_path: str, tess_path: str, out_path: str) -> None:
     v1_truth, v2_truth = tesseract_verse_streams(tess_path)
     score = converter.parse(in_path)
+    lone_v2_swapped = _swap_lone_v2_measures_to_v1(score)
     part_idx, all_notes, by_verse = audiveris_tokens(score)
     report = {
         "part": part_idx,
         "v1_truth_tokens": len(v1_truth),
         "v2_truth_tokens": len(v2_truth),
+        "lone_v2_swapped_to_v1": lone_v2_swapped,
         "verses": {},
     }
     for vnum, audi in by_verse.items():
