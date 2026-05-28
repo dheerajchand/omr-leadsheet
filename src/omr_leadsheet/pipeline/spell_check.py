@@ -47,14 +47,16 @@ WORD = re.compile(r"[A-Za-z][A-Za-z'’]*")
 # Load system dict
 with open("/usr/share/dict/words") as f:
     DICT = {w.strip().lower() for w in f if w.strip()}
-# Gershwin-specific syllables that aren't English words
-LYRIC_SYLLABLES = {
-    # Gershwin-lyric-specific coined syllables
+# Gershwin-specific jazz syllables that aren't English words.
+# Kept as a SEPARATE set (not unioned into MODERN_ENGLISH) so the
+# lyric-prefer rule in apply_alignment can distinguish "jah" (a
+# legitimate jazz syllable) from "knows" (just a modern dict word).
+GERSHWIN_SYLLABLES = {
     "pa", "ja", "jah", "po", "tah", "ma", "mah", "to", "oh", "im",
     "ee", "ny", "eye", "nee", "ther", "lawf", "awf", "nil", "nel",
     "sas", "rel", "ril", "mance", "romance", "ness", "ing",
     "ers", "erst", "oyst", "sters", "oysters", "ersters",
-    "af", "ty", "dont", "tah", "nah",
+    "af", "ty", "dont", "nah",
 }
 # Common modern English inflections that web2 (1913) doesn't have
 MODERN_ENGLISH = {
@@ -72,7 +74,9 @@ MODERN_ENGLISH = {
     "didn't", "doesn't", "haven't", "hasn't", "hadn't", "shouldn't",
     "wouldn't", "couldn't",
 }
-LYRIC_SYLLABLES |= MODERN_ENGLISH
+# Backwards-compatible alias for downstream callers that imported the
+# old name. Both sets contribute to the dict.
+LYRIC_SYLLABLES = GERSHWIN_SYLLABLES | MODERN_ENGLISH
 DICT |= LYRIC_SYLLABLES
 
 
@@ -414,6 +418,27 @@ def apply_alignment(audi_pairs: list, truth: list[str], all_notes: list, verse_n
         audi_tok = lyr.text or ""
         truth_tok = truth[ti]
         if is_real_word(audi_tok):
+            # #70: when the truth token is a Gershwin-specific lyric
+            # syllable (e.g. "jah" from "pa-jah-mas") and the audi
+            # token is a generic English word that isn't a Gershwin
+            # syllable (e.g. "jab" -- a real word, but the wrong one
+            # for this context), prefer the lyric form. Bounded by:
+            # - sim >= 0.6 (one-character mismatches only)
+            # - length 2-5 (typical jazz syllable length)
+            # - audi NOT itself a Gershwin syllable (so we don't
+            #   thrash legitimate "ee" / "pa" / etc.)
+            audi_lo = audi_tok.lower().strip(",.;:!?\"'’()[]-_")
+            truth_lo = truth_tok.lower().strip(",.;:!?\"'’()[]-_")
+            if (
+                truth_lo in GERSHWIN_SYLLABLES
+                and audi_lo not in GERSHWIN_SYLLABLES
+                and 2 <= len(audi_lo) <= 5
+                and sim(audi_tok, truth_tok) >= 0.6
+            ):
+                polished = polish(truth_tok)
+                lyr.text = polished
+                stats["replaced"] += 1
+                continue
             stats["kept_dict"] += 1
             continue
         candidate = truth_tok
