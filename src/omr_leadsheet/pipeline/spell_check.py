@@ -335,12 +335,18 @@ NON_LYRIC_TOKENS = {
     # ("mp", "mf", "pp", "ff") as text-shaped tokens and attaches them
     # to notes via the same y-coordinate confusion as tempo marks.
     "mp", "mf", "pp", "ff", "fff", "ppp", "fp", "sf", "sfz",
-    "p", "f",  # lone-letter dynamics; conflicts with no real syllable
+    # Lone-letter dynamics intentionally excluded -- "f" appears as
+    # an OCR truncation of "for" or "of" in some songs, and the
+    # is_real_word 1-char gate already handles real-word vs noise.
     # Common Italian section / repeat / structural words.
     "fine", "coda", "segno", "dal",
-    # Allegro / moderato / lento abbreviations.
-    "all", "andante", "allegro", "presto", "vivace", "moderato", "lento",
-    "adagio", "largo", "grave",
+    # Italian tempo markings. "all" is intentionally excluded -- it's
+    # a very common real-word lyric token ("all my love", "for all
+    # we know"); only the full-word "allegro" / "allargando" forms
+    # are safe to filter. "grave" is also too common in English to
+    # blacklist as a tempo mark.
+    "andante", "allegro", "allargando", "presto", "vivace",
+    "moderato", "lento", "adagio", "largo",
 }
 
 # A token shaped exactly like a chord symbol (e.g. "Eb", "Gm",
