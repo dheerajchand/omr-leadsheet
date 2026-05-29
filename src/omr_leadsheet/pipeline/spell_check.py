@@ -211,12 +211,26 @@ def _line_to_tokens(line: str) -> list[str]:
 
 
 def _is_lyric_line(s: str) -> bool:
-    """Reject lines that are clearly not lyrics (titles, credits)."""
+    """Reject lines that are clearly not lyrics (titles, credits,
+    copyright/publishing footer)."""
     if not s.strip():
         return False
-    low = s.lower()
-    if low.startswith(("copyright ", "lyrics by", "music by")):
+    low = s.lower().lstrip("‘'\"`")
+    if low.startswith(("copyright", "lyrics by", "music by")):
         return False
+    # Tesseract OCR of jazz scores often picks up the page footer
+    # (#07 Summertime: "Copyright © 1935 by Gershwin Publishing
+    # Corporation"). Reject lines containing publishing-house
+    # markers anywhere.
+    if any(
+        marker in low
+        for marker in (
+            "publishing", "publication", "chappell & co", "harms inc",
+            "renewed,", "co., inc",
+        )
+    ):
+        return False
+    # All-uppercase + apostrophes only = title / section header
     if re.fullmatch(r"[A-Z'\s]+", s):
         return False
     return True
@@ -241,6 +255,12 @@ def tesseract_verse_streams(path: str) -> tuple[list[str], list[str]]:
     """
     with open(path) as f:
         raw = [l.rstrip() for l in f if _is_lyric_line(l.rstrip())]
+
+    def _drop_non_lyric_tokens(toks: list[str]) -> list[str]:
+        """Drop tempo / expression / copyright-fragment tokens that
+        slip into a lyric line through tesseract OCR of mid-staff
+        markings. See NON_LYRIC_TOKENS comment."""
+        return [t for t in toks if _looks_like_lyric(t)]
 
     def first_letters(line: str, k: int = 2) -> list[str]:
         return [t[:k].lower() for t in _line_to_tokens(line) if len(t) >= k]
@@ -288,12 +308,47 @@ def tesseract_verse_streams(path: str) -> tuple[list[str], list[str]]:
         v2_tokens.extend(toks)
         i += 1
 
-    return v1_tokens, v2_tokens
+    return _drop_non_lyric_tokens(v1_tokens), _drop_non_lyric_tokens(v2_tokens)
 
 
 def tesseract_tokens(path: str) -> list[str]:
     v1, _ = tesseract_verse_streams(path)
     return v1
+
+
+# Non-lyric phrases Audiveris commonly mis-attaches to vocal notes.
+# Page-footer text ("Copyright by Publishing"), tempo / expression
+# marks ("a tempo", "animato", "rit."), and stage directions all live
+# in the same y-region as lyrics on jazz scores; Audiveris can't
+# always tell them apart. Symptom on #07 Summertime: m3 carried
+# "Publish ing" as a lyric, m9 carried "a tempo", m17 carried
+# "animate". Drop the audi lyric (note keeps its pitch / duration)
+# so NW alignment can fill from tesseract truth.
+NON_LYRIC_TOKENS = {
+    "copyright", "publish", "publishing", "publication", "renewed",
+    "assigned", "chappell", "gershwin", "co.,", "inc.", "&",
+    "a tempo", "animato", "animate", "rit.", "ritard.", "rall.",
+    "accel.", "molto", "poco", "rit", "rall", "ad", "lib.",
+    "leggiero", "tempo", "espressivo", "dolce", "marc.", "marcato",
+}
+
+
+def _looks_like_lyric(text: str) -> bool:
+    """True if a lyric-text token actually looks like a sung syllable
+    (as opposed to a tempo mark, copyright fragment, or stage
+    direction Audiveris accidentally attached to a note)."""
+    if not text:
+        return False
+    norm = text.strip().lower().strip(".,;:!?\"'’()[]-_")
+    if not norm:
+        return False
+    if norm in NON_LYRIC_TOKENS:
+        return False
+    # "a tempo" comes through as a single lyric on one note sometimes;
+    # check the multi-word form too.
+    if any(phrase in norm for phrase in ("tempo", "animato", "ritard")):
+        return False
+    return True
 
 
 def audiveris_tokens(score) -> tuple[int, list, dict[int, list]]:
@@ -310,7 +365,16 @@ def audiveris_tokens(score) -> tuple[int, list, dict[int, list]]:
     for idx, n in enumerate(all_notes):
         if not n.lyrics:
             continue
+        # Drop non-lyric tokens before adding to by_verse. Mutates the
+        # note's .lyrics in place so downstream stages don't see them.
+        kept = []
         for lyr in n.lyrics:
+            if _looks_like_lyric(lyr.text or ""):
+                kept.append(lyr)
+            else:
+                continue
+        n.lyrics = kept
+        for lyr in kept:
             v = lyr.number or 1
             by_verse.setdefault(v, []).append((idx, n, lyr))
     return best_idx, all_notes, by_verse
