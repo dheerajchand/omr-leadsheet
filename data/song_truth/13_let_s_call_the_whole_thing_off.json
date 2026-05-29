@@ -52,7 +52,8 @@
       "chords": ["A"]
     },
     "13": {
-      "lyrics_v1": ["It", "looks", "as", "if", "we"],
+      "comment": "Published has 5 syllables (It looks as if we) but the pickup 'we' lives in m14 after Audiveris's reduction; truth lists only the 4 m13-resident syllables.",
+      "lyrics_v1": ["It", "looks", "as", "if"],
       "chords": ["F#m6"]
     }
   }
