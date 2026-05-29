@@ -330,13 +330,39 @@ NON_LYRIC_TOKENS = {
     "a tempo", "animato", "animate", "rit.", "ritard.", "rall.",
     "accel.", "molto", "poco", "rit", "rall", "ad", "lib.",
     "leggiero", "tempo", "espressivo", "dolce", "marc.", "marcato",
+    # Dynamic markings (#98). Audiveris emits dynamics as `<dynamics>`
+    # but the chord-row OCR sometimes catches the printed letterforms
+    # ("mp", "mf", "pp", "ff") as text-shaped tokens and attaches them
+    # to notes via the same y-coordinate confusion as tempo marks.
+    "mp", "mf", "pp", "ff", "fff", "ppp", "fp", "sf", "sfz",
+    "p", "f",  # lone-letter dynamics; conflicts with no real syllable
+    # Common Italian section / repeat / structural words.
+    "fine", "coda", "segno", "dal",
+    # Allegro / moderato / lento abbreviations.
+    "all", "andante", "allegro", "presto", "vivace", "moderato", "lento",
+    "adagio", "largo", "grave",
 }
+
+# A token shaped exactly like a chord symbol (e.g. "Eb", "Gm",
+# "C#dim", "A7", "G/B") is almost never a lyric syllable. Audiveris
+# often emits chord-row glyphs as text words; if those land at the
+# lyric y-coordinate, the chord NAME leaks into the lyric stream
+# (#98: #04 'It Ain't Necessarily So' had "Gm" and "Eb" as lyric
+# syllables). Match against a permissive chord-symbol regex.
+_CHORD_SHAPE_RE = re.compile(
+    r"^[A-G][b#]?"
+    r"(?:m|maj|aug|dim|sus|add|m7|maj7|m6|dim7|m11|m9|m13)?"
+    r"(?:\d+)?"
+    r"(?:[+\-])?"
+    r"(?:/[A-G][b#]?)?$"
+)
 
 
 def _looks_like_lyric(text: str) -> bool:
     """True if a lyric-text token actually looks like a sung syllable
-    (as opposed to a tempo mark, copyright fragment, or stage
-    direction Audiveris accidentally attached to a note)."""
+    (as opposed to a tempo mark, copyright fragment, dynamic, chord
+    symbol, or stage direction Audiveris accidentally attached to a
+    note)."""
     if not text:
         return False
     norm = text.strip().lower().strip(".,;:!?\"'’()[]-_")
@@ -347,6 +373,9 @@ def _looks_like_lyric(text: str) -> bool:
     # "a tempo" comes through as a single lyric on one note sometimes;
     # check the multi-word form too.
     if any(phrase in norm for phrase in ("tempo", "animato", "ritard")):
+        return False
+    # Chord-shaped tokens (Eb, Gm, C#dim, A7, etc.) are not lyrics.
+    if _CHORD_SHAPE_RE.match(text.strip().strip(".,;:!?\"'’()[]-_")):
         return False
     return True
 
