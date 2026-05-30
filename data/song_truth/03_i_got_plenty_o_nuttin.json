@@ -1,0 +1,22 @@
+{
+  "song": "03 - I Got Plenty O' Nuttin'",
+  "key_fifths": 1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics from Heyward & Ira Gershwin. Partial coverage -- m3-m5 fix opening line; m14 wipes a misattributed phrase (without GT verification of what the published wants there, naked is better than wrong).",
+  "measures": {
+    "3": {
+      "comment": "Pre-fix had 'I got plen ty o'' which is correct, just preserving here.",
+      "lyrics_v1": ["I", "got", "plen", "ty", "o'"]
+    },
+    "4": {
+      "lyrics_v1": ["nut", "tin',", "An'"]
+    },
+    "5": {
+      "lyrics_v1": ["nut", "tin's", "plen", "ty", "fo'", "me."]
+    },
+    "14": {
+      "comment": "Pre-fix had spurious 'Got a. lock' here misattributed from elsewhere in the verse. Wiping to naked rather than guessing the published lyric without page-2 image verification.",
+      "lyrics_v1": []
+    }
+  }
+}
