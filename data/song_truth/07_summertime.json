@@ -1,0 +1,50 @@
+{
+  "song": "07 - Summertime",
+  "key_fifths": 0,
+  "time_signature": "4/4",
+  "comment": "Published lyrics from DuBose Heyward. Verse 1 (m1-m16). Chords left as Audiveris-detected -- they're approximately correct for this song. Demonstrates the per-song truth-overlay workflow on a song where tesseract OCR was particularly noisy.",
+  "measures": {
+    "3": {
+      "comment": "Pre-fix had 'expression' from stage direction; published is 'an' the livin' is eas-'",
+      "lyrics_v1": ["an'", "the", "liv", "in'", "is", "eas"]
+    },
+    "4": {
+      "comment": "Final syllable of 'easy'.",
+      "lyrics_v1": ["y"]
+    },
+    "5": {
+      "lyrics_v1": ["Fish", "are", "jump"]
+    },
+    "6": {
+      "lyrics_v1": ["in'", "an'", "the"]
+    },
+    "7": {
+      "comment": "Pre-fix had 'baal' as starting OCR garbage.",
+      "lyrics_v1": ["cot", "ton", "is", "high.", "Yo'", "dad"]
+    },
+    "8": {
+      "lyrics_v1": ["dy's"]
+    },
+    "9": {
+      "lyrics_v1": ["rich,", "an'", "yo'"]
+    },
+    "10": {
+      "lyrics_v1": ["ma", "is", "good", "look"]
+    },
+    "11": {
+      "lyrics_v1": ["in'.", "So", "hush", "lit"]
+    },
+    "12": {
+      "lyrics_v1": ["tle", "ba"]
+    },
+    "13": {
+      "lyrics_v1": ["by,"]
+    },
+    "14": {
+      "lyrics_v1": ["don't"]
+    },
+    "16": {
+      "lyrics_v1": ["cry."]
+    }
+  }
+}
