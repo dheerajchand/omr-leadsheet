@@ -1,0 +1,92 @@
+{
+  "song": "20 - Nice Work If You Can Get It",
+  "key_fifths": 1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Moderato) + Refrain (smoothly). Pipeline has high coverage (96%) but several OCR garble issues, stage-direction-as-lyrics, and verse-stacking artifacts.",
+  "measures": {
+    "1": {
+      "comment": "Pipeline stacked verse lyrics 'who The man on'. Published verse 1: 'The man who on-'.",
+      "lyrics_v1": ["The", "man", "who", "on"]
+    },
+    "3": {
+      "comment": "Pipeline had 'that Lives life nt'. Published: 'Lives a life that is-'.",
+      "lyrics_v1": ["Lives", "a", "life", "that"]
+    },
+    "4": {
+      "comment": "Pipeline had 'nec es sa ri ly sun ny.' (7 on 7n). Published: 'n't nec-es-sa-ri-ly sun-ny.'.",
+      "lyrics_v1": ["n't", "nec", "es", "sa", "ri", "ly", "sun"]
+    },
+    "11": {
+      "comment": "Pipeline had 'that the on work ly' (scrambled). Published: 'the on-ly work that'.",
+      "lyrics_v1": ["the", "on", "ly", "work", "that"]
+    },
+    "13": {
+      "comment": "Pipeline had 'Is kind for' (3 on 3n). Published: 'Is the kind that's for' — but only 3 notes, so: 'Is the kind'.",
+      "lyrics_v1": ["Is", "the", "kind"]
+    },
+    "14": {
+      "comment": "Pipeline had 'girl and boy meant,'. Published: 'girl and boy meant,' — correct but note 'that's for' carries from m13.",
+      "lyrics_v1": ["girl", "and", "boy", "meant,"]
+    },
+    "19": {
+      "comment": "Pipeline had 'get it. SS' -- 'SS' is OCR garbage. Published: 'get it.'.",
+      "lyrics_v1": ["get", "it."]
+    },
+    "20": {
+      "comment": "Pipeline read 'Refrain' as a lyric. It's a section heading, not a sung word.",
+      "lyrics_v1": []
+    },
+    "21": {
+      "comment": "Pipeline had 'Hold mg hands at'. Published: 'Hold-ing hands at'.",
+      "lyrics_v1": ["Hold", "ing", "hands", "at"]
+    },
+    "25": {
+      "comment": "Pipeline dropped 'if' from 'Nice work if you can'. Published: 'Nice work if you can'.",
+      "lyrics_v1": ["Nice", "work", "if", "you", "can"]
+    },
+    "31": {
+      "comment": "Pipeline had 'Sigh ing sigh aft'. Published: 'Sigh-ing sigh aft-'.",
+      "lyrics_v1": ["Sigh", "ing", "sigh", "aft"]
+    },
+    "37": {
+      "comment": "Pipeline had 'Just I'm ag ine'. Published: 'Just im-ag-ine'.",
+      "lyrics_v1": ["Just", "im", "ag", "ine"]
+    },
+    "39": {
+      "comment": "Pipeline had 'Wait ing at cot tage'. Published: 'Wait-ing at the cot-tage'. But 5n, so: 'Wait ing at the cot'? Actually PDF shows 'Wait-ing at the cot-tage' with 'the' clearly present but pipeline dropped it. Pipeline has 5 lyrics on 5n+1r. Let me check: 'Wait ing at cot tage' = 5 tokens, 'Wait-ing at the cot-tage' = 6 syllables. Pipeline dropped 'the'.",
+      "lyrics_v1": ["Wait", "ing", "at", "the", "cot"]
+    },
+    "42": {
+      "comment": "Pipeline had 'come one Who could' (4 on 5n). Published: 'come one_ Who could'.",
+      "lyrics_v1": ["come", "one", "Who", "could"]
+    },
+    "43": {
+      "comment": "Pipeline had 'ask for an y thing'' with stray quote. Published: 'ask for an-y-thing'.",
+      "lyrics_v1": ["ask", "for", "an", "y", "thing"]
+    },
+    "47": {
+      "comment": "Pipeline had 'And then tak ly ing for that ing' (8 lyrics on 5n — severe garble). Published: 'And then tak-ing that'.",
+      "lyrics_v1": ["And", "then", "tak", "ing", "that"]
+    },
+    "48": {
+      "comment": "Pipeline had 'vow, mon' — 'mon' is OCR garbage. Published: 'vow,'.",
+      "lyrics_v1": ["vow,"]
+    },
+    "49": {
+      "comment": "Pipeline dropped 'if'. Published: 'Nice work if you can'.",
+      "lyrics_v1": ["Nice", "work", "if", "you"]
+    },
+    "50": {
+      "comment": "Pipeline had 'get it, And if you' (5 on 5n). Published: 'get it, And if you'.",
+      "lyrics_v1": ["get", "it,", "And", "if", "you"]
+    },
+    "53": {
+      "comment": "Pipeline 1st ending 'how?' correct. No change needed for ending 1.",
+      "lyrics_v1": ["how?"]
+    },
+    "55": {
+      "comment": "Pipeline 2nd ending 'how' missing '?'. Published: 'how?'.",
+      "lyrics_v1": ["how?"]
+    }
+  }
+}
