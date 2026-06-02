@@ -1,0 +1,142 @@
+{
+  "song": "06 - Oh Bess, Oh Where's My Bess",
+  "key_fifths": -3,
+  "time_signature": "3/4",
+  "comment": "Published lyrics by Ira Gershwin. Eb major, Andantino con molto calore. Porgy's aria. No chord-row labels in published score -- spurious pipeline chords wiped. Many gap measures where pipeline lost lyrics. Unfixable note-loss gaps: m6 (tell me), m8 (rest), m28 (rest), m30 (rest), m57 (rest), m64 (rest). Held/tied notes with no new syllable documented as empty lyrics_v1.",
+  "measures": {
+    "5": {
+      "comment": "Pipeline read 'some- bod- tell' (3 notes). Published: 'some-bod-y' on 3 notes; 'tell me' was in m6 where pipeline lost notes entirely.",
+      "lyrics_v1": ["some", "bod", "y"]
+    },
+    "7": {
+      "comment": "Pipeline read 'where?-' with trailing hyphen. Published: 'where?' (no continuation syllable).",
+      "lyrics_v1": ["where?"]
+    },
+    "16": {
+      "comment": "Pipeline read 'mare' with spurious Ab dominant chord. Published: held 'Bess?' tied from m15, no new syllable. No chords in score.",
+      "lyrics_v1": [],
+      "chords": []
+    },
+    "18": {
+      "comment": "Pipeline had 1 note with 0 lyrics. Published: 'Oh' (start of 'Oh Lawd').",
+      "lyrics_v1": ["Oh"]
+    },
+    "19": {
+      "comment": "Pipeline had 1 note with 0 lyrics. Published: held tied note continuation. No new syllable.",
+      "lyrics_v1": []
+    },
+    "20": {
+      "comment": "Pipeline had 1 note with 0 lyrics. Published: 'Lawd,'.",
+      "lyrics_v1": ["Lawd,"]
+    },
+    "21": {
+      "comment": "Pipeline had 1 note with 0 lyrics. Published: held tied 'Lawd'. No new syllable.",
+      "lyrics_v1": []
+    },
+    "22": {
+      "comment": "Pipeline had 1 note, 0 lyrics, spurious Ab minor chord. Published: 'My' (pickup to 'My Bess!'). No chords in score.",
+      "lyrics_v1": ["My"],
+      "chords": []
+    },
+    "23": {
+      "comment": "Pipeline read only 'I' for 2 notes. Published: 'Bess!' on first note, 'I' on second.",
+      "lyrics_v1": ["Bess!", "I"]
+    },
+    "26": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: 'Wid' (start of 'Wid-out her I can't go on').",
+      "lyrics_v1": ["Wid"]
+    },
+    "27": {
+      "comment": "Pipeline read 'out her ee'. Published: 'out her I' (3 notes).",
+      "lyrics_v1": ["out", "her", "I"]
+    },
+    "34": {
+      "comment": "Pipeline read 'till' for 2 notes. Published: first note is held 'gone', second note is 'till'.",
+      "lyrics_v1": ["till"]
+    },
+    "35": {
+      "comment": "Pipeline read 'to' for 2 notes. Published: 'I got' (2 separate syllables on 2 notes).",
+      "lyrics_v1": ["I", "got"]
+    },
+    "36": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: 'home'.",
+      "lyrics_v1": ["home"]
+    },
+    "37": {
+      "comment": "Pipeline had 2 notes, 0 lyrics. Published: held 'home' then 'to' pickup.",
+      "lyrics_v1": ["to"]
+    },
+    "39": {
+      "comment": "Pipeline read 'Won't' for 2 notes. Published: first note is held 'face.' from m38, second is 'Won't' pickup.",
+      "lyrics_v1": ["Won't"]
+    },
+    "43": {
+      "comment": "Pipeline had 2 notes, 0 lyrics. Published: held 'Bess?' then 'I' pickup.",
+      "lyrics_v1": ["I"]
+    },
+    "44": {
+      "comment": "Pipeline had 3 notes, 0 lyrics. Published: 'want her so,' (3 syllables on 3 notes).",
+      "lyrics_v1": ["want", "her", "so,"]
+    },
+    "45": {
+      "comment": "Pipeline read 'my' for 2 notes. Published: held 'so' then 'my' on second note.",
+      "lyrics_v1": ["my"]
+    },
+    "47": {
+      "comment": "Pipeline read 'ae My'. Published: held 'gal,' then 'My' pickup. 'ae' is OCR garbage.",
+      "lyrics_v1": ["My"]
+    },
+    "49": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: held tied 'Bess,'. No new syllable.",
+      "lyrics_v1": []
+    },
+    "51": {
+      "comment": "Pipeline read 'Oh' for 2 notes. Published: held 'she' then 'Oh' pickup.",
+      "lyrics_v1": ["Oh"]
+    },
+    "52": {
+      "comment": "Pipeline had 2 notes, 0 lyrics. Published: 'Gawd,' and 'in' (2 notes).",
+      "lyrics_v1": ["Gawd,", "in"]
+    },
+    "53": {
+      "comment": "Pipeline had 2 notes, 0 lyrics. Published: 'yo'' and 'big' (2 notes).",
+      "lyrics_v1": ["yo'", "big"]
+    },
+    "54": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: 'Heav'n'.",
+      "lyrics_v1": ["Heav'n"]
+    },
+    "55": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: 'please' (held Heav'n then 'please' pickup).",
+      "lyrics_v1": ["please"]
+    },
+    "59": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: held 'go,' tied. No new syllable.",
+      "lyrics_v1": []
+    },
+    "60": {
+      "comment": "Pipeline read 'give me strength,' for 3 notes. Published: 'Oh give me de strength,' where 'Oh' is in m59 pickup area. 3 notes in m60: best fit is 'give me de' with 'strength,' moving to m61.",
+      "lyrics_v1": ["give", "me", "de"]
+    },
+    "63": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: held 'way!' tied. No new syllable.",
+      "lyrics_v1": []
+    },
+    "70": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: held 'Bess!' tied. No new syllable.",
+      "lyrics_v1": []
+    },
+    "71": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: held 'Bess!' tied. No new syllable.",
+      "lyrics_v1": []
+    },
+    "72": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: held 'Bess!' tied. No new syllable.",
+      "lyrics_v1": []
+    },
+    "73": {
+      "comment": "Pipeline had 1 note, 0 lyrics. Published: final held note, end of piece. No new syllable.",
+      "lyrics_v1": []
+    }
+  }
+}

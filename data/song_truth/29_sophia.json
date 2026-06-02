@@ -1,0 +1,236 @@
+{
+  "song": "29 - Sophia",
+  "key_fifths": 0,
+  "time_signature": "3/4",
+  "comment": "Published lyrics by Ira Gershwin. C major. 3/4 time (Tempo di valse moderato). 5-page score. Verse then Refrain with 2 verses (1. Listen to me / 2. Listen to me). 116% stacking, 25 stacked measures in the Refrain. Pipeline has many GAP measures (m24-32 instrumental transition, m44-47 instrumental). Verse (m1-23) is single-voice and mostly correct. Refrain (m33 onward) has extensive stacking. OCR errors include 'CV' for 'ev', 'GIGS' for 'cres', missing apostrophes. The '-a' endings (So-phi-a, vi-bra-to, a-mo-ro-so, etc.) are a recurring pattern.",
+  "measures": {
+    "1": {
+      "comment": "Pipeline: [\"Ev\",\"'ry\"] on 2n+1r. PDF p136: 'Ev-'ry'. Correct.",
+      "lyrics_v1": ["Ev", "'ry"]
+    },
+    "2": {
+      "comment": "Pipeline: ['day','I'] on 2n. PDF: 'day I'. Correct.",
+      "lyrics_v1": ["day", "I"]
+    },
+    "3": {
+      "comment": "Pipeline: ['sit','and'] on 2n+1r. PDF: 'sit and'. Correct.",
+      "lyrics_v1": ["sit", "and"]
+    },
+    "4": {
+      "comment": "Pipeline: ['pray','I'] on 2n. PDF: 'pray I'. Correct but actually PDF shows 'pray I' without comma. Pipeline matches.",
+      "lyrics_v1": ["pray", "I"]
+    },
+    "5": {
+      "comment": "Pipeline: ['win'] on 2n+1r (1 lyric). PDF: 'win__'. 1 lyric on first of 2 notes (held). Correct.",
+      "lyrics_v1": ["win"]
+    },
+    "6": {
+      "comment": "Pipeline: ['o','ver'] on 2n. PDF: 'you o-ver'. Pipeline lost 'you' — but only 2n, and 'o-ver' fits. Actually PDF: 'win you o-ver' across m5-6. m5 has 'win', m6 should have 'you o-ver' but only 2n. Perhaps 'you' is on beat 1 (rest) or pipeline mapping is off.",
+      "lyrics_v1": ["o", "ver"]
+    },
+    "7": {
+      "comment": "Pipeline: ['soon'] on 1n+1r. PDF: 'soon.__'. Correct.",
+      "lyrics_v1": ["soon"]
+    },
+    "8": {
+      "comment": "Pipeline: ['Say','yes,'] on 2n+1r. PDF: 'Say yes,'. Correct.",
+      "lyrics_v1": ["Say", "yes,"]
+    },
+    "9": {
+      "comment": "Pipeline: [\"won't\",'you'] on 2n. PDF: 'won't you?'. Missing question mark.",
+      "lyrics_v1": ["won't", "you?"]
+    },
+    "10": {
+      "comment": "Pipeline: ['Do','you,'] on 2n+1r. PDF: 'Do you,'. Correct.",
+      "lyrics_v1": ["Do", "you,"]
+    },
+    "11": {
+      "comment": "Pipeline: [\"don't\",'you'] on 2n. PDF: 'don't you'. Correct.",
+      "lyrics_v1": ["don't", "you"]
+    },
+    "12": {
+      "comment": "Pipeline: ['want','this'] on 2n+1r. PDF: 'want this'. Correct.",
+      "lyrics_v1": ["want", "this"]
+    },
+    "13": {
+      "comment": "Pipeline: ['world','in'] on 2n. PDF: 'world in'. Correct.",
+      "lyrics_v1": ["world", "in"]
+    },
+    "14": {
+      "comment": "Pipeline: ['tune'] on 1n. PDF: 'tune?__'. Missing question mark.",
+      "lyrics_v1": ["tune?"]
+    },
+    "16": {
+      "comment": "Pipeline: ['it','does'] on 2n+1r. PDF p137: 'What does it' — pipeline lost 'What'. But m16 has 2n+1r, so only 2 syllables fit. The PDF shows 'it' and 'does' on these notes (with 'What' in prior measure or as grace). Actually looking at PDF: 'What does it take to per-suade you?' The measure breakdown: m16='it does' is wrong order. PDF has 'What does it' with 'What' on the rest? No — 'What' is on beat 1. Pipeline has 'it does' but PDF order is 'does it'. Let me recheck: PDF p137 top: 'What does it take to per-suade you?' The notes show: 'What does it' on 3 notes. But pipeline m16 has only 2n+1r.",
+      "lyrics_v1": ["it", "does"]
+    },
+    "17": {
+      "comment": "Pipeline: ['take','to','per'] on 3n. PDF: 'take to per-'. Correct.",
+      "lyrics_v1": ["take", "to", "per"]
+    },
+    "18": {
+      "comment": "Pipeline: ['suade','you?'] on 2n. PDF: '-suade you?__'. Correct.",
+      "lyrics_v1": ["suade", "you?"]
+    },
+    "20": {
+      "comment": "Pipeline: ['And','how','much'] on 3n. PDF: 'And how much'. Correct.",
+      "lyrics_v1": ["And", "how", "much"]
+    },
+    "21": {
+      "comment": "Pipeline: ['more','must','I'] on 3n. PDF: 'more must I'. Correct.",
+      "lyrics_v1": ["more", "must", "I"]
+    },
+    "22": {
+      "comment": "Pipeline: ['ser','e'] on 2n. PDF: 'ser-e-'. Correct (continuing to '-nade').",
+      "lyrics_v1": ["ser", "e"]
+    },
+    "23": {
+      "comment": "Pipeline: ['an','you?'] on 2n. PDF: '-nade you?'. Pipeline OCR: 'an' for 'nade'. ",
+      "lyrics_v1": ["nade", "you?"]
+    },
+    "33": {
+      "comment": "Pipeline: ['i'] on 2n+1r (1 lyric). PDF p137 Refrain: 'Lis-ten to me, So-phi-a,__'. m33 starts the Refrain. Pipeline has 'i' which is garbled. PDF: beat 1 = rest, then 'Lis-ten'. But only 2n+1r. m33='Lis' on the first note, 'ten' is likely m34. Pipeline garble.",
+      "lyrics_v1": ["Lis"]
+    },
+    "34": {
+      "comment": "Pipeline: ['de','a'] on 2n. PDF: '-ten to'. Pipeline OCR: 'de a' is from 'i-de-a' later in the phrase. Should be '-ten to'.",
+      "lyrics_v1": ["ten", "to"]
+    },
+    "35": {
+      "comment": "Pipeline v2:['Oo'] on 1n+2r. PDF: 'me,' on beat 1 held. Pipeline picked up garbled text. 1n, should be 'me,'.",
+      "lyrics_v1": ["me,"]
+    },
+    "36": {
+      "comment": "STACKED. Pipeline v1:['How','much'] v2:['How','much']. 2n+1r. PDF: v1='So-phi-' v2='So-phi-'. But 2n only fits 2 syllables. v1='So-' on first note, 'phi-' on second. Both verses identical.",
+      "lyrics_v1": ["So", "phi"]
+    },
+    "37": {
+      "comment": "STACKED. Pipeline v1:['you','mean','to'] v2:['you','mean','to']. 3n. PDF: v1='a,__ Have you' — but pipeline shows 3n. Actually this is 'So-phi-a,__ Have you an-y i-de-a'. m37 = 'a,' held then pickup. Pipeline garble 'you mean to' is from different phrase. PDF Refrain system 2: 'Have you an-y i-de-a' — but m37 has 3n. PDF shows '-a,__' (held) then silence. Hmm. Let me recheck the Refrain structure. PDF p137 bottom: '1. Lis-ten to me, So-phi-a,__ Have you an-y i-de-a'. The measure layout: m33-35 = 'Lis-ten to me,' m36-37 = 'So-phi-a,__'. m37 has 3n. v1='a,' held across the measure? No, 3 notes. Let me trust the PDF Refrain layout: m36='How much' m37='you mean to' m38='me-a?'. This maps to 'How much you mean to me-a?' which is the second phrase. Both verses say the same. Pipeline is actually correct here!",
+      "lyrics_v1": ["you", "mean", "to"]
+    },
+    "38": {
+      "comment": "STACKED. Pipeline v1:['me'] v2:['me']. 1n+1r. PDF: 'me-a?__'. Only 1n, 'me' is what fits (the '-a?' is held/tied).",
+      "lyrics_v1": ["me"]
+    },
+    "40": {
+      "comment": "Pipeline: [\"Ev\",\"'ry\"] on 2n+1r. PDF p138 top: v1='How much you'll nev-er know!' v2='Ev-'ry day more and more!'. Pipeline has 'Ev 'ry' which is v2 text. For v1: 'How much'. But stacking: both verses have text here. Provide v1.",
+      "lyrics_v1": ["How", "much"]
+    },
+    "41": {
+      "comment": "Pipeline: ['day','more','Ev'] on 3n. PDF: v1='you'll nev-er' v2='day more and'. For v1: 'you'll nev-er'. Pipeline has v2 text.",
+      "lyrics_v1": ["you'll", "nev", "er"]
+    },
+    "48": {
+      "comment": "STACKED. Pipeline v1:[\"'ry\"] v2:['How','a']. 2n+1r. PDF p138: v1='Ev-'ry heart-string vi-bra-to,' v2='Not a-one am-o-ro-so,'. m48 = start of this phrase. v1='Ev-' on first note, \"'ry\" on second. Pipeline v1 only has \"'ry\". Lost 'Ev-'.",
+      "lyrics_v1": ["Ev", "'ry"]
+    },
+    "49": {
+      "comment": "STACKED. Pipeline v1:['heart','string','vi'] v2:['one','am','o']. 3n. PDF: v1='heart-string vi-' v2='one am-o-'. Correct for v1.",
+      "lyrics_v1": ["heart", "string", "vi"]
+    },
+    "50": {
+      "comment": "STACKED. Pipeline v1:['bra','to,'] v2:['ro','so,']. 2n. PDF: v1='-bra-to,' v2='-ro-so,'. Correct for v1.",
+      "lyrics_v1": ["bra", "to,"]
+    },
+    "51": {
+      "comment": "Pipeline v2:['a','look'] on 2n+1r. PDF: v1 has no text here (rest), v2='But with a look'. Pipeline has v2 text. For v1 this is blank or transition.",
+      "lyrics_v1": []
+    },
+    "52": {
+      "comment": "STACKED. Pipeline v1:[\"Ev\",\"'ry\"] v2:['But','with']. 2n+1r. PDF: v1='Ev-'ry look' v2='But with you'. Pipeline correct for v1 partial (2 syllables on 2n).",
+      "lyrics_v1": ["Ev", "'ry"]
+    },
+    "53": {
+      "comment": "STACKED. Pipeline v1:['look','pas','sion'] v2:[\"you\",\"I'm\",'a']. 3n. PDF: v1='look pas-sion-' v2='you I'm a-'. Correct for v1.",
+      "lyrics_v1": ["look", "pas", "sion"]
+    },
+    "54": {
+      "comment": "STACKED. Pipeline v1:['a'] v2:['glow,']. 1n+1r. PDF: v1='-a-to,' v2='-glow,__'. For v1: 'a' (continuing '-sion-a-to,'). Only 1n. Correct.",
+      "lyrics_v1": ["a"]
+    },
+    "56": {
+      "comment": "STACKED. Pipeline v1:['with','Who','but'] v2:['On','ly']. 3n. PDF p139: v1='Who but you' v2='On-ly you'. Pipeline v1 has 'with' contamination.",
+      "lyrics_v1": ["Who", "but", "you"]
+    },
+    "57": {
+      "comment": "STACKED. Pipeline v1:['you','made',\"I'm\"] v2:['you','I']. 3n. PDF: v1='made me so?' v2='I a-dore.__'. For v1: 'made me so?'. Pipeline garbled.",
+      "lyrics_v1": ["made", "me", "so?"]
+    },
+    "58": {
+      "comment": "Pipeline: ['so'] on 1n. PDF: continuation. But v1 'so?' was in m57. m58 = 'so?' held or new phrase. PDF p139: 'so?__' followed by 'It's'. 1n. For v1 this is instrumental or the tail of 'so?'. For v2 'dore.' is held. Let me check pipeline: m58 has 1n with 'so'. But 'so?' was already placed in m57. This might be a held note.",
+      "lyrics_v1": []
+    },
+    "60": {
+      "comment": "STACKED. Pipeline v1:['love',\"it's\"] v2:['sweet','er']. 2n. PDF p139: v1='love, it's love cres-cen-do,' starting the 'It's love' section. v2='sweet-er than spu-mo-ne,'. m60=2n: v1='love it's' v2='sweet-er'. Pipeline correct for v1 but missing comma.",
+      "lyrics_v1": ["love,", "it's"]
+    },
+    "61": {
+      "comment": "STACKED. Pipeline v1:['love','GIGS'] v2:['than','do']. 2n. PDF: v1='love cres-' v2='than spu-'. Pipeline OCR: 'GIGS' for 'cres'. v2: 'do' for 'spu'.",
+      "lyrics_v1": ["love", "cres"]
+    },
+    "62": {
+      "comment": "Pipeline: ['cen','do,'] on 2n. PDF: '-cen-do,'. Correct.",
+      "lyrics_v1": ["cen", "do,"]
+    },
+    "64": {
+      "comment": "STACKED. Pipeline v1:['sweet','er'] v2:['Sweet','er']. 2n+1r. PDF: v1='Nev-er' v2='Sweet-er'. Pipeline v1 OCR: 'sweet er' for 'Nev-er'.",
+      "lyrics_v1": ["Nev", "er"]
+    },
+    "65": {
+      "comment": "STACKED. Pipeline v1:['CV','er','di'] v2:['e','than']. 3n. PDF: v1='ev-er di-' v2='e-ven than'. Pipeline OCR: 'CV' for 'ev'.",
+      "lyrics_v1": ["ev", "er", "di"]
+    },
+    "66": {
+      "comment": "STACKED. Pipeline v1:['min','u'] v2:['za','bag']. 2n. PDF: v1='-min-u-' v2='za-bag-'. Correct for v1.",
+      "lyrics_v1": ["min", "u"]
+    },
+    "67": {
+      "comment": "STACKED. Pipeline v1:['en'] v2:['lio','ne']. 2n. PDF: v1='-en-do.' v2='-lio-ne.'. Pipeline v1 only has 'en' on 2n. Should be 'en-do.' but pipeline lost 'do.'.",
+      "lyrics_v1": ["en", "do."]
+    },
+    "68": {
+      "comment": "STACKED. Pipeline v1:['Say','the'] v2:['Say','the']. 2n+1r. PDF: v1='Say the' v2='Say the'. Both verses identical. Correct.",
+      "lyrics_v1": ["Say", "the"]
+    },
+    "69": {
+      "comment": "STACKED. Pipeline v1:['word','sweet','So'] v2:['word','sweet','So']. 3n. PDF: v1='word, sweet So-' v2='word, sweet So-'. Both identical. Pipeline missing comma.",
+      "lyrics_v1": ["word,", "sweet", "So"]
+    },
+    "70": {
+      "comment": "Pipeline: ['phi'] on 1n+1r. PDF: '-phi-a,__'. 1n, 'phi' is correct (continuation).",
+      "lyrics_v1": ["phi"]
+    },
+    "72": {
+      "comment": "STACKED. Pipeline v1:['Or','from'] v3:['Let','our']. 2n+1r. PDF p140: v1='Or from' v2='Let our'. Correct for v1.",
+      "lyrics_v1": ["Or", "from"]
+    },
+    "73": {
+      "comment": "STACKED. Pipeline v1:['earth','I','re'] v3:[\"heart's\",'in','ter']. 3n. PDF: v1='earth I re-' v2='heart's in-ter-'. Correct for v1.",
+      "lyrics_v1": ["earth", "I", "re"]
+    },
+    "74": {
+      "comment": "STACKED. Pipeline v1:['Sign.'] v3:['twine.']. 1n. PDF: v1='-sign.__' v2='-twine.__'. Pipeline v1 OCR: 'Sign.' should be lowercase 'sign.'.",
+      "lyrics_v1": ["sign."]
+    },
+    "75": {
+      "comment": "Pipeline: ['Let'] on 1n+2r. PDF: transition, possibly 'Let' pickup. But this doesn't appear in the lyric line at this point. Actually PDF shows the 2nd verse ending leads to the coda. 'Let' might be from v2 'Let our heart's intertwine.' But that was in m72-74. This could be a direction or contamination.",
+      "lyrics_v1": []
+    },
+    "76": {
+      "comment": "STACKED. Pipeline v1:['Oh,','So'] v2:['from','Oh,','So']. 3n. PDF p140: v1='Oh, So-' v2='Oh, So-'. Pipeline v2 has 'from' contamination. Correct for v1.",
+      "lyrics_v1": ["Oh,", "So"]
+    },
+    "77": {
+      "comment": "STACKED. Pipeline v1:['phi','a;'] v2:['phi','a,','re']. 3n. PDF: v1='-phi-a, be' v2='-phi-a, be'. Pipeline v1: 'a;' should be 'a,'. 3 notes: 'phi a, be'.",
+      "lyrics_v1": ["phi", "a,", "be"]
+    },
+    "78": {
+      "comment": "STACKED. Pipeline v1:['mine!'] v2:['in']. 1n. PDF: 1st ending: v1='mine!__'. v2 is 2nd ending with different text. For v1: 'mine!'.",
+      "lyrics_v1": ["mine!"]
+    },
+    "84": {
+      "comment": "Pipeline: ['mine!'] on 1n. PDF p140 bottom system: 'mine!__' (final ending). Correct.",
+      "lyrics_v1": ["mine!"]
+    }
+  }
+}

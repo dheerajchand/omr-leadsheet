@@ -1,0 +1,152 @@
+{
+  "song": "25 - The Back Bay Polka",
+  "key_fifths": null,
+  "time_signature": "2/4",
+  "comment": "Published lyrics by Ira Gershwin. C major (Audiveris detected no stable key). 2/4 time, Moderato. 4-page score. MOST stacked song in the collection: 354% coverage, 32 stacked measures. Four verses throughout the entire refrain. Pipeline has extreme OCR garble in the 4-verse stacking. Every lyric measure has 4 verses stacked. v1-only lyrics provided. Many pipeline errors: 'Du-luth' for 'Du-luth', missing hyphens, garbled verse separation. The song is a satirical portrait of Boston propriety. Optional Interlude at end (instrumental).",
+  "measures": {
+    "1": {
+      "comment": "STACKED 4v. Pipeline v1:['Give','up','the'] v2:['Don't','speak','the'] v3:['Some','where','the'] v4:['On','Bos','ton']. 3n. PDF: v1='Give up the' v2='Don't speak the' v3='Some-where the' v4='On Bos-ton'. Correct for v1.",
+      "lyrics_v1": ["Give", "up", "the"]
+    },
+    "2": {
+      "comment": "STACKED 4v. Pipeline v1:['fond','em'] v2:['nak'] v3:['fair'] v4:['beans']. 2n+1r. PDF: v1='fond em-' v2='nak-ed' v3='fair-er' v4='beans you'. Pipeline lost many v2-v4 syllables. v1 correct.",
+      "lyrics_v1": ["fond", "em"]
+    },
+    "3": {
+      "comment": "STACKED 4v. Pipeline v1:['up','that'] v2:['nak','ed'] v3:['er','curves','that'] v4:['go','to']. 3n+1r. PDF: v1='brace, Pass up that' but m3 has only 3n. Actually: v1='-brace, Pass' would be m2 overflow. PDF system 1 m3: v1='Pass up that'. Pipeline 'up that' lost 'Pass'. But only 3n.",
+      "lyrics_v1": ["up", "that"]
+    },
+    "4": {
+      "comment": "STACKED 4v. Pipeline v1:['pret','ty','face,'] v2:['is','un','couth.'] v3:['are','con','vex,'] v4:['bed','at','nine.']. 3n. PDF: v1='pret-ty face,' v2='is un-couth.' v3='are con-vex,' v4='bed at nine.'. Correct for v1.",
+      "lyrics_v1": ["pret", "ty", "face,"]
+    },
+    "5": {
+      "comment": "STACKED 4v. Pipeline v1:[\"Don't\",'You're','of','the'] v2:['It','may','go'] v3:['And','girls','don't'] v4:['You','must',\"n't\"]. 4n. PDF: v1='You're of the' but 4n. Actually PDF system 2: v1='You're of the'. Pipeline v1 has 'Don't' contamination from v2/v3. Drop the 'Don't'.",
+      "lyrics_v1": ["You're", "of", "the"]
+    },
+    "6": {
+      "comment": "STACKED 4v. Pipeline v1:['hu','man','race,'] v2:['in','Du','all'] v3:['all','wear','specs'] v4:['un','der','mi']. 3n. PDF: v1='hu-man race,' v2='in Du-luth' v3='all wear specs' v4='un-der-mine'. Pipeline v2 OCR: 'all' for 'luth'. Correct for v1.",
+      "lyrics_v1": ["hu", "man", "race,"]
+    },
+    "7": {
+      "comment": "STACKED 4v. Pipeline v1:['dine','But','not','in'] v2:['But','not','in'] v3:['But','not','in'] v4:['The','town','of']. 4n. PDF: v1='But not in' (3 syllables on first 3 of 4 notes). Actually PDF shows v1 line continues from 'race, But not in'. Pipeline v1 has extra 'dine' from prior measure overflow.",
+      "lyrics_v1": ["But", "not", "in"]
+    },
+    "8": {
+      "comment": "Pipeline: ['Bos'] on 1n+2r. PDF: 'Bos-ton.' held across m8. Only 1n, 'Bos' is all that fits. But PDF shows 'Bos-' continuing to 'ton.' Pipeline has only 1 note here.",
+      "lyrics_v1": ["Bos"]
+    },
+    "9": {
+      "comment": "STACKED 4v. Pipeline v1:['Think','as','your'] v2:['Keep','up','the'] v3:['One','day',\"it's\"] v4:['No','song','ex']. 3n. PDF p120: v1='Think as your' v2='Keep up the' v3='One day it's' v4='No song ex-'. Correct for v1.",
+      "lyrics_v1": ["Think", "as", "your"]
+    },
+    "10": {
+      "comment": "STACKED 4v. Pipeline v1:['neigh'] v2:['cul'] v3:['much','too'] v4:['cept']. 2n+1r. PDF: v1='neigh-bors' v2='cul-tured' v3='much too' v4='cept a'. Pipeline lost 2nd syllables for v1,v2,v4. v1='neigh' is partial, only 1 lyric on first of 2 notes.",
+      "lyrics_v1": ["neigh"]
+    },
+    "11": {
+      "comment": "STACKED 4v. Pipeline v1:['lem','on'] v2:['look','ing'] v3:['cold','as'] v4:['keep','your']. 2n+2r. PDF: v1='Make lem-on-' but pipeline m11=2n. v1='lem-on' from 'lemon-ade'. Actually pipeline shows 'lem on' which works for the 2 notes. But PDF line is '-ade your drink' continuing. The 'Make' was lost.",
+      "lyrics_v1": ["lem", "on"]
+    },
+    "12": {
+      "comment": "STACKED 4v. Pipeline v1:['ade','your','drink;'] v2:['down','your','nose,'] v3:['you','know','what.'] v4:['Ian','guage','prim;']. 3n. PDF: v1='-ade your drink;' v2='down your nose,' v3='you know what.' v4='lan-guage prim;'. Pipeline v4 OCR: 'Ian' for 'lan'.",
+      "lyrics_v1": ["ade", "your", "drink;"]
+    },
+    "13": {
+      "comment": "STACKED 4v. Pipeline v1:['Keep',\"You'll\",'be','the'] v2:['Keep','up','the'] v3:['In','all','the'] v4:['You','call','a.']. 4n. PDF p120 system 3: v1='You'll be the' v2='Keep up the' v3='In all the' v4='You call a'. Pipeline v1 has 'Keep' contamination from v2. v4 'a.' should be 'a'.",
+      "lyrics_v1": ["You'll", "be", "the"]
+    },
+    "14": {
+      "comment": "STACKED 4v. Pipeline v1:['Miss','ing','Link','If','you'] v2:['stat','us','quos','Or','they'] v3:['world',\"there's\",'not','Weath','er'] v4:['leg','a','limb','Or','they']. 5n. PDF: v1='Miss-ing Link If you' v2='stat-us quos Or they' v3='world there's not Weath-er' v4='leg a limb Or they'. Correct for v1.",
+      "lyrics_v1": ["Miss", "ing", "Link", "If", "you"]
+    },
+    "15": {
+      "comment": "STACKED 4v. Pipeline v1:[\"don't\",'wear','spats','in'] v2:['keep','you','out'] v3:['an','y','where'] v4:['boot','you','out']. 4n. PDF: v1='don't wear spats in' v2='keep you out of' v3='an-y-where like' v4='boot you out of'. Pipeline v2-v4 lost trailing words. v1 correct.",
+      "lyrics_v1": ["don't", "wear", "spats", "in"]
+    },
+    "16": {
+      "comment": "Pipeline v2:['of'] on 1n+2r. PDF: 'Bos-ton.' continuation. This is the '-ton.' held note. Only 1 lyric needed. Actually all 4 verses end with 'Bos-ton.' Pipeline only captured v2's 'of'. But the note carries 'Bos-' from all verses.",
+      "lyrics_v1": ["Bos"]
+    },
+    "17": {
+      "comment": "STACKED 4v. Pipeline v1:['Paint','ers','who'] v2:['Books','that','are'] v3:['At','a','Or'] v4:[\"You're\",'of','the']. 3n. PDF p121 system 3: v1='Paint-ers who' v2='Books that are' v3='At natu-ral' v4='You're of the'. Pipeline v3 OCR garble: 'a Or' for 'natu-ral'. Correct for v1.",
+      "lyrics_v1": ["Paint", "ers", "who"]
+    },
+    "18": {
+      "comment": "STACKED 4v. Pipeline v1:['paint','the','nude'] v2:['out','of','key'] v3:['his','to','ry'] v4:['hour','geoi','sie']. 3n. PDF: v1='paint the nude' v2='out of key' v3='his-to-ry' v4='bour-geoi-sie'. Pipeline v4 OCR: 'hour' for 'bour'.",
+      "lyrics_v1": ["paint", "the", "nude"]
+    },
+    "19": {
+      "comment": "STACKED 4v. Pipeline v1:['We','keep','re'] v2:['We','quick','ly'] v3:['Paint','We','are','co'] v4:['And','no','one']. 4n. PDF: v1='We keep re-' v2='We quick-ly' v3='We are co-' v4='And no one'. Pipeline v3 has 'Paint' contamination. Correct for v1: 3 lyrics on first 3 of 4n.",
+      "lyrics_v1": ["We", "keep", "re"]
+    },
+    "20": {
+      "comment": "STACKED 4v. Pipeline v1:['press','ing;'] v2:['bur','y'] v3:['ly','sal.'] v4:['both','ers,']. 2n. PDF: v1='press-ing;' v2='bur-y.' v3='-los-al.' v4='both-ers,'. Correct for v1 (but v3 is 'co-los-al' continuing).",
+      "lyrics_v1": ["press", "ing;"]
+    },
+    "21": {
+      "comment": "STACKED 4v. Pipeline v1:['We','take','the'] v2:['You','will','find'] v3:['That','is','be'] v4:['hand','if','your']. 3n. PDF p121 system 4: v1='We take the' v2='You will find' v3='That is be-' v4='Not if your'. Pipeline v4 OCR: 'hand' for 'Not'.",
+      "lyrics_v1": ["We", "take", "the"]
+    },
+    "22": {
+      "comment": "STACKED 4v. Pipeline v1:['at','ti','tude'] v2:['lib','er','ty'] v3:['cause,','you','see,'] v4:['farm',\"'ly\",'tree']. 3n. PDF: v1='at-ti-tude' v2='lib-er-ty' v3='cause, you see,' v4='fam-'ly tree'. Pipeline v4 OCR: 'farm' for 'fam'.",
+      "lyrics_v1": ["at", "ti", "tude"]
+    },
+    "23": {
+      "comment": "Pipeline v2:['In'] on 1n+3r. PDF: continuation/transition. 'In' is from verse 2 overflow. For v1 this is part of the 'E-ven a sal-ad' phrase. But only 1n. Pipeline has it as v2.",
+      "lyrics_v1": []
+    },
+    "25": {
+      "comment": "STACKED 4v. Pipeline v1:['New','York','or'] v2:['Laugh','ter','goes'] v3:['At','ers','are'] v4:['There','fore','when']. 3n. PDF p121 system 5: v1='New York or' v2='Laugh-ter goes' v3='Strang-ers are' v4='There-fore when'. Pipeline v3 OCR: 'At ers' for 'Strang-ers'.",
+      "lyrics_v1": ["New", "York", "or"]
+    },
+    "26": {
+      "comment": "STACKED 4v. Pipeline v1:['Phil'] v2:['up','the'] v3:['all'] v4:['all']. 2n+1r. PDF: v1='Phil-a-' v2='up the' v3='all dis-' v4='all is'. Pipeline lost 2nd syllable for v1. Only 1 lyric on first of 2n.",
+      "lyrics_v1": ["Phil"]
+    },
+    "27": {
+      "comment": "STACKED 5v. Pipeline v1:['Laugh','a','you'] v2:['is','one'] v3:['that',\"we're\"] v4:['is','so'] v5:['Refrain','with']. 3n+1r. PDF: v1='-a-delph'' v2='flue.' v3='-missed.' v4='said,' continuing. Pipeline has 5 verses but this is garbled OCR. v1 should be 'a-delph'' — the tail of 'Phil-a-delph''. Pipeline is totally garbled here.",
+      "lyrics_v1": ["a", "delph'"]
+    },
+    "28": {
+      "comment": "STACKED 5v. Pipeline v1:['on','the','shelf'] v2:['Strang','ers','are'] v3:['big','ta,','boo.'] v4:['ed','ju','dead'] v5:['lim','it','ed']. 3n. PDF p121 system 6: v1='Won't put you on the shelf' across m27-28. m28=3n. v1='on the shelf' v2='ta-boo.' v3='pre-ju-diced' v4='lim-it-ed'. Pipeline v1 correct. Pipeline badly garbled for other verses.",
+      "lyrics_v1": ["on", "the", "shelf"]
+    },
+    "29": {
+      "comment": "STACKED 5v. Pipeline v1:['a','you','I'] v2:['is','If','you','would'] v3:['No','mat','shelf'] v4:['You','sim','ply'] v5:['You','find,','un']. 4n. PDF: v1='If you would' v2='No mat-ter' v3='You sim-ply' v4='You find, un-'. Pipeline v1 has 'a you I' garble. Actually examining the PDF grid more carefully: each verse line in this section starts with 'If you would / No matter / You simply / You find, un-'. Pipeline is confused.",
+      "lyrics_v1": ["If", "you", "would"]
+    },
+    "30": {
+      "comment": "STACKED 5v. Pipeline v1:['ed','I','Bos','ton'] v2:['be','your','self,','But'] v3:['what','you','do,','It'] v4:['don't','ex','ist','If'] v5:['less','you're','dead,','You']. 4n. PDF: v1='be your-self, But' v2='what you do, It' v3='don't ex-ist If' v4='less you're dead, You'. Pipeline garbled. v1 should match the first published verse.",
+      "lyrics_v1": ["be", "your", "self,", "But"]
+    },
+    "31": {
+      "comment": "STACKED 5v. Pipeline v1:[\"Can't\",'be','your','self'] v2:['you','is',\"n't\",'be','ing','done'] v3:['have',\"n't\",'been','born'] v4:['nev','er','get','a.','head'] v5:['er','get']. 7n+1r. PDF p122: v1='you can't be your-self in' v2='it is-n't be-ing done in' v3='you have-n't been born in' v4='you nev-er get a-head in'. Pipeline has 7n. v1='can't be your-self in' (5 syllables on 5 of 7 notes). Actually the full line needs more notes.",
+      "lyrics_v1": ["can't", "be", "your", "self", "in"]
+    },
+    "32": {
+      "comment": "STACKED 4v. Pipeline v1:['You'] v2:['It'] v3:['You'] v4:['You']. 1n+3r. PDF: 'Bos-ton.' held then next phrase starts. v1='Bos-ton.' continuation. Pipeline has 'You' which is from the next phrase. 1n should be 'Bos'.",
+      "lyrics_v1": ["Bos"]
+    },
+    "33": {
+      "comment": "STACKED 4v. Pipeline v1:[\"can't\"] v2:['is','nt'] v3:['have','nt'] v4:['nev','er']. 2n. PDF: v1='You can't' v2='It is-n't' v3='You have-n't' v4='You nev-er'. Pipeline v1 has 1 lyric on 2n. Lost 'You'. v2-v4 missing apostrophes.",
+      "lyrics_v1": ["You", "can't"]
+    },
+    "34": {
+      "comment": "STACKED 4v. Pipeline v1:['your','be'] v2:[\"n't\",'be'] v3:[\"n't\",'been'] v4:['get',\"you're\"]. 3n. PDF: v1='be your-self,' v2='be-ing done,' v3='been born' v4='get a-head'. Pipeline garbled order. v1 should be 'be your-' (2 syllables on first 2 of 3n).",
+      "lyrics_v1": ["be", "your"]
+    },
+    "35": {
+      "comment": "STACKED 4v. Pipeline v1:[\"can't\",'be','be'] v2:['is',\"n't\",'be'] v3:['have',\"n't\",'been'] v4:['nev','er','get']. 3n. PDF: v1='You can't be your-self in' — this is the repeat of the refrain tag. m35 has 3n. v1='can't be your-' (3 syllables).",
+      "lyrics_v1": ["can't", "be", "your"]
+    },
+    "36": {
+      "comment": "STACKED 4v. Pipeline v1:['Bos','ton!','ing'] v2:['Bos','ton!'] v3:['Bos','ton!'] v4:['Bos','ton!']. 3n. PDF: v1='self in Bos-' v2='-ing done in Bos-' v3='born in Bos-' v4='a-head in Bos-'. Pipeline mostly has 'Bos-ton!' for all verses. v1 for m36: 3n. 'self in Bos-' is 3 syllables. But pipeline shows 'Bos ton! ing' — garbled.",
+      "lyrics_v1": ["self", "in", "Bos"]
+    },
+    "37": {
+      "comment": "Pipeline: ['Optional'] on 1n. PDF: '-ton!' then 'Optional Interlude'. Pipeline picked up the section label. The note should carry 'ton!'.",
+      "lyrics_v1": ["ton!"]
+    }
+  }
+}
