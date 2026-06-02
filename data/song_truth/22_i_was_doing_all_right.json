@@ -1,0 +1,60 @@
+{
+  "song": "22 - I Was Doing All Right",
+  "key_fifths": 1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Animato) + Refrain (Moderately). Pipeline has stacked-verse garble in m24 (6L/5n) and m26 (6L/5n). Gaps at m14 (1n), m17 (5n!), m46 (1n, instrumental -- no fix). The gap at m14-m17 lost the entire first line of the refrain. m46 is instrumental in the PDF (first-ending volta fill).",
+  "measures": {
+    "11": {
+      "comment": "Pipeline had 'look at me now,.. I' (5L/6n). Spurious '..' Published: 'look at me now,-- I'. The '..' should be a long dash or removed; correcting punctuation.",
+      "lyrics_v1": ["look", "at", "me", "now,", "I"]
+    },
+    "12": {
+      "comment": "Pipeline had 'all right know where I'm' (5L/5n). 'all right' is cross-line contamination. Published: 'don't know where I'm' (4 syllables on 5 notes; 'at.' is in m13). Pipeline has 5n so can carry 4.",
+      "lyrics_v1": ["don't", "know", "where", "I'm"]
+    },
+    "14": {
+      "comment": "GAP: 1 note + 2 rests, no lyrics. Refrain begins here. Published: 'I' (pickup).",
+      "lyrics_v1": ["I"]
+    },
+    "15": {
+      "comment": "GAP: 4 notes, no lyrics. Published: 'was do-ing all'.",
+      "lyrics_v1": ["was", "do", "ing", "all"]
+    },
+    "16": {
+      "comment": "GAP: 1 note + 1 rest, no lyrics. Published: 'right,'.",
+      "lyrics_v1": ["right,"]
+    },
+    "17": {
+      "comment": "GAP: 5 notes + 1 rest, no lyrics. Published: 'Noth-ing but rain-bows' (5 syllables on 5 notes). Remaining syllables 'in my sky,' were on lost notes.",
+      "lyrics_v1": ["Noth", "ing", "but", "rain", "bows"]
+    },
+    "24": {
+      "comment": "STACKED 6L/5n. Pipeline had 'Life was as I sweet as'. 'I' is v2 bleed. Published v1: 'Life was as sweet as'.",
+      "lyrics_v1": ["Life", "was", "as", "sweet", "as"]
+    },
+    "26": {
+      "comment": "STACKED 6L/5n. Pipeline had 'Nev er no er ticed the'. Second 'er' is v2 bleed. Published v1: 'Nev-er no-ticed the'.",
+      "lyrics_v1": ["Nev", "er", "no", "ticed", "the"]
+    },
+    "30": {
+      "comment": "Pipeline had 'now When' (2L/3n). Missing syllable. Published: 'now When-ev-' (3 syllables on 3 notes).",
+      "lyrics_v1": ["now", "When", "ev"]
+    },
+    "36": {
+      "comment": "Pipeline had 'love is nt one' (4L/4n). Missing apostrophe. Published: 'love is-n't one'.",
+      "lyrics_v1": ["love", "is", "n't", "one"]
+    },
+    "39": {
+      "comment": "Pipeline had 'tight, me' (2L/2n). Word order reversed. Published: 'me tight,'.",
+      "lyrics_v1": ["me", "tight,"]
+    },
+    "40": {
+      "comment": "Pipeline had 'Ting ling all through I' (5L/5n). Missing comma after 'through'. Published: 'Ting-ling all through, I'.",
+      "lyrics_v1": ["Ting", "ling", "all", "through,", "I"]
+    },
+    "42": {
+      "comment": "Pipeline had 'right all But I'm' (4L/4n). Word order swapped. Published: 'all right But I'm'.",
+      "lyrics_v1": ["all", "right", "But", "I'm"]
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "song": "21 - I Love To Rhyme",
+  "key_fifths": 1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Moderato con spirito) + Refrain (p-mf spiritedly). Pipeline has two total lyric gaps (m33: 3n, m34: 2n) plus OCR garble and syllable-split errors. m17 'fun.' lost (pipeline 0n 1r -- note lost, unfixable).",
+  "measures": {
+    "5": {
+      "comment": "Pipeline read 'th' + 'ers' instead of 'oth' + 'ers'. Published: 'There are oth - ers'.",
+      "lyrics_v1": ["There", "are", "oth", "ers"]
+    },
+    "6": {
+      "comment": "Pipeline read 'plea.' with spurious period. Published: 'who get plea - sure'.",
+      "lyrics_v1": ["who", "get", "plea", "sure"]
+    },
+    "14": {
+      "comment": "Pipeline had 'love to pun, the But' -- word order garbled. Published: 'love to pun, But the'.",
+      "lyrics_v1": ["love", "to", "pun,", "But", "the"]
+    },
+    "24": {
+      "comment": "Pipeline had 'crime' missing comma. Published: 'crime,' with comma.",
+      "lyrics_v1": ["crime,", "But"]
+    },
+    "31": {
+      "comment": "Pipeline had 'Chuck knuck le, nick el, fick le,' -- dropped '-le,' after 'Chuck' and shifted all subsequent syllables. Published: 'Chuck - le, knuck - le, nick - el, fick - le,' (8 syllables). Pipeline only has 7n so best fit is 7 syllables.",
+      "lyrics_v1": ["Chuck", "le,", "knuck", "le,", "nick", "el,", "fick"]
+    },
+    "32": {
+      "comment": "Pipeline had only 'le' on 4 notes. Published: 'le, pick - le!' then rest. 4n but only 3 syllables sung.",
+      "lyrics_v1": ["le,", "pick", "le!"]
+    },
+    "33": {
+      "comment": "GAP: Pipeline has 3 notes but NO LYRICS. Published: 'I love to'.",
+      "lyrics_v1": ["I", "love", "to"]
+    },
+    "34": {
+      "comment": "GAP: Pipeline has 2 notes but NO LYRICS. Published: 'rhyme!' on note 1, then 'Va-' pickup on note 2.",
+      "lyrics_v1": ["rhyme!", "Va"]
+    },
+    "36": {
+      "comment": "Pipeline had 'Theres' missing apostrophe. Published: 'There's no'. 5n with 'pri e ty,' from previous word completing, then 'There's no'.",
+      "lyrics_v1": ["pri", "e", "ty,", "There's", "no"]
+    },
+    "37": {
+      "comment": "Pipeline had 'stop ping When you've' -- 'When' should be lowercase. Published: 'stop - ping when you've'.",
+      "lyrics_v1": ["stop", "ping", "when", "you've"]
+    },
+    "38": {
+      "comment": "Pipeline had 'gun; Ca,' with spurious comma. Published: 'gun;' then 'Ca -' (start of Ca-pac-i-ty).",
+      "lyrics_v1": ["gun;", "Ca"]
+    },
+    "39": {
+      "comment": "Pipeline had 'a.u' as last token -- OCR garble. Published: 'pac - i - ty, ve - rac - i - ty, au -'.",
+      "lyrics_v1": ["pac", "i", "ty,", "ve", "rac", "i", "ty,", "au"]
+    },
+    "43": {
+      "comment": "Pipeline had only 2 lyrics ('love to') on 3 notes. Published: 'love to rhyme,' -- missing 'rhyme,'.",
+      "lyrics_v1": ["love", "to", "rhyme,"]
+    },
+    "45": {
+      "comment": "Pipeline had 'would it be sub' missing contraction. Published: 'would - n't it be sub -'. 4n + 1r; 4 syllables on 4 notes.",
+      "lyrics_v1": ["would", "n't", "it", "be"]
+    }
+  }
+}

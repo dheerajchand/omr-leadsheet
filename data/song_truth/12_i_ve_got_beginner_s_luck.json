@@ -1,0 +1,80 @@
+{
+  "song": "12 - (I've Got) Beginner's Luck",
+  "key_fifths": 2,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Moderato) + Refrain (not fast). Pipeline has stacked-verse garble in m17 (7L/4n). m50 gap (1n), m52 gap (1n). Several OCR misreads: spurious periods, missing syllables, garbled tokens.",
+  "measures": {
+    "2": {
+      "comment": "Pipeline had 'a. ny gamb ling Ca.' (5L/6n) -- spurious periods on 'a.' and 'Ca.'. Published: 'a-ny gamb-ling Ca-'. Correcting to remove periods.",
+      "lyrics_v1": ["a", "ny", "gamb", "ling", "Ca"]
+    },
+    "6": {
+      "comment": "Pipeline had 'tell you that a, be' (5L/6n) -- stray comma on 'a,'. Published: 'tell you that a be-'.",
+      "lyrics_v1": ["tell", "you", "that", "a", "be"]
+    },
+    "7": {
+      "comment": "Pipeline had 'gin net Comes' (3L/3n). OCR garble 'net' for 'ner'. Published: 'gin-ner Comes'.",
+      "lyrics_v1": ["gin", "ner", "Comes"]
+    },
+    "9": {
+      "comment": "Pipeline had 'win Be' (2L/2n). Pipeline dropped 'ner.' -- 'Be' belongs to next phrase. Published: 'win-ner.' on the 2 notes (with rests following).",
+      "lyrics_v1": ["win", "ner."]
+    },
+    "10": {
+      "comment": "Pipeline had 'gin ner fish ing for' (5L/6n). With m9 corrected to 'win ner.', 'Be' moves here. Published: 'Be-gin-ner fish-ing for' (6 syllables on 6 notes).",
+      "lyrics_v1": ["Be", "gin", "ner", "fish", "ing", "for"]
+    },
+    "11": {
+      "comment": "Pipeline had 'fioun der Will' (3L/3n). OCR garble 'fioun' for 'floun'. Published: 'floun-der Will'.",
+      "lyrics_v1": ["floun", "der", "Will"]
+    },
+    "12": {
+      "comment": "Pipeline had 'catch a. sev en teen' (5L/6n). Spurious period in 'a.'. Published: 'catch a sev-en-teen'.",
+      "lyrics_v1": ["catch", "a", "sev", "en", "teen"]
+    },
+    "17": {
+      "comment": "STACKED 7L/4n. Pipeline read interleaved v1/v2: 'thought n ' ab love Surd, with But'. Published v1: 'thought ab-surd, But'.",
+      "lyrics_v1": ["thought", "ab", "surd,", "But"]
+    },
+    "23": {
+      "comment": "Pipeline had 'Ere got be' (3L/3n). OCR garble 'Ere' for 'I've'. Published: 'I've got be-'.",
+      "lyrics_v1": ["I've", "got", "be"]
+    },
+    "26": {
+      "comment": "Pipeline had 'I'm in love With' (4L/5n). Missing 'you.' and wrong capitalization. Published: 'I'm in love with you.' (5 syllables on 5 notes).",
+      "lyrics_v1": ["I'm", "in", "love", "with", "you."]
+    },
+    "29": {
+      "comment": "Pipeline had 'got be' (2L/3n). Missing 'I've'. Published: 'I've got be-' (3 syllables on 3 notes).",
+      "lyrics_v1": ["I've", "got", "be"]
+    },
+    "31": {
+      "comment": "Pipeline had 'nev er was such a. smile' (6L/6n). Spurious period in 'a.'. Published: 'nev-er was such a smile'.",
+      "lyrics_v1": ["nev", "er", "was", "such", "a", "smile"]
+    },
+    "32": {
+      "comment": "Pipeline had 'Or such such of' (4L/5n). Duplicate 'such' -- second should be 'eyes'. Published: 'Or such eyes of'.",
+      "lyrics_v1": ["Or", "such", "eyes", "of"]
+    },
+    "37": {
+      "comment": "Pipeline had 'than a.' (2L/4n). Spurious period and missing syllables. Published: 'much more than a' (4 syllables on 4 notes).",
+      "lyrics_v1": ["much", "more", "than", "a"]
+    },
+    "44": {
+      "comment": "Pipeline had 'gin ners luck,' (3L/3n). Missing apostrophe in 'ners'. Published: 'gin-ner's luck,'.",
+      "lyrics_v1": ["gin", "ner's", "luck,"]
+    },
+    "46": {
+      "comment": "Pipeline had 'through, Cause the' (3L/3n). Missing leading apostrophe on 'Cause. Published: 'through, 'Cause the'.",
+      "lyrics_v1": ["through,", "'Cause", "the"]
+    },
+    "50": {
+      "comment": "GAP: 1 note + 3 rests, no lyrics in pipeline. Published: 'you.' (first ending).",
+      "lyrics_v1": ["you."]
+    },
+    "52": {
+      "comment": "GAP: 1 note + 1 rest, no lyrics in pipeline. Published: 'you.' (second ending).",
+      "lyrics_v1": ["you."]
+    }
+  }
+}

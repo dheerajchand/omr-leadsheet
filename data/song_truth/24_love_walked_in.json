@@ -1,0 +1,76 @@
+{
+  "song": "24 - Love Walked In",
+  "key_fifths": -3,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Moderato, a tempo) + Refrain (slowly, with much expression). Pipeline has lyric gap at m19 (5n, lost all refrain-opening lyrics). m15 'door.' note lost (0n 1r, unfixable). m26 lost 1 note from 'ma-gic mo-ment' (4 syllables on 3n). m34 and m38 each lost 1 note, dropping a syllable.",
+  "measures": {
+    "1": {
+      "comment": "Pipeline had 'seem ed' with OCR space insertion. Published: 'Noth - ing seemed to'.",
+      "lyrics_v1": ["Noth", "ing", "seemed", "to"]
+    },
+    "2": {
+      "comment": "Pipeline had 'a.' with spurious period. Published: 'mat - ter a - ny'.",
+      "lyrics_v1": ["mat", "ter", "a", "ny"]
+    },
+    "5": {
+      "comment": "Pipeline had 'nt' missing apostrophe. Published: 'Did - n't care what'.",
+      "lyrics_v1": ["Did", "n't", "care", "what"]
+    },
+    "7": {
+      "comment": "Pipeline had 'for' missing semicolon. Published: 'for;'.",
+      "lyrics_v1": ["for;"]
+    },
+    "13": {
+      "comment": "Pipeline had 'a.' with spurious period. Published: 'came a knock - knock -'.",
+      "lyrics_v1": ["came", "a", "knock", "knock"]
+    },
+    "19": {
+      "comment": "GAP: Pipeline has 5 notes but NO LYRICS. Published: 'Love walked right in and' (refrain opening).",
+      "lyrics_v1": ["Love", "walked", "right", "in", "and"]
+    },
+    "20": {
+      "comment": "Pipeline had OCR garble 'Wa)'. Published: 'way;'.",
+      "lyrics_v1": ["way;"]
+    },
+    "23": {
+      "comment": "Pipeline had 'brou much sun ni Love' -- garbled syllables and next-phrase bleed. Published: 'brought my sun - ni - est'. 5n.",
+      "lyrics_v1": ["brought", "my", "sun", "ni", "est"]
+    },
+    "26": {
+      "comment": "Pipeline had 'right mo ment' -- 'right' is wrong word. Published: 'ma - gic mo - ment' (4 syllables on 4 notes but pipeline has 3n + 1r). Best fit for 3n: 'ma gic mo'. Note lost: 'ment' on the rest.",
+      "lyrics_v1": ["ma", "gic", "mo"]
+    },
+    "27": {
+      "comment": "Pipeline had 'sha to' -- OCR garble for 'seemed to'. Published: 'and my heart seemed to'. 5n.",
+      "lyrics_v1": ["and", "my", "heart", "seemed", "to"]
+    },
+    "29": {
+      "comment": "Pipeline correct but published has opening quote. Published: 'That love said \"Hel'. 4n + 1r.",
+      "lyrics_v1": ["That", "love", "said", "\"Hel"]
+    },
+    "30": {
+      "comment": "Pipeline had 'lo','\\'' -- OCR garble. Published: '-lo\",'. 1n.",
+      "lyrics_v1": ["lo\","]
+    },
+    "31": {
+      "comment": "Pipeline had 'a.' with spurious period. Published: 'Though not a'. 3n + 1r.",
+      "lyrics_v1": ["Though", "not", "a"]
+    },
+    "34": {
+      "comment": "Pipeline had 'look I for' -- dropped 'and'. Published: 'look and I for -' (4 syllables). Pipeline lost 1 note (3n + 1r). Best fit for 3n: 'look and I'. The '-for' syllable is on the lost note.",
+      "lyrics_v1": ["look", "and", "I"]
+    },
+    "38": {
+      "comment": "Pipeline had 'look I had' -- dropped 'and'. Published: 'look and I had' (4 syllables). Pipeline lost 1 note (3n + 1r). Best fit for 3n: 'look and I'. The 'had' syllable is on the lost note.",
+      "lyrics_v1": ["look", "and", "I"]
+    },
+    "43": {
+      "comment": "Pipeline had 'found a.' with spurious period. Published: 'found a'. 2n.",
+      "lyrics_v1": ["found", "a"]
+    },
+    "46": {
+      "comment": "Pipeline had 'love walk in with' -- missing past tense '-ed'. Published: 'love walked in with'. 4n.",
+      "lyrics_v1": ["love", "walked", "in", "with"]
+    }
+  }
+}
