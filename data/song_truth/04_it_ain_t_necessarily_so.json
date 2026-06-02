@@ -1,0 +1,244 @@
+{
+  "song": "04 - It Ain't Necessarily So",
+  "key_fifths": -2,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. G-minor centred (Bb major key sig). Complex structure: refrain A with 2 stacked verses (v1 = Jonah/whale, v2 = David/Goliath), then scat section in 2/4, refrain B with 2 stacked verses (v1 = Jonah/whale cont., v2 = Moses/Nile), then second scat in 2/4, then final verse section (Heb-ben, Methus'lah, etc.) in 4/4 before closing refrain. Pipeline interleaves all verse variants. Truth overlay picks v1 throughout. Stage directions (SPORTING LIFE, ALL, SP.L.) and rehearsal marks garble pipeline lyrics in several measures. Scat section switches to 2/4 time. Measures 38-39 appear to be missing from pipeline (possibly rests or instrumental). Some measures with heavily garbled multi-verse stacking are corrected to v1 only.",
+  "measures": {
+    "1": {
+      "comment": "Pipeline had ['humor', 'It', 'SPORTING'] — 'humor' from stage direction '(happily, with humor)', 'SPORTING' from character name 'SPORTING LIFE'. Published: pickup note 'It'.",
+      "lyrics_v1": ["GAP", "It"]
+    },
+    "2": {
+      "comment": "Pipeline interleaved v1+v2: ['aint', 'Da', 'rue', 'aint', 'ces', 'was', 'so', 'sa']. Published v1: 'ain't ne-ces-sa' (4 notes).",
+      "lyrics_v1": ["ain't", "ne", "ces", "sa"]
+    },
+    "3": {
+      "comment": "Pipeline interleaved v1+v2: ['so,', 'my!', 'SO', 'ri', 'It', 'It']. Published v1: 'ri-ly so,' + pickup 'It'. 4 notes.",
+      "lyrics_v1": ["ri", "ly", "so,", "It"]
+    },
+    "4": {
+      "comment": "Pipeline heavily interleaved (5 notes, 12 tokens). Published v1: 'ain't ne-ces-sa-ri' (second 'ain't necessarily' phrase, 5 notes).",
+      "lyrics_v1": ["ain't", "ne", "ces", "sa", "ri"]
+    },
+    "5": {
+      "comment": "Pipeline interleaved v1+v2: ['so,', 'my!', 'big', 'ly', 'Dc', 'He']. Published v1: 'ly so,' + rest/pickup 'De'. 4 notes. 'Dc' is garbled 'De'.",
+      "lyrics_v1": ["ly", "so,", "GAP", "De"]
+    },
+    "6": {
+      "comment": "Pipeline interleaved: ['li', 'fought', 'ath', 'big', 'yo'', 'Go', 'li'', 'Ii']. Published v1: 'tings dat yo' li'-' (4 notes).",
+      "lyrics_v1": ["tings", "dat", "yo'", "li'"]
+    },
+    "7": {
+      "comment": "Pipeline interleaved: ['read', 'lay', 'in', 'down', 'de', 'an'', 'Bi', 'di']. Published v1: 'ble To read in' (4 notes).",
+      "lyrics_v1": ["ble", "To", "read", "in"]
+    },
+    "8": {
+      "comment": "Pipeline interleaved: [\"ain't\", 'Da', 'ne', 'da', 'ces', 'was', 'sa', 'small,']. Published v1: 'de Bi-ble, it' (4 notes).",
+      "lyrics_v1": ["de", "Bi", "ble,", "it"]
+    },
+    "10": {
+      "comment": "Pipeline had ['liv', \"Li'\", '(repeat!)']. Published: first ending continuation with Gm/C7/Eb7/D11 chords, lyric '(repeat!)' is a stage direction, 'Li'l' is v2 pickup. 4 notes + 2 rests. Published v1: whole note 'so.' held through ending — no new v1 lyrics. All pipeline tokens are garble or v2.",
+      "lyrics_v1": ["GAP", "GAP", "GAP", "GAP"]
+    },
+    "11": {
+      "comment": "Pipeline had ['my!']. This is the v2 ending word 'my!' from the repeat. Published v1 at second ending: 'so.' continuation. 1 note + 1 rest. But if this is the second ending, v1 goes to verse section. Pipeline captured v2.",
+      "lyrics_v1": ["GAP"]
+    },
+    "12": {
+      "comment": "Pipeline had ['doo,']. Scat section (2/4 time). Published: 'Wa - doo,' (3 notes). Allegro giocoso.",
+      "lyrics_v1": ["Wa", "GAP", "doo,"]
+    },
+    "13": {
+      "comment": "Pipeline had ['(100,']. This is garbled. Published: 'Wa - doo,' second phrase (F#m, ALL). 2 notes + 1 rest. Dotted quarter 'Wa' then eighth 'doo,'.",
+      "lyrics_v1": ["Wa", "doo,"]
+    },
+    "14": {
+      "comment": "Pipeline had ['Like', 'bam', 'bod', 'savage', 'oo,']. 'Like' and 'savage' are from stage direction 'Like a savage outburst'. Published: 'Zim bam bod-dle-oo,' (5 notes).",
+      "lyrics_v1": ["Zim", "bam", "bod", "dle", "oo,"]
+    },
+    "15": {
+      "comment": "Pipeline had ['ALL']. 'ALL' is a stage direction. Published: 'Zim' (pickup into next phrase). 1 note.",
+      "lyrics_v1": ["Zim"]
+    },
+    "16": {
+      "comment": "Pipeline had ['Hoo', 'dic', 'ah', 'da', 'wa']. Pipeline captured first 'Hoo-dle ah da wa' phrase with 'dic' garbling 'dle'. Published: 'Hoo-dle ah da wa' (5 notes + 1 rest).",
+      "lyrics_v1": ["Hoo", "dle", "ah", "da", "wa"]
+    },
+    "17": {
+      "comment": "Pipeline had ['da']. Published: 'da,' — last syllable of first 'Hoo-dle ah da wa da,' phrase. Pipeline missing comma.",
+      "lyrics_v1": ["da,"]
+    },
+    "18": {
+      "comment": "Pipeline had ['Scat', 'ty', 'wah.', 'Scat']. Published: 'Scat-ty wah,' then pickup 'Scat-' into next phrase. Pipeline 'wah.' should be 'wah,' (comma, first occurrence). 4 notes.",
+      "lyrics_v1": ["Scat", "ty", "wah,", "Scat"]
+    },
+    "20": {
+      "comment": "Pipeline had ['wah']. Published: 'wah.' (1 note + 1 rest). Second 'Scat-ty wah.' — missing period.",
+      "lyrics_v1": ["wah."]
+    },
+    "21": {
+      "comment": "Pipeline interleaved v1+v2: ['Jo', 'Mo', 'nah,', 'ses', 'he', 'was', 'lived', 'found', 'in', 'in', 'de', 'a']. Published v1 (Tempo I, 4/4): 'Jo-nah, he lived in de' (6 notes).",
+      "lyrics_v1": ["Jo", "nah,", "he", "lived", "in", "de"]
+    },
+    "22": {
+      "comment": "Pipeline interleaved: ['whale,', 'stream,', 'Oh,', 'Lil']. Published v1: 'whale,' + rest + pickup 'Oh,' (2 notes + 1 rest).",
+      "lyrics_v1": ["whale,", "Oh,"]
+    },
+    "23": {
+      "comment": "Pipeline interleaved: ['Jo', 'Mo', 'nah,', 'ses', 'he', 'was', 'lived', 'found']. Published v1: 'Jo-nah, he lived' (4 notes).",
+      "lyrics_v1": ["Jo", "nah,", "he", "lived"]
+    },
+    "24": {
+      "comment": "Pipeline interleaved: ['whale,', 'stream,', 'in', \"Fo'\", 'He']. Published v1: 'in de whale,' (3 notes). 'Fo'' is v1 continuation from next phrase.",
+      "lyrics_v1": ["in", "de", "whale,"]
+    },
+    "25": {
+      "comment": "Pipeline interleaved: ['he', 'float', 'made', 'ed', 'his', 'on', 'home', 'wat', 'in', 'er', 'Dat', 'Till']. Published v1: \"Fo' he made his home in\" (6 notes).",
+      "lyrics_v1": ["Fo'", "he", "made", "his", "home", "in"]
+    },
+    "26": {
+      "comment": "Pipeline interleaved v1+v2: ['Ole', 'fish', 'Phar', 'ab', \"aoh's\", 'do', \"aoh'sdaugh\", 'men.', 'ter']. Published v1 (p.25): 'Dat fish-'s ab-do-' (5 notes). v2 = 'Till Ole Phar-aoh's daugh-ter'.",
+      "lyrics_v1": ["Dat", "fish", "'s", "ab", "do"]
+    },
+    "27": {
+      "comment": "Pipeline interleaved v1+v2: ['Jo', 'fished', 'nah,', 'him,', 'he', 'she', 'lived', 'says,', 'float']. Published v1 (p.25): 'men. Oh, Jo-nah, he' continuing from m26 (5 notes).",
+      "lyrics_v1": ["men.", "Oh,", "Jo", "nah,", "he"]
+    },
+    "28": {
+      "comment": "Pipeline interleaved: ['whale.', 'from']. Published v1 first ending: 'whale.' (1 note). But pipeline shows 'from' = v2. 1 note.",
+      "lyrics_v1": ["whale."]
+    },
+    "29": {
+      "comment": "Pipeline had ['er', 'that', 'Till', '(repeat', 'stream']. Published: first ending continuation — 'whale.' held, then (repeat!) direction. 2 notes + 2 rests. Garbled stage direction. v1 ending: no new lyrics needed.",
+      "lyrics_v1": ["GAP", "GAP"]
+    },
+    "30": {
+      "comment": "Pipeline had ['stream.', 'Scat', \"in'\"].  Published: second ending '2. Gm' has 'stream.' (v2: Moses found in a stream). V1 (Jonah) ended at 'whale.' in first ending. Second ending carries v2 text only. 1 note + 1 rest. Pipeline garbled with 'Scat' and 'in'' from nearby scat section.",
+      "lyrics_v1": ["GAP"]
+    },
+    "31": {
+      "comment": "Pipeline had ['Wa,', 'ly', 'doo,', 'She']. Second scat section (2/4). Published: 'Wa - doo,' (3 notes). 'She' is v2 garble.",
+      "lyrics_v1": ["Wa", "GAP", "doo,"]
+    },
+    "32": {
+      "comment": "Pipeline had ['SO', 'Jo']. Published: 'Wa - doo,' second phrase. 3 notes + 1 rest. But pipeline only shows 3n. Hmm — 'SO' looks garbled. Published: 'Wa-' (dotted quarter) 'doo,' — Actually checking p.25 bottom: 'Wa - doo,' then 'Wa - doo,—'. 3 notes.",
+      "lyrics_v1": ["Wa", "GAP", "doo,"]
+    },
+    "33": {
+      "comment": "Pipeline had ['Zim', 'bam', 'hod', 'de']. Published: 'Zim bam bod-dle-oo,' (5 notes). Pipeline has only 5n but 4 tokens — missing one. 'hod' should be 'bod'.",
+      "lyrics_v1": ["Zim", "bam", "bod", "dle", "oo,"]
+    },
+    "34": {
+      "comment": "Pipeline had ['ham', 'fished']. Published: 'Zim bam' (2 notes). 'fished' is v2 garble.",
+      "lyrics_v1": ["Zim", "bam"]
+    },
+    "35": {
+      "comment": "Pipeline had ['him', 'she', 'ah', 'da', 'wa.', 'da,']. Published: 'Hoo-dle ah da wa da,' (6 notes). Pipeline garbled with v2 residue ('him', 'she').",
+      "lyrics_v1": ["Hoo", "dle", "ah", "da", "wa", "da,"]
+    },
+    "36": {
+      "comment": "Pipeline had ['from']. Published: 'Hoo-' (1 note) — start of second 'Hoo-dle ah da wa da,' phrase. 'from' is v2 garble.",
+      "lyrics_v1": ["Hoo"]
+    },
+    "37": {
+      "comment": "Pipeline had ['Scat', 'ty', 'wah,', 'Yeah']. Published on p.26: 'Scat-ty wah,' then 'Yeah!' Pipeline mostly correct — second 'Hoo-dle ah da wa da,' and 'Scat-ty wah.' likely in missing measures 38-39. 4 notes: 'Scat-ty wah,' + 'Yeah!' pickup.",
+      "lyrics_v1": ["Scat", "ty", "wah,", "Yeah!"]
+    },
+    "40": {
+      "comment": "Pipeline had ['aint', 'ne']. Published (Tempo I, returning refrain on p.26): 'ain't ne-ces-sa-ri-ly' — but this measure has only 2 notes. So: 'ain't ne-'. Apostrophe missing from pipeline.",
+      "lyrics_v1": ["ain't", "ne"]
+    },
+    "42": {
+      "comment": "Pipeline had ['aint', 'ne', 'ces']. Published: second phrase starts 'It ain't ne-ces-sa-ri-ly'. 3 notes. But 'It' is missing from pipeline. Checking: if m41 ends with pickup 'It', then m42 = 'ain't ne-ces'. Pipeline matches v1 except missing apostrophe.",
+      "lyrics_v1": ["ain't", "ne", "ces"]
+    },
+    "45": {
+      "comment": "Pipeline had ['deb', \"ble's\", 'a']. Published: 'you chil-lun' (3 notes). Pipeline jumped ahead in the phrase; these notes carry the earlier syllables.",
+      "lyrics_v1": ["you", "chil", "lun"]
+    },
+    "46": {
+      "comment": "Pipeline had ['taint', 'ne']. Published: 'De deb-' (2 notes + 1 rest). Pipeline grabbed lyrics from later in the phrase. Missing apostrophe on 'taint'.",
+      "lyrics_v1": ["De", "deb"]
+    },
+    "47": {
+      "comment": "Pipeline had ['so.', 'To']. Published: 'ble's a' (2 notes). Pipeline jumped ahead to end of phrase.",
+      "lyrics_v1": ["ble's", "a"]
+    },
+    "48": {
+      "comment": "Pipeline had ['get', 'in', 'to']. Published: 'vil-lun, But' (3 notes). Pipeline jumped to 'get in-to' from Heb-ben section.",
+      "lyrics_v1": ["vil", "lun,", "But"]
+    },
+    "49": {
+      "comment": "Pipeline had ['snap', 'for', 'a.']. Published: \"'tain't ne-ces-\" (3 notes). Pipeline grabbed lyrics from later Heb-ben section.",
+      "lyrics_v1": ["'tain't", "ne", "ces"]
+    },
+    "50": {
+      "comment": "Pipeline had ['clean!']. Published: 'sa-' (1 note + 1 rest). Continuation of 'ne-ces-sa-ri-ly'. Pipeline jumped to 'clean!' from later.",
+      "lyrics_v1": ["sa"]
+    },
+    "51": {
+      "comment": "Pipeline had ['fault.']. Published: 'ri-' (1 note). Continuation of 'sa-ri-ly so.' Pipeline jumped to 'fault.' from later.",
+      "lyrics_v1": ["ri"]
+    },
+    "52": {
+      "comment": "Pipeline had ['I', 'ri', 'takes', 'ly']. 4 tokens for 2 notes — garbled interleave. Published (p.26-27): 'ly so.' — end of 'But 'tain't ne-ces-sa-ri-ly so.' bridge phrase.",
+      "lyrics_v1": ["ly", "so."]
+    },
+    "54": {
+      "comment": "Pipeline had ['wid', 'a.']. Published (p.27): 'wid a' from 'But wid a grain of salt.' 2 notes. Period on 'a.' is wrong — no period in published.",
+      "lyrics_v1": ["wid", "a"]
+    },
+    "56": {
+      "comment": "Pipeline had ['thus'', 'hun']. Published (p.27): 'Me-thus'-lah lived nine hun-dred years'. m56=2n: 'Me-thus'-'. Apostrophe garbled.",
+      "lyrics_v1": ["Me", "thus'"]
+    },
+    "57": {
+      "comment": "Pipeline had ['years']. Published: continuing 'lah lived nine hun-dred years,'. m57=1n: 'lah'.",
+      "lyrics_v1": ["lah"]
+    },
+    "58": {
+      "comment": "Pipeline had ['thus', 'lab', 'lived']. Published: 'lived nine hun-' (3 notes).",
+      "lyrics_v1": ["lived", "nine", "hun"]
+    },
+    "59": {
+      "comment": "Pipeline had ['years']. Published: 'dred' (1 note).",
+      "lyrics_v1": ["dred"]
+    },
+    "61": {
+      "comment": "Pipeline had ['no', 'gal', \"'11\"]. Published: 'no gal 'll' (3 notes). Pipeline OCR garbled ''ll' as ''11'.",
+      "lyrics_v1": ["no", "gal", "'ll"]
+    },
+    "63": {
+      "comment": "Pipeline had ['years']. Published: 'years?' (1 note). Missing question mark — end of 'no man what's nine hun-dred years?'.",
+      "lyrics_v1": ["years?"]
+    },
+    "65": {
+      "comment": "Pipeline had ['preach', 'dis']. Published: 'preach-in'' (2 notes). Pipeline dropped 'in''.",
+      "lyrics_v1": ["preach", "in'"]
+    },
+    "66": {
+      "comment": "Pipeline had ['ser', 'mon']. Published: 'dis ser-' (2 notes).",
+      "lyrics_v1": ["dis", "ser"]
+    },
+    "67": {
+      "comment": "Pipeline had ['aint', 'nes', 'sa,']. Published (p.28): 'mon to show,' — continuation of 'ser-mon to show,' from m66. Pipeline grabbed lyrics from the later 'ain't nes-sa' closing.",
+      "lyrics_v1": ["mon", "to", "show,"]
+    },
+    "68": {
+      "comment": "Pipeline had ['amt', 'nes']. Published (p.28): 'ain't nes-' — start of closing 'ain't nes-sa, ain't nes-sa, ain't ne-ces-sa-ri-ly so.' 'amt' is OCR garble of 'ain't'.",
+      "lyrics_v1": ["ain't", "nes"]
+    },
+    "69": {
+      "comment": "Pipeline had ['ne', 'ces']. Published: 'sa, ain't' (2 notes).",
+      "lyrics_v1": ["sa,", "ain't"]
+    },
+    "70": {
+      "comment": "Pipeline had ['SO.', 'ri']. Published: 'nes-sa,' (2 notes). 'SO.' is garbled.",
+      "lyrics_v1": ["nes", "sa,"]
+    },
+    "71": {
+      "comment": "Pipeline had ['ly']. Published (p.28): 'ain't' — third iteration of 'ain't' in the closing 'ain't nes-sa, ain't nes-sa, ain't ne-ces-sa-ri-ly so.' Remaining syllables 'ne-ces-sa-ri-ly so.' continue in measures not reported by pipeline.",
+      "lyrics_v1": ["ain't"]
+    }
+  }
+}
