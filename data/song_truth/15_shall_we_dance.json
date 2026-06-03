@@ -1,0 +1,78 @@
+{
+  "song": "15 - Shall We Dance",
+  "key_fifths": -1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Moderato, C major) mm1-22 + Refrain (brightly and rhythmically, F major) mm23-56. Pipeline coverage ~75%. Verse has two large GAP runs (mm9-11) and a zero-note detection error on m7 ('Blues?'). Refrain has 'Refrain' stage direction read as lyric (m18), several OCR garbles (mm31,41,42,48), and pickup syllables lost to note-count undercount in mm25,29. Instrumental GAPs at mm22,38,50,54,56 are correct (no vocal lyrics in PDF).",
+  "measures": {
+    "4": {
+      "comment": "Pipeline had 'fling' without exclamation. PDF: 'fling!'.",
+      "lyrics_v1": ["fling!"]
+    },
+    "7": {
+      "comment": "Pipeline detected 0 notes, 1 rest. PDF clearly shows a whole note on 'Blues?' — note detection error. Cannot provide lyrics (0 notes). Measure carries the word 'Blues?' completing the phrase 'Why keep nurs-ing the Blues?'."
+    },
+    "9": {
+      "comment": "GAP 3n. Pipeline had no lyrics. PDF: 'If_ you want' — 3 syllables on 3 notes.",
+      "lyrics_v1": ["If", "you", "want"]
+    },
+    "10": {
+      "comment": "GAP 3n. Pipeline had no lyrics. PDF: 'this_ old world' — 3 syllables on 3 notes.",
+      "lyrics_v1": ["this", "old", "world"]
+    },
+    "11": {
+      "comment": "GAP 4n. Pipeline had no lyrics. PDF: 'on_ a' — 2 syllables carried over 4 notes (tied figure).",
+      "lyrics_v1": ["on", "a"]
+    },
+    "14": {
+      "comment": "Pipeline had ['danc','ing','shoes'] missing comma. PDF: 'danc-ing shoes,'.",
+      "lyrics_v1": ["danc", "ing", "shoes,"]
+    },
+    "18": {
+      "comment": "Pipeline read 'Refrain' stage direction as first lyric. Actual lyrics: 'danc-ing shoes,' (repeat of m14). PDF shows 'Refrain (brightly and rhythmically)' is a performance direction above the staff, not a sung word.",
+      "lyrics_v1": ["danc", "ing", "shoes,"]
+    },
+    "22": {
+      "comment": "GAP 1n. Instrumental transition (Db-D-Eb modulation). No vocal lyrics in PDF."
+    },
+    "25": {
+      "comment": "Pipeline had ['keep','on']. PDF: 'Or keep on' — 3 syllables but pipeline detected only 2 notes. Providing ['Or','keep'] to capture the phrase-initial 'Or'; 'on' displaced to m26 onset or lost to note-count undercount.",
+      "lyrics_v1": ["Or", "keep"]
+    },
+    "29": {
+      "comment": "Pipeline had ['walk','on']. PDF: 'and walk on' — 3 syllables but pipeline detected only 2 notes. Providing ['and','walk']; 'on' displaced or lost to note-count undercount.",
+      "lyrics_v1": ["and", "walk"]
+    },
+    "31": {
+      "comment": "Pipeline had ['Shall..','we'] — stray OCR dots. PDF: 'Shall_ we'.",
+      "lyrics_v1": ["Shall", "we"]
+    },
+    "38": {
+      "comment": "GAP 1n. Sustained/tied whole note continuing 'care?' from m37. No new lyrics in PDF."
+    },
+    "41": {
+      "comment": "Pipeline had ['We're','grow','mg'] — 'mg' is OCR misread of 'ing'. PDF: 'We're grow-ing'.",
+      "lyrics_v1": ["We're", "grow", "ing"]
+    },
+    "42": {
+      "comment": "Pipeline had ['old','e1;'] — 'e1;' is OCR garble for 'er,'. PDF: 'old - er,_'.",
+      "lyrics_v1": ["old", "er,"]
+    },
+    "45": {
+      "comment": "GAP. Pipeline had no lyrics (2 notes, 1 rest). PDF: 'an al-so' — 3 syllables but only 2 notes detected. Providing 2 syllables; third syllable 'so' lost to note-count undercount. Part of compound word 'also-ran' split across mm45-46.",
+      "lyrics_v1": ["an", "al"]
+    },
+    "48": {
+      "comment": "Pipeline had ['dance.','lit','tle','la.','dy,'] — stray periods on 'dance.' and 'la.' from OCR. PDF: 'dance, lit-tle la-dy,'.",
+      "lyrics_v1": ["dance,", "lit", "tle", "la", "dy,"]
+    },
+    "50": {
+      "comment": "GAP 1n. Whole note sustained from 'man!' in m49. No new lyrics in PDF."
+    },
+    "54": {
+      "comment": "GAP 1n. First ending — instrumental (tied note + rest). No vocal lyrics in PDF."
+    },
+    "56": {
+      "comment": "GAP 1n. Second ending — final instrumental cutoff. No vocal lyrics in PDF."
+    }
+  }
+}

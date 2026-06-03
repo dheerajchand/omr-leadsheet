@@ -1,0 +1,133 @@
+{
+  "song": "08 - There's A Boat Dat's Leavin' Soon For New York",
+  "key_fifths": -2,
+  "time_signature": "4/4",
+  "comment": "Published lyrics from Ira Gershwin. Bb major, Moderato (Tempo di Blues). Pickup 'There's a' lost by OMR (anacrusis not captured). First statement mm.1-8, second verse mm.10-12, reprise mm.13-17, bridge mm.19-36, coda mm.37-54. Many OCR-garbled syllables in early measures; late-song gaps (mm.37-45) filled where PDF is clear. Spurious A(major) chords wiped.",
+  "measures": {
+    "1": {
+      "comment": "Pickup 'There's a' lost by OMR. OCR capitalised 'DATS'; published is 'dat's'.",
+      "lyrics_v1": ["boat", "dat's"]
+    },
+    "2": {
+      "comment": "OCR garbled 'leav-in'' as 'di'. Spurious A(major) chord wiped. Published: 'leav-in' soon'.",
+      "lyrics_v1": ["leav-in'", "soon"],
+      "chords": []
+    },
+    "3": {
+      "comment": "Pipeline dropped 'New'. Published: 'for New York,'.",
+      "lyrics_v1": ["for", "New", "York,"]
+    },
+    "5": {
+      "comment": "Gap: 1 note with no lyrics. Published: 'wid' (from 'Come wid me').",
+      "lyrics_v1": ["wid"]
+    },
+    "6": {
+      "comment": "OCR grabbed 'You' from verse 2 and 'wid' from wrong position. Published: 'me,' continuing from 'Come wid me,'. Direction '?' is spurious.",
+      "lyrics_v1": ["me,"],
+      "directions": []
+    },
+    "8": {
+      "comment": "Gap: 3 notes with no lyrics. Published: 'sis-ter.' ending first phrase. Third note is melismatic (held).",
+      "lyrics_v1": ["sis", "ter."]
+    },
+    "10": {
+      "comment": "OCR truncated 'kin' to 'ki'. Published: 'me kin' (from 'You an' me kin').",
+      "lyrics_v1": ["me", "kin"]
+    },
+    "11": {
+      "comment": "Pipeline skipped 'dat'. Published: 'live dat' (from 'live dat high life').",
+      "lyrics_v1": ["live", "dat"]
+    },
+    "12": {
+      "comment": "Pipeline dropped 'high' and 'in'. Published: 'high life in New York.' 3 notes; middle syllables compressed.",
+      "lyrics_v1": ["high", "life", "York."]
+    },
+    "14": {
+      "comment": "Pipeline reversed order. Published: 'wid me,' (from 'Come wid me,'). Direction '?' is spurious.",
+      "lyrics_v1": ["wid", "me,"],
+      "directions": []
+    },
+    "17": {
+      "comment": "OCR garbled second syllable. Published: 'sis-ter.' (end of 'sister').",
+      "lyrics_v1": ["sis", "ter."]
+    },
+    "23": {
+      "comment": "OCR merged 'lem' and 'we'll' into one token. Published: 'Har-lem we'll go strut-tin''. Corrected split.",
+      "lyrics_v1": ["Har", "lem", "we'll", "go"]
+    },
+    "24": {
+      "comment": "Missing comma. Published: 'tin',' (end of 'strut-tin'').",
+      "lyrics_v1": ["tin',"],
+      "directions": []
+    },
+    "26": {
+      "comment": "OCR misread 'We'll' as 'tin'' (from adjacent measure). Published: 'We'll' (start of 'We'll go a-strut-tin'').",
+      "lyrics_v1": ["We'll"]
+    },
+    "27": {
+      "comment": "Normalize curly apostrophe to straight. Published: 'go a-strut-tin''.",
+      "lyrics_v1": ["go", "a-", "strut-", "tin'"]
+    },
+    "28": {
+      "comment": "Normalize curly apostrophe. Published: 'nut-tin' Too'.",
+      "lyrics_v1": ["nut-", "tin'", "Too"]
+    },
+    "33": {
+      "comment": "OCR inserted space in 'styles.'. Published: 'styles.'.",
+      "lyrics_v1": ["styles."]
+    },
+    "37": {
+      "comment": "Gap: 1 note no lyrics. Published: 'smiles.' (end of 'Jes' noth-in' but smiles.').",
+      "lyrics_v1": ["smiles."]
+    },
+    "38": {
+      "comment": "Gap: 1 note no lyrics. Published: 'Come' (start of 'Come a-long wid me,').",
+      "lyrics_v1": ["Come"]
+    },
+    "39": {
+      "comment": "Gap: 4 notes no lyrics. Published: 'a-long wid me,' (poco a poco cresc.).",
+      "lyrics_v1": ["a-", "long", "wid", "me,"]
+    },
+    "40": {
+      "comment": "Gap: 4 notes no lyrics. Published: 'dat's de place,' with 1 melismatic note.",
+      "lyrics_v1": ["dat's", "de", "place,"]
+    },
+    "42": {
+      "comment": "Wrong punctuation (period should be comma) and missing 'a-' prefix. Published: 'a-long,' (from 'come a-long,').",
+      "lyrics_v1": ["a-long,"]
+    },
+    "43": {
+      "comment": "Gap: 1 note no lyrics. Published: 'come' (start of second 'come a-long.').",
+      "lyrics_v1": ["come"]
+    },
+    "44": {
+      "comment": "Gap: 2 notes no lyrics. Published: 'a- long.' (end of final 'come a-long.').",
+      "lyrics_v1": ["a-", "long."]
+    },
+    "45": {
+      "comment": "Gap: 3 notes no lyrics. Published: 'There's a- boat' (pickup to final verse, p.47).",
+      "lyrics_v1": ["There's", "a-", "boat"]
+    },
+    "46": {
+      "comment": "Pipeline dropped 'for' and 'New'. Spurious A(major) chord wiped. Published: 'for New York.'.",
+      "lyrics_v1": ["for", "New", "York."],
+      "chords": []
+    },
+    "49": {
+      "comment": "Missing comma. Published: 'me,' (from 'Come wid me,').",
+      "lyrics_v1": ["me,"]
+    },
+    "51": {
+      "comment": "Gap: 1 note no lyrics. Likely melismatic continuation before 'sis-ter' in m52.",
+      "lyrics_v1": []
+    },
+    "52": {
+      "comment": "Missing comma. Published: 'sis-ter,' (not end of song, continues to final 'belong').",
+      "lyrics_v1": ["sis", "ter,"]
+    },
+    "55": {
+      "comment": "Gap: 1 note no lyrics. Likely held continuation of final 'long.' -- no new syllable.",
+      "lyrics_v1": []
+    }
+  }
+}

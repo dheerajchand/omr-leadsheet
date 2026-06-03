@@ -1,0 +1,120 @@
+{
+  "song": "09 - A Woman Is A Sometime Thing",
+  "key_fifths": -2,
+  "time_signature": "4/4",
+  "comment": "Published lyrics from DuBose Heyward. Bb major / G minor centred (key sig -2). Jake's verse from Porgy and Bess. Call-and-response chorus repeats three times with stacking artefacts in pipeline. Measures 32-33 have note under-detection causing lyric loss (She'll love you and / de-ceive you, Then she'll compressed). Measures 38-45 are stacked call-and-response with Guitar tacet markings garbled as directions.",
+  "measures": {
+    "4": {
+      "comment": "Pipeline had 'in\\'' without trailing comma. Published: 'in\\','.",
+      "lyrics_v1": ["in',"]
+    },
+    "5": {
+      "comment": "Pipeline dropped 'may'. Published: 'Wo-man may born— you,'.",
+      "lyrics_v1": ["Wo", "man", "may", "born", "you,"]
+    },
+    "6": {
+      "comment": "Pipeline dropped comma after first 'you'. Published: 'love you, an\\' mourn— you,' but only 4 notes detected so 'an\\'' is lost.",
+      "lyrics_v1": ["love", "you,", "mourn", "you,"]
+    },
+    "7": {
+      "comment": "Pipeline stacked 'Yes' from m10 area into this measure. Published: 'But' (held note only).",
+      "lyrics_v1": ["But"]
+    },
+    "9": {
+      "comment": "Pipeline had spurious apostrophe on 'time\\''. Published: 'wo-man is a some-time'.",
+      "lyrics_v1": ["wo", "man", "is", "a", "some", "time"]
+    },
+    "11": {
+      "comment": "Pipeline had 2 lyrics for 3 notes. Published: 'wo-man is a some-time' but only 3 notes detected; best fit truncated.",
+      "lyrics_v1": ["wo", "man", "is"]
+    },
+    "13": {
+      "comment": "Pipeline had 0 lyrics. Published: rest then pickup 'Yo\\''.",
+      "lyrics_v1": ["Yo'"]
+    },
+    "14": {
+      "comment": "Pipeline had 0 lyrics for 5 notes. Published: 'Mam-my is the first to'. 5 notes, 6 syllables; 'to' overflows to m15 pickup.",
+      "lyrics_v1": ["Mam", "my", "is", "the", "first"]
+    },
+    "15": {
+      "comment": "Pipeline had 4 lyrics missing 'to' pickup from m14 overflow. Published: 'to name you, An\\' she\\'ll'.",
+      "lyrics_v1": ["to", "name", "you,", "An'", "she'll"]
+    },
+    "17": {
+      "comment": "Pipeline dropped 'string,'. Published: 'string,— Then she\\'ll'.",
+      "lyrics_v1": ["string,", "Then", "she'll"]
+    },
+    "20": {
+      "comment": "Pipeline had 0 lyrics, garbled direction 'pom\"D'. Published: '\\'Cause' (held note).",
+      "lyrics_v1": ["'Cause"]
+    },
+    "21": {
+      "comment": "Pipeline had 0 lyrics. Published: rest then pickup 'a—'.",
+      "lyrics_v1": ["a"]
+    },
+    "22": {
+      "comment": "Pipeline had garbled '>\\u00bb' and 'c'. Published: 'wo-man is a some-time'.",
+      "lyrics_v1": ["wo", "man", "is", "a", "some", "time"]
+    },
+    "24": {
+      "comment": "Pipeline dropped 'some'. Published: 'wo-man is a some-time' but only 5 notes; truncated.",
+      "lyrics_v1": ["wo", "man", "is", "a", "some"]
+    },
+    "27": {
+      "comment": "Pipeline had 0 lyrics. Published: 'Don\\'t you' (mf, D7).",
+      "lyrics_v1": ["Don't", "you"]
+    },
+    "28": {
+      "comment": "Pipeline had 0 lyrics for 7 notes. Published: 'nev-er let a wo-man'.",
+      "lyrics_v1": ["nev", "er", "let", "a", "wo", "man"]
+    },
+    "31": {
+      "comment": "Pipeline had 'ring' without period. Published: 'ring.'.",
+      "lyrics_v1": ["ring."]
+    },
+    "32": {
+      "comment": "Pipeline had 0 lyrics for 4 notes. Published: 'She\\'ll love you and'.",
+      "lyrics_v1": ["She'll", "love", "you", "and"]
+    },
+    "33": {
+      "comment": "Pipeline had ['take','leave','you,'] which is from a later phrase. Published: 'de-ceive you, Then she\\'ll' but only 3 notes; truncated.",
+      "lyrics_v1": ["de", "ceive", "you,"]
+    },
+    "34": {
+      "comment": "Pipeline had ['\\'Cause'] but this measure position corresponds to 'take yo\\' clo\\'es an\\' leave you,' in published. Only 3 notes; best fit truncated. '\\'Cause' belongs in m35 area.",
+      "lyrics_v1": ["take", "leave", "you,"]
+    },
+    "35": {
+      "comment": "Pipeline had ['a','de'] with garbled 'de'. Published: '\\'Cause' held then pickup 'a—'. Only 4 notes; 2 meaningful lyrics.",
+      "lyrics_v1": ["'Cause", "a"]
+    },
+    "37": {
+      "comment": "Pipeline had 'thing' without period. Published: 'thing.— Yes,— a'.",
+      "lyrics_v1": ["thing.", "Yes,", "a"]
+    },
+    "38": {
+      "comment": "Pipeline had garbled 'we' for 'wo'. Published: 'wo-man is— a' (call-and-response).",
+      "lyrics_v1": ["wo", "man", "is"]
+    },
+    "39": {
+      "comment": "Pipeline dropped 'some'. Published: 'some-time—' (call-and-response).",
+      "lyrics_v1": ["some", "time"]
+    },
+    "41": {
+      "comment": "Pipeline had 3 lyrics for 4 notes, missing 'a'. Published: 'wo-man is a'.",
+      "lyrics_v1": ["wo", "man", "is", "a"]
+    },
+    "44": {
+      "comment": "STACKED 5 lyrics / 4 notes with '>|' garble. Published: 'wo-man is a' (call-and-response). Garble removed.",
+      "lyrics_v1": ["wo", "man", "is", "a"]
+    },
+    "46": {
+      "comment": "Pipeline had 'thing)' with spurious parenthesis. Published: 'thing,'.",
+      "lyrics_v1": ["thing,"]
+    },
+    "47": {
+      "comment": "Pipeline had 'Yes' — stacking artefact from call-and-response. Published: held whole note, no lyrics.",
+      "lyrics_v1": []
+    }
+  }
+}

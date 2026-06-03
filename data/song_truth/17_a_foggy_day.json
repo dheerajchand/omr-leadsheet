@@ -1,0 +1,60 @@
+{
+  "song": "17 - A Foggy Day",
+  "key_fifths": -1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (rather freely) + Refrain (brighter but warmly). Pipeline has significant gaps in the refrain where notes were lost (m17-m19: 'A fog-gy day in Lon-don', m33-m35: 'charm How long I won-dered could this thing'). Verse OCR has garbled tokens and stage-direction-as-lyrics.",
+  "measures": {
+    "1": {
+      "comment": "OCR merged 'a strang' into 'ast rang'. Published: 'I was a strang-er in the'.",
+      "lyrics_v1": ["I", "was", "a", "strang", "er", "in", "the"]
+    },
+    "3": {
+      "comment": "Pipeline read '(rather freely)' direction as lyric 'freely'. Published: 'Out of town were the'.",
+      "lyrics_v1": ["Out", "of", "town", "were", "the"]
+    },
+    "6": {
+      "comment": "Pipeline dropped 'self' from 'self-pi-ty'. Published: 'self - pi-ty, What to'.",
+      "lyrics_v1": ["self", "pi", "ty,", "What", "to"]
+    },
+    "7": {
+      "comment": "Pipeline had 'do What to do to' (5 on 6n). Published: 'do? What to do? What to'.",
+      "lyrics_v1": ["do?", "What", "to", "do?", "What", "to"]
+    },
+    "8": {
+      "comment": "Pipeline had 'do? The II' -- 'II' is OCR garbage. Published: 'do? The'.",
+      "lyrics_v1": ["do?", "The"]
+    },
+    "11": {
+      "comment": "Pipeline dropped 'walked'. Published: 'walked through the fog-gy'.",
+      "lyrics_v1": ["walked", "through", "the", "fog", "gy"]
+    },
+    "12": {
+      "comment": "Pipeline dropped 'a' from 'a-lone'. Published: 'streets a-lone, It'.",
+      "lyrics_v1": ["streets", "a", "lone,", "It"]
+    },
+    "24": {
+      "comment": "Pipeline had 'had me down. ing' -- 'ing' is OCR bleed from next system. Published: 'had me down.'.",
+      "lyrics_v1": ["had", "me", "down."]
+    },
+    "26": {
+      "comment": "Pipeline read 'vie' instead of 'viewed'. Published: 'I viewed the'.",
+      "lyrics_v1": ["I", "viewed", "the"]
+    },
+    "28": {
+      "comment": "Pipeline had 'a,' with misplaced comma. Published: 'with a larm,'.",
+      "lyrics_v1": ["with", "a", "larm,"]
+    },
+    "38": {
+      "comment": "Pipeline had OCR garble 'age of \" \\' mir'. Published: 'age of mir'.",
+      "lyrics_v1": ["age", "of", "mir"]
+    },
+    "39": {
+      "comment": "Pipeline had 'a,' with stray comma. Published: 'a-cles' (end of mir-a-cles).",
+      "lyrics_v1": ["a", "cles"]
+    },
+    "40": {
+      "comment": "Pipeline had 'had won dered' -- misaligned lyrics from different phrase. Published: 'had n't passed,'.",
+      "lyrics_v1": ["had", "n't", "passed,"]
+    }
+  }
+}

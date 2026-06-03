@@ -1,0 +1,212 @@
+{
+  "song": "01 - The Real American Folk Song",
+  "key_fifths": 1,
+  "time_signature": "6/8",
+  "comment": "Published lyrics by Ira Gershwin. Verse (6/8, Allegretto) mm1-21 with heavy v1/v2 stacking (107% ratio). Refrain (2/2, Tempo di Fox Trot) mm23-61 with repeat. Pipeline read 'Fox Trot' direction as lyrics (m29), displaced lyrics across refrain measures, and left large GAPs in intro (mm23-28) and bridge (mm38-43). Verse v1: 'Near Barcelona the peasant croons...' Verse v2: 'You may dislike, or you may adore...' De-interleaved to v1 throughout.",
+  "measures": {
+    "1": {
+      "comment": "Pipeline stacked v1+v2: 'Near You' (2 on 1n). Published v1: 'Near'.",
+      "lyrics_v1": ["Near"]
+    },
+    "2": {
+      "comment": "Pipeline stacked v1+v2: 10 lyrics on 5n. Published v1: 'Bar-ce-lo-na the'.",
+      "lyrics_v1": ["Bar", "ce", "lo", "na", "the"]
+    },
+    "3": {
+      "comment": "Pipeline stacked v1+v2: 'ha may ant a songs dore The The' (8 on 4n). 'ha' OCR garble of 'peas', 'songs' should be 'croons'. Published v1: 'peas-ant croons The'.",
+      "lyrics_v1": ["peas", "ant", "croons", "The"]
+    },
+    "4": {
+      "comment": "Pipeline stacked v1+v2: 8 on 4n. Published v1: 'old tra-di-tion-'.",
+      "lyrics_v1": ["old", "tra", "di", "tion"]
+    },
+    "5": {
+      "comment": "Pipeline stacked v1+v2: 7 on 4n. Published v1: '-al Span-ish tunes;'.",
+      "lyrics_v1": ["al", "Span", "ish", "tunes;"]
+    },
+    "6": {
+      "comment": "Pipeline stacked: 'They pol songs' (3 on 2n+3r). Published v1: 'The Ne-a-pol-i-tan' but only 2 notes — 'a-pol-i-tan' (4 syllables) lost to 3 rest-detected notes. Unfixable.",
+      "lyrics_v1": ["The", "Ne"]
+    },
+    "7": {
+      "comment": "Pipeline stacked v1+v2: 8 on 4n. Published v1: 'Street Song sighs, You'.",
+      "lyrics_v1": ["Street", "Song", "sighs,", "You"]
+    },
+    "8": {
+      "comment": "Pipeline stacked v1+v2: 10 on 5n. Published v1: 'think of I-tal-ian'.",
+      "lyrics_v1": ["think", "of", "I", "tal", "ian"]
+    },
+    "9": {
+      "comment": "Pipeline stacked v1+v2: 4 on 3n. Published v1: 'skies.' then 'Each' (new phrase). 2 syllables on 3 notes (1 held).",
+      "lyrics_v1": ["skies.", "Each"]
+    },
+    "10": {
+      "comment": "Pipeline stacked v1+v2: 10 on 5n. Published v1: 'na-tion has a cre-'.",
+      "lyrics_v1": ["na", "tion", "has", "a", "cre"]
+    },
+    "11": {
+      "comment": "Pipeline stacked v1+v2: 8 on 4n. Published v1: '-a-tive vein O-'.",
+      "lyrics_v1": ["a", "tive", "vein", "O"]
+    },
+    "12": {
+      "comment": "Pipeline stacked v1+v2: 9 on 5n. Published v1: '-rig-i-nat-ing a'.",
+      "lyrics_v1": ["rig", "i", "nat", "ing", "a"]
+    },
+    "13": {
+      "comment": "Pipeline stacked v1+v2: 7 on 4n. Published v1: 'na-tive strain, With'.",
+      "lyrics_v1": ["na", "tive", "strain,", "With"]
+    },
+    "14": {
+      "comment": "Pipeline stacked: 3 on 2n+2r. Published v1: 'folk songs plain-tive and' but only 2 notes — 'plain-tive and' (3 syllables) lost to rests. Unfixable.",
+      "lyrics_v1": ["folk", "songs"]
+    },
+    "15": {
+      "comment": "Pipeline stacked v1+v2: 8 on 4n. Published v1: 'oth-ers gay, In'.",
+      "lyrics_v1": ["oth", "ers", "gay,", "In"]
+    },
+    "16": {
+      "comment": "Pipeline stacked v1+v2: 5 on 3n+1r. Published v1: 'their own pe-'.",
+      "lyrics_v1": ["their", "own", "pe"]
+    },
+    "17": {
+      "comment": "Pipeline had 'pe' (1 on 1n+4r). Displaced from m16. Published v1: '-cu-' (from 'pe-cu-liar'). '-liar' lost to 4 rests. Unfixable.",
+      "lyrics_v1": ["cu"]
+    },
+    "18": {
+      "comment": "Pipeline stacked v1+v2: 13 on 7n. Published v1: 'way. A-mer-i-can folk songs,' — 'liar' from 'pe-cu-liar' lost (no notes), 'I' squeezed between m18/m19.",
+      "lyrics_v1": ["way.", "A", "mer", "i", "can", "folk", "songs,"]
+    },
+    "19": {
+      "comment": "Pipeline stacked v1+v2: 'feel, time' (2 on 1n). Published v1: 'feel,'.",
+      "lyrics_v1": ["feel,"]
+    },
+    "20": {
+      "comment": "Pipeline stacked v1+v2: 10 on 6n. Published v1: 'Have a much strong-er ap-'.",
+      "lyrics_v1": ["Have", "a", "much", "strong", "er", "ap"]
+    },
+    "21": {
+      "comment": "Pipeline stacked: 'me. sub lime' (3 on 2n). 'me.' is garble. Published v1: '-peal.'.",
+      "lyrics_v1": ["peal."]
+    },
+    "23": {
+      "comment": "GAP 1n. Refrain pickup. Published: 'The'.",
+      "lyrics_v1": ["The"]
+    },
+    "25": {
+      "comment": "GAP 2n. Published: 'real A-'.",
+      "lyrics_v1": ["real", "A"]
+    },
+    "26": {
+      "comment": "GAP 3n. Published: '-mer-i-can'.",
+      "lyrics_v1": ["mer", "i", "can"]
+    },
+    "28": {
+      "comment": "GAP 3n. Published: 'folk song is'.",
+      "lyrics_v1": ["folk", "song", "is"]
+    },
+    "29": {
+      "comment": "Pipeline read 'Fox Trot' direction as lyrics: 'ic the fon for Trot ic' (6 on 6n). Published: 'a rag, A men-tal jag,'.",
+      "lyrics_v1": ["a", "rag,", "A", "men", "tal", "jag,"]
+    },
+    "30": {
+      "comment": "Pipeline displaced: 'blues. The' (2 on 3n). Published: 'A rhyth-mic'.",
+      "lyrics_v1": ["A", "rhyth", "mic"]
+    },
+    "31": {
+      "comment": "Pipeline displaced: 'mer i can folk it a' (6 on 6n). Published: 'ton-ic for the chron-ic'.",
+      "lyrics_v1": ["ton", "ic", "for", "the", "chron", "ic"]
+    },
+    "32": {
+      "comment": "Pipeline displaced: 'joke sang, rag' (3 on 3n). Published: 'blues. The crit-'.",
+      "lyrics_v1": ["blues.", "The", "crit"]
+    },
+    "33": {
+      "comment": "Pipeline displaced: 'now' (1 on 1n). Published: '-ics'.",
+      "lyrics_v1": ["ics"]
+    },
+    "34": {
+      "comment": "Pipeline displaced: 'They've' (1 on 1n). Published: 'called'.",
+      "lyrics_v1": ["called"]
+    },
+    "35": {
+      "comment": "Pipeline displaced: 'chang their tune. ed and' (5 on 5n). Published: 'it a joke song, but'.",
+      "lyrics_v1": ["it", "a", "joke", "song,", "but"]
+    },
+    "36": {
+      "comment": "Pipeline displaced: 'they some' (2 on 2n). Published: 'now They've'.",
+      "lyrics_v1": ["now", "They've"]
+    },
+    "37": {
+      "comment": "Pipeline displaced: 'how.' (1 on 1n). Published: 'changed'.",
+      "lyrics_v1": ["changed"]
+    },
+    "38": {
+      "comment": "Pipeline had 'For' (1 on 5n) — 4 lyrics missing. Published: 'their tune and they like'.",
+      "lyrics_v1": ["their", "tune", "and", "they", "like"]
+    },
+    "39": {
+      "comment": "GAP 7n. Published: 'it some-how. For it's in oc-'.",
+      "lyrics_v1": ["it", "some", "how.", "For", "it's", "in", "oc"]
+    },
+    "40": {
+      "comment": "GAP 6n. Published: '-u-lat-ed with a syn-'.",
+      "lyrics_v1": ["u", "lat", "ed", "with", "a", "syn"]
+    },
+    "41": {
+      "comment": "Pipeline had 'me' (1 on 1n+3r). Published: '-co-' (from 'syn-co-pat-ed'). '-pat-ed sort of me-ter,...strain.' lost to rests and 0-note measures (mm42-43). Partially unfixable.",
+      "lyrics_v1": ["co"]
+    },
+    "42": {
+      "comment": "GAP 4n. Published: '-pat-ed sort of'.",
+      "lyrics_v1": ["pat", "ed", "sort", "of"]
+    },
+    "43": {
+      "comment": "GAP 7n. Published: 'me-ter, Sweet-er Than a class-'. 7 syllables on 7n.",
+      "lyrics_v1": ["me", "ter,", "Sweet", "er", "Than", "a", "class"]
+    },
+    "44": {
+      "comment": "Pipeline had 'Boy! You can't re main' (5 on 6n). Published: '-ic strain. Boy! You can't re-'. Adding 'ic strain.' prefix.",
+      "lyrics_v1": ["ic", "strain.", "Boy!", "You", "can't", "re"]
+    },
+    "45": {
+      "comment": "Pipeline had 'and Still qui' (3 on 3n) — wrong order. Published: '-main Still and'.",
+      "lyrics_v1": ["main", "Still", "and"]
+    },
+    "46": {
+      "comment": "Pipeline had 'et For it's a. ri ot! The' (7 on 7n) — 'a.' has stray period. Published: 'qui-et, For it's a ri-ot!'.",
+      "lyrics_v1": ["qui", "et,", "For", "it's", "a", "ri", "ot!"]
+    },
+    "47": {
+      "comment": "Pipeline had 'real mer 'i can' (4 on 6n) — missing 'The' and 'A', garbled ''i'. Published: 'The real A-mer-i-can'.",
+      "lyrics_v1": ["The", "real", "A", "mer", "i", "can"]
+    },
+    "49": {
+      "comment": "Pipeline had 'like of Foun tain' (4 on 5n) — missing 'a'. Published: 'like a Foun-tain of'.",
+      "lyrics_v1": ["like", "a", "Foun", "tain", "of"]
+    },
+    "50": {
+      "comment": "Pipeline had 'Youth,' — comma should be semicolon. Published: 'Youth; You'.",
+      "lyrics_v1": ["Youth;", "You"]
+    },
+    "55": {
+      "comment": "Pipeline had 'real mer i can' (4 on 5n) — missing 'A'. Published: 'real A-mer-i-can'.",
+      "lyrics_v1": ["real", "A", "mer", "i", "can"]
+    },
+    "56": {
+      "comment": "Pipeline had 'folk song, mas ter' (4 on 6n) — missing 'A'. Published: 'folk song, A mas-ter'.",
+      "lyrics_v1": ["folk", "song,", "A", "mas", "ter"]
+    },
+    "57": {
+      "comment": "Pipeline had 'stroke song, is a.' (4 on 4n) — stray period on 'a.'. Published: 'stroke song, is a'.",
+      "lyrics_v1": ["stroke", "song,", "is", "a"]
+    },
+    "59": {
+      "comment": "GAP 1n. 2nd ending pickup. Published: 'The'.",
+      "lyrics_v1": ["The"]
+    },
+    "60": {
+      "comment": "GAP 1n. 2nd ending final. Published: 'rag.'.",
+      "lyrics_v1": ["rag."]
+    }
+  }
+}

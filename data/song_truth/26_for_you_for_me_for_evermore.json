@@ -1,0 +1,48 @@
+{
+  "song": "26 - For You, For Me, For Evermore",
+  "key_fifths": -3,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (smoothly) + Refrain (not fast). Pipeline completely lost the verse opening 'Par-a-dise can-not re-fuse us, Nev-er such a hap-py' (no measures in pipeline data). Multiple note-loss gaps: m8 (lost 4 notes from 'All the shad-ows now will'), m22 (lost 'to be'), m34 (lost 'you're mine,'), m38-m39 (lost 'end-ing starts.'). Second ending m49-m50 also lost.",
+  "measures": {
+    "8": {
+      "comment": "Pipeline had 'All shad will' on 3n + 3r. Published: 'All the shad-ows now will lose us,'. Pipeline lost 4 notes (3r should be notes). Best fit for 3n: 'All the shad'. Rest of syllables lost.",
+      "lyrics_v1": ["All", "the", "shad"]
+    },
+    "10": {
+      "comment": "Pipeline had 'Luck y stars are ev ry' missing apostrophe. Published: 'Luck - y stars are ev - 'ry -'. 6n.",
+      "lyrics_v1": ["Luck", "y", "stars", "are", "ev", "'ry"]
+    },
+    "12": {
+      "comment": "Pipeline had 'As hap py' dropping 'a'. Published: 'As a hap - py'. 3n + 1r. Only 3 notes available.",
+      "lyrics_v1": ["As", "a", "hap"]
+    },
+    "18": {
+      "comment": "Pipeline had 'bound for' -- wrong word. Published: 'me, for' (from 'for me, for ev-er-more'). 2n.",
+      "lyrics_v1": ["me,", "for"]
+    },
+    "19": {
+      "comment": "Pipeline had 'ev ~er more,' -- tilde is OCR garble. Published: 'ev - er - more,'. 3n.",
+      "lyrics_v1": ["ev", "er", "more,"]
+    },
+    "20": {
+      "comment": "Pipeline had 'Its' missing apostrophe. Published: 'It's'. 2n + 1r, 1 lyric on held note is correct.",
+      "lyrics_v1": ["It's"]
+    },
+    "24": {
+      "comment": "Pipeline had 'It's' (1 lyric) on 2n + 1r. Published: 'It's'. Same pattern as m20. Correct.",
+      "lyrics_v1": ["It's"]
+    },
+    "42": {
+      "comment": "Pipeline had 'world will be a' on 4n + 1r. Published: 'world will be, With a'. Missing comma after 'be' and 'With' misread as continuation. 4 notes carry 4 syllables but 'a' should be 'With a' split differently.",
+      "lyrics_v1": ["world", "will", "be,", "With"]
+    },
+    "44": {
+      "comment": "Pipeline had 'store For' on 2n. Published: 'store. For'. Missing period.",
+      "lyrics_v1": ["store.", "For"]
+    },
+    "47": {
+      "comment": "Pipeline had 'ceremony' -- severe OCR garble. Published: 'more!' (1st ending). 1n.",
+      "lyrics_v1": ["more!"]
+    }
+  }
+}

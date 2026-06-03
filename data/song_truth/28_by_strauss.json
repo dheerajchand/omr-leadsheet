@@ -1,0 +1,196 @@
+{
+  "song": "28 - By Strauss",
+  "key_fifths": -1,
+  "time_signature": "3/4",
+  "comment": "Published lyrics by Ira Gershwin. Waltz in 3/4 time. Verse (Tempo di Valse Viennoise) + Refrain. Verse has moderate OCR errors. Refrain has several GAP measures and stacked verses in m54-56. Pipeline missing m37 entirely. Many measures in interlude/coda (m69-74, m83-84) are piano-only.",
+  "measures": {
+    "1": {
+      "comment": "Pipeline had no lyrics on 1n. PDF: 'A-' pickup syllable on beat 3. Pipeline missed it.",
+      "lyrics_v1": ["A"]
+    },
+    "2": {
+      "comment": "Pipeline had ['way', 'with', 'the'] on 3n. PDF: 'way with the' — correct.",
+      "lyrics_v1": ["way", "with", "the"]
+    },
+    "3": {
+      "comment": "Pipeline had ['mu', 'sic', 'of'] on 3n. PDF: 'mu-sic of' — correct.",
+      "lyrics_v1": ["mu", "sic", "of"]
+    },
+    "4": {
+      "comment": "Pipeline had ['way'] on 2n. PDF: 'Broad-way!__' — 2 syllables on 2 notes. Pipeline only has 1.",
+      "lyrics_v1": ["Broad", "way!"]
+    },
+    "5": {
+      "comment": "Pipeline had ['Be'] on 2n. PDF: 'Be' as pickup — but 2 notes. Second note is tied/rest.",
+      "lyrics_v1": ["Be"]
+    },
+    "9": {
+      "comment": "Pipeline had ['Written', 'Oh'] on 2n. PDF: '— Oh,' as pickup. 'Written' is from the footnote text '*Written for...' — stage direction/footnote contamination. Only 'Oh,' is a real lyric.",
+      "lyrics_v1": ["Oh,"]
+    },
+    "10": {
+      "comment": "Pipeline had ['Id', 'give', 'no'] on 3n. PDF: 'I'd give no' — missing apostrophe.",
+      "lyrics_v1": ["I'd", "give", "no"]
+    },
+    "11": {
+      "comment": "Pipeline had ['thar', 'ter', 'to'] on 3n. PDF: 'quar-ter to' — OCR garble 'thar' for 'quar'.",
+      "lyrics_v1": ["quar", "ter", "to"]
+    },
+    "17": {
+      "comment": "GAP 1n+2rests. PDF: 'tin.__' held/tied from m16 then rest. Actually the '—' after 'tin.' means 'How' pickup is in m17. PDF shows 'How' on beat 3. Pipeline has 1 note, 2 rests.",
+      "lyrics_v1": ["How"]
+    },
+    "23": {
+      "comment": "Pipeline had ['night', 'club', 'hing'] on 3n. PDF: 'night-club-bing' — OCR 'hing' for 'bing'.",
+      "lyrics_v1": ["night", "club", "bing"]
+    },
+    "24": {
+      "comment": "Pipeline had ['sous', 'es.'] on 2n. PDF: 'sous-es.__' — 'sous' should have hyphen continuation. Actually 'sous-es.' is correct as rendered. Pipeline OK but missing period placement. Actually 'sous-es.' on 2n is fine.",
+      "lyrics_v1": ["sous", "es."]
+    },
+    "27": {
+      "comment": "Pipeline had ['n ,', 'free', 'eas', 'y'] on 4n. PDF: \"free 'n' eas-y\" — OCR garble 'n ,' for \"'n'\". 4 syllables on 4 notes.",
+      "lyrics_v1": ["free", "'n'", "eas", "y"]
+    },
+    "36": {
+      "comment": "Pipeline had [\"Strauss's\"] on 1n. PDF: 'Strauss's!__' — held note. Missing exclamation mark.",
+      "lyrics_v1": ["Strauss's!"]
+    },
+    "38": {
+      "comment": "Pipeline had ['Ya.'] on 1n. PDF: 'Ya,' — period should be comma.",
+      "lyrics_v1": ["Ya,"]
+    },
+    "39": {
+      "comment": "GAP 1n. PDF: 'ya,' on held note.",
+      "lyrics_v1": ["ya,"]
+    },
+    "40": {
+      "comment": "GAP 1n. PDF: 'ya!___' on held note.",
+      "lyrics_v1": ["ya!"]
+    },
+    "41": {
+      "comment": "Pipeline had ['Give', 'me'] on 3n. PDF: 'Give me' — but only 2 lyrics on 3 notes. Third note is rest/pickup area. Pipeline count is 3n but only 2 lyric syllables — correct.",
+      "lyrics_v1": ["Give", "me"]
+    },
+    "42": {
+      "comment": "Pipeline had ['m'] on 1n with direction 'ma.' — OCR split. PDF: 'oom-' on held note. Actually 'oom' is the syllable.",
+      "lyrics_v1": ["oom"]
+    },
+    "43": {
+      "comment": "Pipeline had ['pah'] on 1n with direction 'm'. PDF: '- pah' on held note. Correct syllable but pipeline direction garble.",
+      "lyrics_v1": ["pah"]
+    },
+    "45": {
+      "comment": "GAP 1n. PDF: 'pah!__' continuation. Actually m44 has 'pah!' and m45 is interlude. Looking at PDF p3: after 'pah - pah!' there's an interlude with double bar into Refrain. m45 = 1n in interlude. No lyric expected on interlude note.",
+      "lyrics_v1": []
+    },
+    "46": {
+      "comment": "Pipeline had ['want', 'a'] on 2n. PDF: 'When I want a' — Refrain starts. But pipeline has 2n+2rests. 'want a' on the 2 notes is plausible but 'When I' is missing. These may be pickup notes.",
+      "lyrics_v1": ["want", "a"]
+    },
+    "47": {
+      "comment": "Pipeline had ['mel', 'o', 'dy'] on 3n. PDF: 'mel-o-dy' — correct.",
+      "lyrics_v1": ["mel", "o", "dy"]
+    },
+    "48": {
+      "comment": "Pipeline had ['ing', 'through', 'the'] on 3n. PDF: 'lilt-ing through the' — pipeline missing 'lilt' prefix. But only 3n. 'ing' is continuation syllable — correct for these 3 notes.",
+      "lyrics_v1": ["ing", "through", "the"]
+    },
+    "52": {
+      "comment": "Pipeline had ['By'] on 2n. PDF: 'By Strauss!__' — 2 notes, 'By' on first, held note. But 'Strauss!' should be on second note. Pipeline only has 1 lyric on 2n.",
+      "lyrics_v1": ["By"]
+    },
+    "53": {
+      "comment": "GAP 1n. PDF: 'Strauss!__' held note or 'It' pickup. Looking at PDF p4: after 'By Strauss!' there's 'It' as new phrase. m53 = 1n.",
+      "lyrics_v1": ["It"]
+    },
+    "54": {
+      "comment": "STACKED: Pipeline had ['di', 'It', 'Valse'] on 2n. 'Valse' is from stage direction 'Tempo di Valse'. 'It' is from stacked verse. PDF v1: 'laughs!' on 2n (but 'laughs!' is 1 syllable on held note). Actually looking at PDF p4: 'It laughs! it sings!' — m54 should have 'laughs!' area. Pipeline has 2n.",
+      "lyrics_v1": ["laughs!"]
+    },
+    "55": {
+      "comment": "STACKED: Pipeline had ['laughs', 'I .', 'it', 'want'] on 2n. Garbled mix of v1 and refrain repeat. PDF v1: 'it' on first note (pickup), then rest.",
+      "lyrics_v1": ["it"]
+    },
+    "56": {
+      "comment": "STACKED: Pipeline had ['sings!', 'a', 'The'] on 2n. PDF v1: 'sings! The' — 'a' is from stacked refrain. 2 syllables on 2 notes.",
+      "lyrics_v1": ["sings!", "The"]
+    },
+    "62": {
+      "comment": "Pipeline had ['Let', 'th'] on 2n. PDF: 'Let the' — OCR truncated 'the' to 'th'.",
+      "lyrics_v1": ["Let", "the"]
+    },
+    "63": {
+      "comment": "Pipeline had ['flow', 'a', 'long'] on 3n. PDF: '\"Da-nube\" flow a-long' — but only 3n in pipeline. 'flow a long' = 'flow a-long' is correct for 3 notes.",
+      "lyrics_v1": ["flow", "a", "long"]
+    },
+    "64": {
+      "comment": "Pipeline had ['Fle', 'der'] on 3n. PDF: 'And the \"Fle-der-' — 3 syllables on 3n. Pipeline missing 'And the' but only has 3n. Actually looking at m64: pipeline says 3n+2rests. PDF: 'And the Fle-der-' — wait, the 'And the' is at end of m63 or start of m64? Let me look at count: pipeline m63=3n, m64=3n+2rests. 'flow a-long' fills m63. 'And the Fle-der-' = 4 syllables but m64 has 3n. So 'And' may be in a rest area. Providing 3.",
+      "lyrics_v1": ["Fle", "der"]
+    },
+    "65": {
+      "comment": "Pipeline had ['maus'] on 1n. PDF: '-maus!\"' — correct continuation.",
+      "lyrics_v1": ["maus!"]
+    },
+    "69": {
+      "comment": "GAP 1n. PDF: 'By Strauss!__' area — interlude/coda. Looking at PDF p5: after 'By Strauss!__' there's instrumental then 'By Jo! By Jing!' Pipeline has 1n with no lyrics. This may be held 'Strauss!' note.",
+      "lyrics_v1": []
+    },
+    "70": {
+      "comment": "GAP — pipeline 2n+1rest. PDF: instrumental interlude. No lyrics expected.",
+      "lyrics_v1": []
+    },
+    "71": {
+      "comment": "GAP — pipeline 2n. PDF: instrumental interlude area.",
+      "lyrics_v1": []
+    },
+    "72": {
+      "comment": "GAP — pipeline 2n. PDF: instrumental interlude area.",
+      "lyrics_v1": []
+    },
+    "73": {
+      "comment": "GAP — pipeline 3n. PDF: 'By Jo! By Jing!' area. But these notes may be piano. Looking at PDF: 'By Jo!' text appears in vocal line. 3 notes.",
+      "lyrics_v1": ["By", "Jo!", "By"]
+    },
+    "74": {
+      "comment": "GAP — pipeline 3n+2rests. PDF: 'Jing! \"By Strauss\" is the thing!' — but pipeline has 3n. 'Jing!' on 1 note then 2 rests.",
+      "lyrics_v1": ["Jing!"]
+    },
+    "75": {
+      "comment": "Pipeline had ['ha', 'cha', 'By'] on 3n. PDF: 'So I say to ha-cha-cha__' — but pipeline only has 3n for 'ha-cha-cha' area. Wait, PDF shows 'mp calmo Fdim' direction area then 'So I say to' as pickup then 'ha-cha-cha__'. Pipeline 3n: 'ha' 'cha' then 'By' which is wrong — 'By' belongs later. Actually looking at m75: 'ha-cha-cha' is 3 syllables on 3 notes (with tied note carrying into next measure).",
+      "lyrics_v1": ["ha", "cha", "cha"]
+    },
+    "76": {
+      "comment": "Pipeline had ['Her'] on 1n. PDF: 'Her-aus!' — 'Her' on held note. Pipeline correct for 1n.",
+      "lyrics_v1": ["Her"]
+    },
+    "77": {
+      "comment": "Pipeline had ['aus!'] on 1n. PDF: '-aus!' continuation — correct.",
+      "lyrics_v1": ["aus!"]
+    },
+    "78": {
+      "comment": "Pipeline had ['Just', 'give', 'me', 'a'] on 5n. PDF: 'Just give me a' — but only 4 lyrics on 5n. Actually 'Just give me a' = 4 words. Pipeline has 4 on 5n. One note is a rest or tied. 4 lyrics on 5 notes is fine.",
+      "lyrics_v1": ["Just", "give", "me", "a"]
+    },
+    "79": {
+      "comment": "Pipeline had ['to', 'pah', 'pah'] on 3n. PDF: 'oom-pah-pah' — 'to' should be 'oom'.",
+      "lyrics_v1": ["oom", "pah", "pah"]
+    },
+    "80": {
+      "comment": "Pipeline had ['By'] on 2n. PDF: '— By' — 1 lyric syllable. Pipeline has 2n; first is tied/held.",
+      "lyrics_v1": ["By"]
+    },
+    "82": {
+      "comment": "Pipeline had ['When', 'want', 'a'] on 3n. PDF: 'When I want a' — but 4 syllables on 3n+2rests. Pipeline missing 'I'. Providing best 3 for 3n.",
+      "lyrics_v1": ["When", "I", "want"]
+    },
+    "83": {
+      "comment": "GAP 1n. PDF: 'a' continuation from m82 or first ending pickup. Looking at PDF p5: 1st ending bracket shows 'When I want a' then m83-84 area. 1n here.",
+      "lyrics_v1": ["a"]
+    },
+    "84": {
+      "comment": "GAP 2n+1rest. PDF: 1st ending area 'Strauss.' and instrumental. No lyrics clearly assignable to this pipeline measure since endings cause confusion.",
+      "lyrics_v1": []
+    }
+  }
+}

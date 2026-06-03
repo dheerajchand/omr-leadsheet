@@ -1,0 +1,148 @@
+{
+  "song": "11 - Slap That Bass",
+  "key_fifths": -3,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Moderato) + Refrain (mp-f rhythmically). Verse has moderate OCR garble; refrain has stacked v1/v2 in m15-16 and several GAP measures (m41-43, m59). Pipeline at ~85% coverage. Measures 23-26 are piano interlude (no vocal notes). Measures 34, 57 are piano-only.",
+  "measures": {
+    "1": {
+      "comment": "Pipeline had ['zoom!'] on 2n. PDF: 'Zoom-zoom!' — two syllables on two notes.",
+      "lyrics_v1": ["Zoom", "zoom!"]
+    },
+    "3": {
+      "comment": "Pipeline had 'a.' with stray period. PDF: 'world is in a' — no period mid-phrase.",
+      "lyrics_v1": ["world", "is", "in", "a"]
+    },
+    "5": {
+      "comment": "Pipeline had 'ticS' (capital S). PDF: 'pol-i-tics and tax-es'. OCR case error.",
+      "lyrics_v1": ["pol", "i", "tics", "And", "tax", "es"]
+    },
+    "7": {
+      "comment": "Pipeline had 'Theres'. PDF: 'There's' — missing apostrophe.",
+      "lyrics_v1": ["There's", "no", "hap", "pi"]
+    },
+    "9": {
+      "comment": "Pipeline had ['Zoom'] on 2n. PDF: 'Zoom - zoom!' on 2 notes (plus rests). Only 1 lyric for 2 notes.",
+      "lyrics_v1": ["Zoom", "zoom!"]
+    },
+    "10": {
+      "comment": "Pipeline had ['zoom', 'zoom'] on 3n. PDF: 'zoom - zoom!' on 2 of 3 notes (rest follows).",
+      "lyrics_v1": ["zoom", "zoom!"]
+    },
+    "11": {
+      "comment": "Pipeline had ['thm,1ead', 'your'] — severe OCR garble. PDF: 'Rhy-thm, lead your' but only 3 notes. Best fit: 'Rhy-thm,lead' is m11 continuation from tied note in m10. Providing 3 syllables for 3 notes.",
+      "lyrics_v1": ["thm,", "lead", "your"]
+    },
+    "13": {
+      "comment": "Pipeline had ['fu', 'tu re does', 'fret', 'me', 'If'] — 'tu re does' merged. PDF: 'The fu-ture does-n't fret me If'. 6 notes + 1 rest = 6 lyric slots. Pipeline missing 'n't' and merged tokens.",
+      "lyrics_v1": ["fu", "ture", "does", "n't", "fret", "me"]
+    },
+    "14": {
+      "comment": "Pipeline correct lyrics but missing 'If' pickup which belongs at end of m13. PDF: 'If I can on-ly get me'. 6 notes. Pipeline had 'I can on ly get me' — 'on ly' should be 'on-ly'.",
+      "lyrics_v1": ["I", "can", "on", "ly", "get", "me"]
+    },
+    "15": {
+      "comment": "STACKED 5L/4n. Pipeline had ['one', 'to', 'slap', 'that', 'Phil']. PDF v1: 'Some-one to slap that' on 4 notes. 'Phil' is from stacked 'Phil-har-' line. Providing v1 only.",
+      "lyrics_v1": ["one", "to", "slap", "that"]
+    },
+    "16": {
+      "comment": "STACKED 2L/1n. Pipeline had ['bass!', 'mon']. PDF v1: 'bass!' on 1 note. 'mon' is from stacked 'Philharmonic' line.",
+      "lyrics_v1": ["bass!"]
+    },
+    "19": {
+      "comment": "Pipeline had 'list mg'. PDF: 'list'n-ing' — OCR garble on 'listening'.",
+      "lyrics_v1": ["When", "I'm", "listh", "ning"]
+    },
+    "21": {
+      "comment": "Pipeline had ['fid'] on 1n. PDF: 'fid-dle.' — tied note, only 1 note gets lyric. Correct as 'fid'.",
+      "lyrics_v1": ["fid"]
+    },
+    "28": {
+      "comment": "Pipeline had ['its', 'it', 'till', 'diz', 'zy,'] on 5n. PDF: 'slap it till it's diz-zy,—'. Pipeline garbled 'its'/'it' order and lost 'it's'. Best 5 for 5n.",
+      "lyrics_v1": ["slap", "it", "till", "it's", "diz"]
+    },
+    "30": {
+      "comment": "Pipeline had ['Keep', 'the', 'rhy', 'bus', 'y'] on 5n. PDF: 'Keep the rhy-thm bus-y!' — 6 syllables but only 5 notes. Pipeline lost 'thm' syllable. Providing best 5.",
+      "lyrics_v1": ["Keep", "the", "rhythm", "bus", "y!"]
+    },
+    "33": {
+      "comment": "Pipeline had ['Slap'] on 2n. PDF: held note from 'go!—' then rest then pickup. Actually this is tied whole note area. Pipeline captured pickup 'Slap' — but 2n means there's a note for the tie too. First note is tail of 'go!—', second is rest area.",
+      "lyrics_v1": ["Slap"]
+    },
+    "35": {
+      "comment": "Pipeline had ['bass', 'that'] on 2n. PDF: 'that bass,' — order was reversed by pipeline.",
+      "lyrics_v1": ["that", "bass,"]
+    },
+    "36": {
+      "comment": "Pipeline had ['Slap', 'it', 'like', 'ton', 'ic!'] on 5n. PDF: 'Use it like a ton-ic!' — 'Slap' should be 'Use', missing 'a'.",
+      "lyrics_v1": ["Use", "it", "like", "a", "ton"]
+    },
+    "37": {
+      "comment": "Pipeline had ['Keep', 'that', 'bass,'] on 3n. PDF: 'Slap that bass,' — 'Keep' should be 'Slap'.",
+      "lyrics_v1": ["Slap", "that", "bass,"]
+    },
+    "38": {
+      "comment": "Pipeline had ['Zoom', 'your', 'Phil', 'mon', 'ic!'] on 5n. PDF: 'Keep your Phil-har-mon-ic!' — 6 syllables on 5 notes. 'Zoom' should be 'Keep', missing 'har'.",
+      "lyrics_v1": ["Keep", "your", "Phil", "har", "mon"]
+    },
+    "39": {
+      "comment": "Pipeline had ['zoom!', 'zoom!'] on 2n. PDF: 'Zoom!zoom! zoom!' — 3 syllables but pipeline only has 2n+1rest. Two lyrics on 2 notes is correct.",
+      "lyrics_v1": ["Zoom!", "zoom!"]
+    },
+    "40": {
+      "comment": "Pipeline had \"']1\" as last syllable — OCR garble. PDF: 'And the milk and hon-ey-'ll' on 7 notes.",
+      "lyrics_v1": ["And", "the", "milk", "and", "hon", "ey", "'ll"]
+    },
+    "41": {
+      "comment": "GAP 2n. PDF: 'flow!___' — held note plus tied note. 1 lyric syllable on first note.",
+      "lyrics_v1": ["flow!"]
+    },
+    "42": {
+      "comment": "GAP 5n. PDF: 'Dic-ta-tors would be' — 5 syllables on 5 notes.",
+      "lyrics_v1": ["Dic", "ta", "tors", "would", "be"]
+    },
+    "43": {
+      "comment": "GAP 7n. PDF: 'bet-ter off— If they' — but that's only 5 syllable-words on 7 notes (2 notes are melisma or tied). Providing what fits.",
+      "lyrics_v1": ["bet", "ter", "off", "If", "they"]
+    },
+    "44": {
+      "comment": "Pipeline had ['now', 'and', 'then.'] on 3n. PDF: 'zoom zoomed now and then.' — but only 3 notes in pipeline. Lyrics are correct for the 3 notes (the 'zoom zoomed' is in prior measure area).",
+      "lyrics_v1": ["now", "and", "then."]
+    },
+    "46": {
+      "comment": "Pipeline had ['day', 'you', 'can', 'see'] on 5n. PDF: 'day___ you can see' — 'day' is held across multiple notes. 4 lyric syllables on 5 notes is correct (1 melisma).",
+      "lyrics_v1": ["day", "you", "can", "see"]
+    },
+    "49": {
+      "comment": "Pipeline had ['All', 'got'] on 4n. PDF: 'All got rhy-thm!' — 4 syllables but pipeline only has 2. Missing 'rhy-thm!'.",
+      "lyrics_v1": ["All", "got", "rhy", "thm!"]
+    },
+    "50": {
+      "comment": "Pipeline had 'If' — OCR error. PDF: 'In which case' on 3 notes.",
+      "lyrics_v1": ["In", "which", "case"]
+    },
+    "51": {
+      "comment": "Pipeline stacked: ['Slap', 'you', 'want', 'bub', 'ble'] on 5n. PDF v1: 'If you want to bub-ble,' but only 5 notes. 'Slap' is from stacked refrain repeat. Providing v1.",
+      "lyrics_v1": ["you", "want", "to", "bub", "ble,"]
+    },
+    "52": {
+      "comment": "Pipeline had ['Slap', 'that', 'bass,'] on 3n. PDF: 'Slap that bass,' — correct.",
+      "lyrics_v1": ["Slap", "that", "bass,"]
+    },
+    "53": {
+      "comment": "Pipeline stacked: ['your', 'a.', 'way', 'trou', 'ble'] on 5n. PDF v1: 'Slap a-way your trou-ble!' — but stacked with repeat. Providing v1 order.",
+      "lyrics_v1": ["a", "way", "your", "trou", "ble!"]
+    },
+    "56": {
+      "comment": "Pipeline had ['bass'] on 2n. PDF: 'bass!___' — held/tied note. Missing exclamation.",
+      "lyrics_v1": ["bass!"]
+    },
+    "58": {
+      "comment": "Pipeline had ['bass!'] on 1n. PDF: 'bass!___' — correct.",
+      "lyrics_v1": ["bass!"]
+    },
+    "59": {
+      "comment": "GAP 1n. PDF: final held note, continuation of 'bass!' tied from m58. No new lyric syllable needed — but pipeline has 0 lyrics on 1 note. The note is a tie continuation, no syllable expected.",
+      "lyrics_v1": []
+    }
+  }
+}

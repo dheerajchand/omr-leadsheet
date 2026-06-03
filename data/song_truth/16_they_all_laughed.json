@@ -1,0 +1,180 @@
+{
+  "song": "16 - They All Laughed",
+  "key_fifths": 1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Moderato gracefully) + Refrain (happily). Heavy verse stacking in refrain — v1 and v2 interleaved on same notes. Pipeline at 136% lyric-to-note ratio. Truth provides v1-only lyrics. Several OCR garble issues in verse; 2nd ending lyrics completely missing from pipeline.",
+  "measures": {
+    "1": {
+      "comment": "Pipeline read direction 'p simply' as lyric 'simply'. Published: just 'The' (pickup). 2 notes — 'The' assigned to note[0]; alignment may be imperfect if note[0] is not the pickup.",
+      "lyrics_v1": ["The"]
+    },
+    "3": {
+      "comment": "Pipeline had 'bun dred to one a'. Published: 'hun-dred to one a-'. OCR 'b' for 'h'.",
+      "lyrics_v1": ["hun", "dred", "to", "one", "a"]
+    },
+    "12": {
+      "comment": "Pipeline had 'censed me .' with stray space. Published: 'censed me.'.",
+      "lyrics_v1": ["censed", "me."]
+    },
+    "13": {
+      "comment": "Pipeline had 'v Oh, I' — 'v' is OCR garble. Published: 'Oh, I' on last 2 of 3 notes. Alignment imperfect (sequential assignment puts 'Oh,' on note[0] instead of note[1]).",
+      "lyrics_v1": ["Oh,", "I"]
+    },
+    "14": {
+      "comment": "Pipeline had 'was n't a, bit con' — stray comma on 'a,'. Published: 'was-n't a bit con-'.",
+      "lyrics_v1": ["was", "n't", "a", "bit", "con"]
+    },
+    "15": {
+      "comment": "Pipeline had 'cern ed For from' — 'cern ed' is two tokens. Published: 'cerned For from'.",
+      "lyrics_v1": ["cerned", "For", "from"]
+    },
+    "18": {
+      "comment": "Pipeline had 'man y y times the' (5 on 5n). Published: 'man-y, man-y times the' (6 syllables). Pipeline lost a note (triplet). Unfixable — providing best 5 of 6, adding comma.",
+      "lyrics_v1": ["man", "y,", "y", "times", "the"]
+    },
+    "21": {
+      "comment": "Pipeline had 'Ay' — garbled pickup 'They' for refrain. Published: 'They' (refrain pickup).",
+      "lyrics_v1": ["They"]
+    },
+    "22": {
+      "comment": "Pipeline stacked v1+v2: 'all all laugh laugh at at' (6 on 3n). Published v1: 'all laughed at' (pickup 'They' is in m21). 3 on 3n.",
+      "lyrics_v1": ["all", "laughed", "at"]
+    },
+    "23": {
+      "comment": "Pipeline stacked v1+v2: 'Chris Rock to e pher fel Co ler lum Cen bus ter' (12 on 6n). Published v1: 'Chris-to-pher Co-lum-bus'.",
+      "lyrics_v1": ["Chris", "to", "pher", "Co", "lum", "bus"]
+    },
+    "24": {
+      "comment": "Pipeline stacked v1+v2: 'When Now he they're said fight the ing World to was get round' (13 on 7n). Published v1: 'When he said the World was round'.",
+      "lyrics_v1": ["When", "he", "said", "the", "World", "was", "round"]
+    },
+    "25": {
+      "comment": "Pipeline had 'in' — this is v2 only ('get in'). v1 is a held note from 'round'. Clear v2 bleed.",
+      "lyrics_v1": []
+    },
+    "26": {
+      "comment": "Pipeline stacked v1+v2: 'all all laugh laugh when at' (6 on 3n). Published v1: 'all laughed when'. Pickup 'They' missing (likely lost note).",
+      "lyrics_v1": ["all", "laughed", "when"]
+    },
+    "27": {
+      "comment": "Pipeline stacked v1+v2: 'Ed Whit i ney son and re his cord cot ed ton sound. gin.' (14 on 7n). Published v1: 'Ed-i-son re-cord-ed sound.'.",
+      "lyrics_v1": ["Ed", "i", "son", "re", "cord", "ed", "sound."]
+    },
+    "29": {
+      "comment": "Pipeline had no lyrics on 1n+1r. Published: 'They' (pickup for next refrain phrase). Adding pickup.",
+      "lyrics_v1": ["They"]
+    },
+    "30": {
+      "comment": "Pipeline had 'all lau at' (3 on 3n) — 'lau' is garbled 'laughed'. Published v1: 'all laughed at'.",
+      "lyrics_v1": ["all", "laughed", "at"]
+    },
+    "31": {
+      "comment": "Pipeline stacked v1+v2: 'il Ful bur ton and and his his broth steam' (10 on 5n). Published v1: 'Wil-bur and his broth-'. OCR lost 'W' from 'Wil'.",
+      "lyrics_v1": ["Wil", "bur", "and", "his", "broth"]
+    },
+    "32": {
+      "comment": "Pipeline stacked 13 lyrics on 7n. Published v1: 'er, When they said that man could' (continuation of 'broth-er,' then new phrase).",
+      "lyrics_v1": ["er,", "When", "they", "said", "that", "man", "could"]
+    },
+    "33": {
+      "comment": "Pipeline stacked v1+v2: 'fly bar' (2 on 1n). Published v1: 'fly.'.",
+      "lyrics_v1": ["fly."]
+    },
+    "34": {
+      "comment": "Pipeline stacked v1+v2: 'They Ford told and Mar his co Liz ni zie' (10 on 5n). Published v1: 'They told Mar-co-ni'.",
+      "lyrics_v1": ["They", "told", "Mar", "co", "ni"]
+    },
+    "35": {
+      "comment": "Pipeline stacked v1+v2: 'Wire Kept less the was laugh a ers pho bus ney y' (12 on 6n). Published v1: 'Wire-less was a pho-ney;'.",
+      "lyrics_v1": ["Wire", "less", "was", "a", "pho", "ney;"]
+    },
+    "36": {
+      "comment": "Pipeline had v2 only: 'That's how peo ple' (4 on 4n). Published v1: 'It's the same old'.",
+      "lyrics_v1": ["It's", "the", "same", "old"]
+    },
+    "37": {
+      "comment": "Pipeline had 'are. They latghed at' (v2 'are.' + garbled 'laughed'). Published v1: 'cry. They laughed at'.",
+      "lyrics_v1": ["cry.", "They", "laughed", "at"]
+    },
+    "38": {
+      "comment": "Pipeline had 'me Wit mg' — OCR garble of 'want-ing'. Published v1: 'me want-ing'. 3 lyrics on 4 notes.",
+      "lyrics_v1": ["me", "want", "ing"]
+    },
+    "39": {
+      "comment": "Pipeline stacked v1+v2: 'you. you, Said Said I it was would' (8 on 6n). Published v1: 'you, Said I was'. 4 lyrics on 6 notes (held notes).",
+      "lyrics_v1": ["you,", "Said", "I", "was"]
+    },
+    "40": {
+      "comment": "Pipeline stacked v1+v2: 'reach be ing Hel for lo the Good' (8 on 4n). Published v1: 'reach-ing for the'.",
+      "lyrics_v1": ["reach", "ing", "for", "the"]
+    },
+    "41": {
+      "comment": "Pipeline stacked v1+v2: 'moon; bye; But But' (4 on 2n). Published v1: 'moon; But'.",
+      "lyrics_v1": ["moon;", "But"]
+    },
+    "42": {
+      "comment": "Pipeline stacked v1+v2: 'oh, oh, You You came came' (6 on 4n). Published v1: 'oh, You came'. Both verses identical.",
+      "lyrics_v1": ["oh,", "You", "came"]
+    },
+    "43": {
+      "comment": "Pipeline stacked v1+v2: 'through through Now Now they'll they're' (6 on 4n). Published v1: 'through Now they'll'.",
+      "lyrics_v1": ["through", "Now", "they'll"]
+    },
+    "44": {
+      "comment": "Pipeline stacked v1+v2: 'have eat to ing change hum their ble' (8 on 4n). Published v1: 'have to change their'.",
+      "lyrics_v1": ["have", "to", "change", "their"]
+    },
+    "45": {
+      "comment": "Pipeline stacked v1+v2: 'tune. pie.' (2 on 1n). Published v1: 'tune.'.",
+      "lyrics_v1": ["tune."]
+    },
+    "46": {
+      "comment": "Pipeline stacked: 'They all all said said we we'd' (7 on 4n). Published v1: 'They all said we'.",
+      "lyrics_v1": ["They", "all", "said", "we"]
+    },
+    "47": {
+      "comment": "Pipeline stacked v1+v2: 'nev nev er er could get be to hap geth py, er;' (12 on 6n). Published v1: 'nev-er could be hap-py,'.",
+      "lyrics_v1": ["nev", "er", "could", "be", "hap", "py,"]
+    },
+    "48": {
+      "comment": "Pipeline stacked v1+v2: 'They Dar laugh ling, at us let and a' (9 on 5n). Published v1: 'They laughed at us and'.",
+      "lyrics_v1": ["They", "laughed", "at", "us", "and"]
+    },
+    "49": {
+      "comment": "Pipeline stacked v1+v2: 'howl bow, But For,' (4 on 2n). Published v1: 'howl But'.",
+      "lyrics_v1": ["howl", "But"]
+    },
+    "50": {
+      "comment": "Pipeline stacked v1+v2: 'Ho, Ho, Ho, Ho, Ho! Ho!' (6 on 3n). Published v1: 'Ho, Ho, Ho!' (both verses identical).",
+      "lyrics_v1": ["Ho,", "Ho,", "Ho!"]
+    },
+    "51": {
+      "comment": "Pipeline stacked v1+v2: 'Whos Whos got got the the last last laugh laugh,' (10 on 5n). Published v1: 'Who's got the last laugh'. Fix 'Whos' apostrophe.",
+      "lyrics_v1": ["Who's", "got", "the", "last", "laugh"]
+    },
+    "52": {
+      "comment": "Pipeline stacked v1+v2: 'now now' (2 on 1n). 1st ending. Published v1: 'now?'. Missing question mark.",
+      "lyrics_v1": ["now?"]
+    },
+    "53": {
+      "comment": "2nd ending. Pipeline had 'He' (1 on 1n). Published: 'He,' — missing comma.",
+      "lyrics_v1": ["He,"]
+    },
+    "54": {
+      "comment": "Pipeline had 'He, He' (2 on 3n). Published: 'He, He!' — missing exclamation.",
+      "lyrics_v1": ["He,", "He!"]
+    },
+    "56": {
+      "comment": "Pipeline had NO lyrics on 3n. Published 2nd ending: 'Ha, Ha, Ha!'.",
+      "lyrics_v1": ["Ha,", "Ha,", "Ha!"]
+    },
+    "57": {
+      "comment": "Pipeline had NO lyrics on 5n. Published 2nd ending: 'Who's got the last laugh'.",
+      "lyrics_v1": ["Who's", "got", "the", "last", "laugh"]
+    },
+    "58": {
+      "comment": "Pipeline had NO lyrics on 1n. Published 2nd ending: 'now?'.",
+      "lyrics_v1": ["now?"]
+    }
+  }
+}

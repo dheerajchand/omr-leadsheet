@@ -1,0 +1,208 @@
+{
+  "song": "27 - They Can't Take That Away From Me",
+  "key_fifths": -3,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (with feeling) + Refrain (not fast, mp-mf). Heavy stacking in verse measures m8-10. Refrain has large GAP blocks where pipeline lost all lyrics (m19-30 area, m42-47). Stage direction 'Refrain' captured as lyric in m17. Pipeline missing m3 entirely.",
+  "measures": {
+    "1": {
+      "comment": "Pipeline had ['Our', 'ro', 'mance', \"won't\"] on 4n. PDF: 'Our ro-mance won't' — correct.",
+      "lyrics_v1": ["Our", "ro", "mance", "won't"]
+    },
+    "2": {
+      "comment": "Pipeline had ['end', 'on', 'a', 'sor', 'row'] on 5n. PDF: 'end on a sor-row-ful' — but pipeline has 5 on 5n. Actually PDF: 'end on a sor-row' then '-ful' in next measure area. Pipeline 'row' for last syllable is missing hyphen continuation but count is OK. Actually 'sor-row-ful' needs 3 syllables. Pipeline has 'sor' and 'row' = only 2 of 3. But 5n fits 5 syllables. PDF shows 'end on a sor-row-ful' as 6 syllables... let me recount. The PDF says 'end on a sor-row-ful note,' — m2 has 5 notes for 'end on a sor-row'.",
+      "lyrics_v1": ["end", "on", "a", "sor", "row"]
+    },
+    "4": {
+      "comment": "Pipeline had ['Though', 'by', 'to', 'mor'] on 4n. PDF: 'Though by to-mor-' — correct, continuation in m5.",
+      "lyrics_v1": ["Though", "by", "to", "mor"]
+    },
+    "5": {
+      "comment": "Pipeline had ['row', 'The'] on 2n. PDF: 'row you're' — wait, PDF: 'Though by to-mor-row you're' — 'row' then 'you're' not 'The'. Actually looking at PDF p1: 'Though by to-mor-row you're' then next system 'gone,___'. Pipeline has 'row' then 'The' which is wrong — 'The' belongs later.",
+      "lyrics_v1": ["row", "you're"]
+    },
+    "6": {
+      "comment": "Pipeline had ['song', 'is', 'end', 'ed,'] on 4n. PDF: 'The song is end-ed,' — but pipeline is missing 'The' (which was misplaced in m5). Actually m6 in PDF: 'gone,___ The song is end-ed,' — the held note 'gone' takes first beat, then 'The song is end-ed,'. Pipeline has 4 lyrics on 4 notes — but 'song is end-ed' is correct if 'gone' is a tied note from previous measure. Let me recount: m5 has 2n (row, gone?), m6 has 4n. PDF: 'gone,__ The song is end-ed,'. So m6 = 'The', 'song', 'is', 'end-ed,' — but that's 5 syllables on 4 notes ('end-ed,' = 2 on 1?). Checking again: 'The song is end-ed,' with hyphen = 'The' 'song' 'is' 'end' 'ed,' = 5. But only 4 notes. Pipeline has 'song is end ed,' (4 on 4n) so it dropped 'The'. Hmm, but that makes 'The' orphaned from m5. Pipeline m5 has 'The' which should be 'you're'. Let me fix both.",
+      "lyrics_v1": ["song", "is", "end", "ed,"]
+    },
+    "7": {
+      "comment": "Pipeline had ['but', 'as', 'the', 'song', 'writ'] on 5n. PDF: 'but as the song-writ-er wrote,' — 'song' and 'writ' on notes, then '-er' and 'wrote,' continue. 5 on 5n is correct for first part.",
+      "lyrics_v1": ["but", "as", "the", "song", "writ"]
+    },
+    "8": {
+      "comment": "STACKED 4L/2n. Pipeline had ['wrote.', 'THEY', 'The', \"CAN'T\"] on 2n. PDF v1: 'er wrote,' — 'er' from 'writ-er' and 'wrote,' on 2 notes. 'THEY CAN'T' is title text / stacked caps. Providing v1.",
+      "lyrics_v1": ["er", "wrote,"]
+    },
+    "9": {
+      "comment": "STACKED 7L/4n. Pipeline had ['mel', 'er', 'o', 'your', 'dy', 'smile', 'Written'] on 4n. PDF v1: 'The mel-o-dy' — wait, looking at PDF p1 bottom system: 'The mel-o-dy ling-ers on.' m8='er wrote,' m9='The mel-o-dy' (4 syllables on 4 notes). v1 provides the verse lyric.",
+      "lyrics_v1": ["mel", "o", "dy", "ling"]
+    },
+    "10": {
+      "comment": "STACKED 2L/1n. Pipeline had ['on.', 'just'] on 1n. PDF v1: 'ers' — continuation of 'ling-ers'. Wait, recount: m9 = 4n for 'mel-o-dy ling-', m10 = 1n for '-ers on.' Actually 'ling-ers on.' = 3 syllables but only 1 note. PDF shows held note. Providing 'on.' for the 1 note (tied from previous).",
+      "lyrics_v1": ["on."]
+    },
+    "11": {
+      "comment": "Pipeline had ['They', 'may', 'take', 'you'] on 4n. PDF: 'They may take you' — correct.",
+      "lyrics_v1": ["They", "may", "take", "you"]
+    },
+    "12": {
+      "comment": "Pipeline had ['me,', \"I'll\"] on 2n. PDF: 'from me, I'll' — but only 2 notes. Actually 'from' may be end of m11 or tied. Pipeline has 'me,' and 'I'll' on 2n which matches if 'from' is in m11. But m11 pipeline has 4 lyrics 'They may take you' — PDF: 'They may take you from' is 5 syllables. Pipeline lost 'from'. Unfixable in m11 (4n). m12 is correct as-is.",
+      "lyrics_v1": ["me,", "I'll"]
+    },
+    "13": {
+      "comment": "Pipeline had ['miss', 'your', 'fond', 'ca'] on 4n. PDF: 'miss your fond ca-' — correct.",
+      "lyrics_v1": ["miss", "your", "fond", "ca"]
+    },
+    "14": {
+      "comment": "Pipeline had ['ress', 'But'] on 2n. PDF: '-ress. But' — correct.",
+      "lyrics_v1": ["ress.", "But"]
+    },
+    "15": {
+      "comment": "Pipeline had ['though', 'they', 'take', 'from'] on 5n. PDF: 'though they take you from' — 5 syllables on 5 notes. Pipeline missing 'you'.",
+      "lyrics_v1": ["though", "they", "take", "you", "from"]
+    },
+    "16": {
+      "comment": "Pipeline had ['sess:'] on 1n. PDF: 'me, I'll still pos-sess:' — but only 1 note for held whole note 'sess:'. Wait, looking at PDF p2: the measure has 'pos - sess:' area. Pipeline 1n = held note. 'sess:' is last syllable on held note — but 'pos-' must be on a previous note. OK, 'sess:' on 1n is correct.",
+      "lyrics_v1": ["sess:"]
+    },
+    "17": {
+      "comment": "Pipeline had ['Refrain', 'hat,'] on 2n. 'Refrain' is stage direction, not a lyric. PDF: 'The way you wear your hat,__' — m17 has 'The way you wear your hat,__' starting at refrain. Pipeline has 2n+5rests. 'hat,' on note 2. But 'Refrain' is the stage direction. The actual lyrics on 2n: looking at PDF, the refrain pickup is 'The way you wear your hat,__'. That's 7 syllables but pipeline only sees 2 notes. This is a complex pickup area. Pipeline detected 2 notes — 'your' and 'hat,' perhaps. Given 2n, provide best v1.",
+      "lyrics_v1": ["your", "hat,"]
+    },
+    "18": {
+      "comment": "Pipeline had ['The'] on 1n. PDF: 'The' as pickup to next phrase — correct.",
+      "lyrics_v1": ["The"]
+    },
+    "19": {
+      "comment": "GAP — pipeline has 0 notes, 7 rests. Piano interlude measure. No lyrics expected.",
+      "lyrics_v1": []
+    },
+    "20": {
+      "comment": "GAP — pipeline has 0 notes, 1 rest. No vocal notes detected. Cannot fix.",
+      "lyrics_v1": []
+    },
+    "21": {
+      "comment": "Pipeline had ['you'] on 1n+6rests. PDF: 'The way you sip your tea,__' in this refrain section. Pipeline only found 1 note. 'you' could be from this phrase.",
+      "lyrics_v1": ["you"]
+    },
+    "22": {
+      "comment": "GAP 1n. PDF: 'The mem'ry of all that,__' in this area. Pipeline found 1 note but no lyrics. Providing best single syllable.",
+      "lyrics_v1": ["The"]
+    },
+    "23": {
+      "comment": "GAP 4n. PDF: 'mem-'ry of all' — 4 syllables on 4 notes.",
+      "lyrics_v1": ["mem", "'ry", "of", "all"]
+    },
+    "24": {
+      "comment": "GAP 5n. PDF: 'that,___' on held note then 'No, no! They' pickup. Providing v1.",
+      "lyrics_v1": ["that,", "No,", "no!", "They", "can't"]
+    },
+    "25": {
+      "comment": "GAP — pipeline has 1n+6rests. PDF: 'take that a-way from me!' — but pipeline only detected 1 note here.",
+      "lyrics_v1": ["take"]
+    },
+    "26": {
+      "comment": "Pipeline had 1n, no lyrics. PDF: continuation area. 'that' on this note.",
+      "lyrics_v1": ["a"]
+    },
+    "29": {
+      "comment": "Pipeline had ['dreams'] on 1n. PDF: 'The way you haunt my dreams,__' — pipeline captured 'dreams' from this phrase. 1n = held note.",
+      "lyrics_v1": ["dreams,"]
+    },
+    "30": {
+      "comment": "GAP 1n. PDF: pickup area for 'No, no! They can't take that a-way from me!' Pipeline found 1 note. Providing best syllable.",
+      "lyrics_v1": ["No,"]
+    },
+    "31": {
+      "comment": "Pipeline had ['No,', 'no!', 'They'] on 4n. PDF: 'No, no! They can't' — 4 syllables on 4 notes. But pipeline already has 3 — missing 'can't'. Actually wait: 'No,' 'no!' 'They' = 3 on 4n. Need 4th.",
+      "lyrics_v1": ["no!", "They", "can't", "take"]
+    },
+    "32": {
+      "comment": "Pipeline had [\"can't\", 'take', 'that', 'a', 'way', 'from'] on 6n. PDF: 'take that a-way from me!' — but pipeline already starts with 'can't'. Recount with m31 fix.",
+      "lyrics_v1": ["that", "a", "way", "from", "me!"]
+    },
+    "33": {
+      "comment": "Pipeline had ['We', 'may'] on 2n. PDF: 'We may' — correct.",
+      "lyrics_v1": ["We", "may"]
+    },
+    "34": {
+      "comment": "Pipeline had ['nev', 'er,', 'nev', 'er'] on 4n. PDF: 'nev-er, nev-er' — correct.",
+      "lyrics_v1": ["nev", "er,", "nev", "er"]
+    },
+    "35": {
+      "comment": "Pipeline had ['meet', 'a', 'gam', 'On', 'the'] on 5n. PDF: 'meet a-gain On the' — 'gam' should be 'gain'. 4 syllable-words on 5 notes (1 rest).",
+      "lyrics_v1": ["meet", "a", "gain", "On", "the"]
+    },
+    "36": {
+      "comment": "Pipeline had ['bump', 'y', 'road', 'to'] on 4n. PDF: 'bump-y road to' — correct.",
+      "lyrics_v1": ["bump", "y", "road", "to"]
+    },
+    "37": {
+      "comment": "Pipeline had ['Still', \"I'll\"] on 2n. PDF: 'love, Still I'll' — but 2n. 'Still I'll' correct for these 2 notes.",
+      "lyrics_v1": ["Still", "I'll"]
+    },
+    "38": {
+      "comment": "Pipeline had ['al', 'ways', 'al', 'Ways'] on 4n. PDF: 'al-ways, al-ways' — 'Ways' should be lowercase 'ways'.",
+      "lyrics_v1": ["al", "ways,", "al", "ways"]
+    },
+    "39": {
+      "comment": "Pipeline had ['keep', 'the', 'mem', 'fry'] on 4n. PDF: 'keep the mem-'ry' — 'fry' is OCR garble for ''ry'.",
+      "lyrics_v1": ["keep", "the", "mem", "'ry"]
+    },
+    "40": {
+      "comment": "Pipeline had ['of'] on 1n. PDF: 'of' — correct.",
+      "lyrics_v1": ["of"]
+    },
+    "41": {
+      "comment": "Pipeline had ['The', 'knife,'] on 2n. PDF: 'The way you hold your knife,__' — pipeline only captured 2 of the phrase. 2n+5rests means lots of rests. Providing best 2.",
+      "lyrics_v1": ["your", "knife,"]
+    },
+    "42": {
+      "comment": "GAP 1n. PDF: 'The way we danced till three,__' area. Pipeline found 1 note, no lyrics.",
+      "lyrics_v1": ["The"]
+    },
+    "43": {
+      "comment": "GAP — pipeline 0 notes, 7 rests. No vocal notes detected. Cannot provide lyrics.",
+      "lyrics_v1": []
+    },
+    "44": {
+      "comment": "GAP — pipeline 0 notes, 1 rest. No vocal notes detected. Cannot provide lyrics.",
+      "lyrics_v1": []
+    },
+    "45": {
+      "comment": "GAP — pipeline 1n+6rests. PDF: 'The way you've changed my life.__' area. 1 note only.",
+      "lyrics_v1": ["life."]
+    },
+    "46": {
+      "comment": "Pipeline had 1n, no lyrics. PDF: 'No, no! They' pickup. Providing for 1n.",
+      "lyrics_v1": ["No,"]
+    },
+    "47": {
+      "comment": "GAP 4n. PDF: 'no! They can't take' on 4 notes.",
+      "lyrics_v1": ["no!", "They", "can't", "take"]
+    },
+    "48": {
+      "comment": "Pipeline had [\"can't\", 'take', 'that', 'a', 'way', 'from'] on 6n. PDF: 'that a-way from me!__' — but pipeline has 6 lyrics including 'can't take' which belong in m47. Providing correct v1 for 6n.",
+      "lyrics_v1": ["that", "a", "way", "from", "me!"]
+    },
+    "49": {
+      "comment": "Pipeline had ['me', 'No!', 'They'] on 3n. PDF: 'No! They can't' — pipeline has 'me' from previous measure overflow. Providing v1 for 3n.",
+      "lyrics_v1": ["No!", "They", "can't"]
+    },
+    "50": {
+      "comment": "Pipeline had [\"can't\", 'take', 'that', 'a'] on 4n. PDF: 'take that a-way' — adjusting for m49 fix.",
+      "lyrics_v1": ["take", "that", "a", "way"]
+    },
+    "51": {
+      "comment": "Pipeline had ['way', 'from'] on 2n. PDF: 'from me!' — adjusting.",
+      "lyrics_v1": ["from", "me!"]
+    },
+    "52": {
+      "comment": "Pipeline had 0 notes, 3 rests. Ending area, 1st ending bracket. No vocal notes. Cannot provide lyrics.",
+      "lyrics_v1": []
+    },
+    "53": {
+      "comment": "Pipeline had ['hat'] on 1n. PDF: 2nd ending 'me!___' held note. 'hat' is misattributed from 1st ending repeat text 'The way you wear your hat'. Providing correct v1 for 2nd ending.",
+      "lyrics_v1": ["me!"]
+    }
+  }
+}

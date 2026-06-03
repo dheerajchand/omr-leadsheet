@@ -1,0 +1,292 @@
+{
+  "song": "10 - Just Another Rhumba",
+  "key_fifths": 1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. G major. 8-page score: verse (Moderato, Rhumba rhythm) in cut-time feel, then Refrain in 4/4, then Trio in 4/4. Pipeline coverage ~79% with many GAP measures (m16-22 instrumental, m33-36 lost lyrics, m55-58 lost, m64-70 lost). Only 1 stacked measure (m88). The song has extensive 'rhumba' wordplay with '-ah' endings (slum-bah, num-bah, dum-bah, etc.). Many mid-word syllable errors in pipeline. Verse-to-Refrain transition at m25. Trio at ~m71.",
+  "measures": {
+    "2": {
+      "comment": "Pipeline: ['hap', 'pened', 'to', 'me'] on 5n. PDF: 'hap-pened to me__'. 4 syllables on 4 melody notes (5th note is tied/rest). OK as is.",
+      "lyrics_v1": ["hap", "pened", "to", "me"]
+    },
+    "4": {
+      "comment": "Pipeline: ['West'] on 1n. PDF: 'West In-dies.__' But only 1 note in this measure. Actually from PDF p53 system 2: 'West' is the held note, then 'In - dies.__' is below on the next measure. Pipeline has 1n 2r which matches 'West' held.",
+      "lyrics_v1": ["West"]
+    },
+    "10": {
+      "comment": "Pipeline: [\"I'm\"] on 1n. PDF p54 system 3: 'I'm jit-ter-y,' — but pipeline only has 1n+3r. 'I'm' is the pickup. The rest of 'jit-ter-y' should be on other notes in this measure but pipeline lost them.",
+      "lyrics_v1": ["I'm"]
+    },
+    "11": {
+      "comment": "Pipeline: ['I', 'guess'] on 2n. PDF: 'I'm twit-ter-y,' — OCR got 'I guess' instead. But looking more carefully at PDF p54: system 3 shows 'I'm  jit-ter-y,  I'm  twit-ter-y,  I guess I'm'. So m10='I'm', m11 could be 'jit-ter-y' or pipeline renumbered. The pipeline has 2n+4r. PDF shows 'twit-ter-y,' but only 2 notes captured. Pipeline lost notes.",
+      "lyrics_v1": ["I", "guess"]
+    },
+    "12": {
+      "comment": "Pipeline: ['I', 'guess', \"I'm\"] on 3n. PDF: 'I guess I'm'. Correct.",
+      "lyrics_v1": ["I", "guess", "I'm"]
+    },
+    "13": {
+      "comment": "Pipeline: ['And', \"it's\"] on 2n. PDF: 'And it's'. Correct.",
+      "lyrics_v1": ["And", "it's"]
+    },
+    "14": {
+      "comment": "Pipeline: ['some', 'thing', 'a', 'bout', 'which', \"there's\"] on 6n. PDF: 'some-thing a-bout which there's'. Correct.",
+      "lyrics_v1": ["some", "thing", "a", "bout", "which", "there's"]
+    },
+    "15": {
+      "comment": "Pipeline: ['noth', 'ing', 'an', 'can', 'y', 'one'] on 6n. PDF: 'noth-ing an-y-one can'. Pipeline has garbled order — 'an can y one' instead of 'an-y-one can'. Correct order is 'noth-ing an-y-one can'.",
+      "lyrics_v1": ["noth", "ing", "an", "y", "one", "can"]
+    },
+    "25": {
+      "comment": "Pipeline: ['Just', 'An', 'th', 'er'] on 4n. PDF p54 Refrain: 'It's Just An-oth-er'. But pipeline m25 has 4n. PDF shows 'Just An-oth-er' on 4 notes. Pipeline has 'th' instead of 'oth'.",
+      "lyrics_v1": ["Just", "An", "oth", "er"]
+    },
+    "26": {
+      "comment": "Pipeline: ['slum', 'ba,'] on 4n (2 lyrics). PDF: 'Rhum-ba,__'. Pipeline OCR garble: 'slum-ba' instead of 'Rhum-ba'. Only 2 lyric syllables on first 2 of 4 notes.",
+      "lyrics_v1": ["Rhum", "ba,"]
+    },
+    "29": {
+      "comment": "Pipeline: ['cer', 'tain', 'you', 'has', 'my'] on 5n. PDF: 'cer-tain-ly has my'. Pipeline OCR: 'you' instead of 'ly'.",
+      "lyrics_v1": ["cer", "tain", "ly", "has", "my"]
+    },
+    "30": {
+      "comment": "Pipeline: ['num', 'bah,'] on 4n (2 lyrics). PDF: 'num-bah,__'. Correct.",
+      "lyrics_v1": ["num", "bah,"]
+    },
+    "35": {
+      "comment": "GAP: 1n+2r, no lyrics. PDF p55 system 2: 'So much so__' — 'So' starts here. Pipeline lost the lyrics.",
+      "lyrics_v1": ["So"]
+    },
+    "37": {
+      "comment": "Pipeline: ['\"', 'ine'] on 3n (2 lyrics). PDF p55 system 3: 'im-ag-ine'. Pipeline garble: quote mark instead of 'ag'. Actually this is 'Can you im-ag-ine' across measures. m37 should have 'ag-ine' but pipeline has junk.",
+      "lyrics_v1": ["ag", "ine"]
+    },
+    "38": {
+      "comment": "Pipeline: ['an', 'y', 'thing'] on 4n (3 lyrics). PDF: 'an-y-thing'. Correct but pipeline missed the dash continuation marker. Actually correct.",
+      "lyrics_v1": ["an", "y", "thing"]
+    },
+    "39": {
+      "comment": "Pipeline: ['dumb', 'ah'] on 2n. PDF: 'dumb-ah?__' Missing question mark.",
+      "lyrics_v1": ["dumb", "ah?"]
+    },
+    "41": {
+      "comment": "Pipeline: ['Why', 'did', 'I', 'have', 'to', 'plan', 'a'] on 7n. PDF: 'Why did I have to plan a'. Correct.",
+      "lyrics_v1": ["Why", "did", "I", "have", "to", "plan", "a"]
+    },
+    "42": {
+      "comment": "Pipeline: ['Va', 'ca', 'tion', 'in', 'Ha', 'va', 'na'] on 7n. PDF: 'Va-ca-tion in Ha-va-na?'. Missing question mark.",
+      "lyrics_v1": ["Va", "ca", "tion", "in", "Ha", "va", "na?"]
+    },
+    "43": {
+      "comment": "Pipeline: ['Why', 'did', 'I', 'take', 'that', 'trip'] on 6n. PDF: 'Why did I take that trip'. Correct.",
+      "lyrics_v1": ["Why", "did", "I", "take", "that", "trip"]
+    },
+    "44": {
+      "comment": "Pipeline: ['That', 'made', 'me', 'lose', 'my', 'grip?'] on 6n. PDF: 'That made me lose my grip?'. Correct.",
+      "lyrics_v1": ["That", "made", "me", "lose", "my", "grip?"]
+    },
+    "46": {
+      "comment": "Pipeline: ['That', 'mu'] on 2n. PDF p56 system 2: 'That piece of mu-sic laid me'. Pipeline only captured 2 of the notes. Pipeline lost 'piece of' — only 2n+6r in pipeline. Notes lost by OCR.",
+      "lyrics_v1": ["That", "mu"]
+    },
+    "47": {
+      "comment": "Pipeline: ['sic'] on 1n. PDF: 'sic' continuing from m46. But PDF actually shows 'That piece of mu-sic laid me low.' across m46-47. Pipeline only got 'sic' here. The measure has 1n so 'sic' is all that fits.",
+      "lyrics_v1": ["sic"]
+    },
+    "48": {
+      "comment": "Pipeline: ['goes', 'a', 'gain'] on 3n. PDF p56 system 2: 'There it goes a-gain!' Pipeline lost 'There it' from prior measure. m48 has 3n and 'goes a-gain' fits but PDF shows 'a-gain!' with exclamation.",
+      "lyrics_v1": ["goes", "a", "gain!"]
+    },
+    "49": {
+      "comment": "Pipeline: ['Just', 'An', 'th', 'er'] on 4n. PDF: 'Just An-oth-er'. Pipeline OCR: 'th' for 'oth'.",
+      "lyrics_v1": ["Just", "An", "oth", "er"]
+    },
+    "50": {
+      "comment": "Pipeline v1: ['Rhum', 'ba!'] v2: ['first', 'it'] on 4n. PDF p56 system 3: 'Rhum-ba!__' then 'But it' pickup. Stacked: v1='Rhum-ba!' v2='But it'. Pipeline OCR: 'first' instead of 'But'.",
+      "lyrics_v1": ["Rhum", "ba!"]
+    },
+    "51": {
+      "comment": "Pipeline v2: ['was'] on 1n. PDF: 'was' continuing v2 'But it was'. Not stacked here, single verse continuation.",
+      "lyrics_v1": ["was"]
+    },
+    "53": {
+      "comment": "Pipeline: ['heard', 'on', 'ly', 'last', 'Sep'] on 5n. PDF p56 system 3: 'Which I heard on-ly last Sep-'. Pipeline lost 'Which I' from m52. m53 has 5n, 'heard on-ly last Sep' fits.",
+      "lyrics_v1": ["heard", "on", "ly", "last", "Sep"]
+    },
+    "54": {
+      "comment": "Pipeline: ['tum', 'bah!'] on 4n (2 lyrics). PDF: 'tum-bah!__'. Correct.",
+      "lyrics_v1": ["tum", "bah!"]
+    },
+    "59": {
+      "comment": "Pipeline: ['cum'] on 1n. PDF p57 system 2: 'suc-cum-bah__'. Pipeline has only 'cum' — rest of syllables lost to other measures. 1n so only 1 syllable fits.",
+      "lyrics_v1": ["cum"]
+    },
+    "61": {
+      "comment": "Pipeline: ['ag', 'me'] on 3n (2 lyrics). PDF p57 system 3: 'im-ag-ine'. Pipeline: 'ag me' — 'me' is wrong, should be 'ine'.",
+      "lyrics_v1": ["ag", "ine"]
+    },
+    "62": {
+      "comment": "Pipeline: ['an', 'Why', 'to'] on 4n (3 lyrics). PDF: 'an-y-thing'. Pipeline garble: 'Why to' contamination from adjacent text. 3 syllables on first 3 of 4 notes.",
+      "lyrics_v1": ["an", "y", "thing"]
+    },
+    "63": {
+      "comment": "Pipeline: ['dum', 'bah?.'] on 3n (2 lyrics). PDF: 'dumb-ah?__'. Pipeline OCR garble.",
+      "lyrics_v1": ["dumb", "ah?"]
+    },
+    "64": {
+      "comment": "Pipeline: ['Why', 'did', 'I', 'have', 'to', 'sue'] on 6n. PDF p57 system 4: 'Why did I have to suc-'. Pipeline OCR: 'sue' for 'suc'.",
+      "lyrics_v1": ["Why", "did", "I", "have", "to", "suc"]
+    },
+    "65": {
+      "comment": "Pipeline: ['cum', 'bah'] on 3n (2 lyrics). PDF: 'cum-bah__'. Correct but missing long dash.",
+      "lyrics_v1": ["cum", "bah"]
+    },
+    "66": {
+      "comment": "Pipeline: ['to', 'that'] on 3n (2 lyrics). PDF: 'to that'. Correct.",
+      "lyrics_v1": ["to", "that"]
+    },
+    "67": {
+      "comment": "Pipeline: ['Ah', \"I'm\", 'bah?'] on 4n (3 lyrics). PDF p57 system 4: 'rhu-m-bah?__'. Pipeline garble: 'Ah I'm' for 'rhu-m'. 3 syllables.",
+      "lyrics_v1": ["rhu", "m", "bah?"]
+    },
+    "71": {
+      "comment": "Pipeline: ['Ah!', 'cha'] on 2n. PDF p58 Trio system 1: 'Ah! Ah!' then 'I'm the cu-ca-ra-cha'. m71='Ah, Ah!' but pipeline has 'Ah! cha'. Looking more carefully at the Trio: m71 starts at 'Ah, ah,' — 2 notes. Pipeline got 'cha' contamination.",
+      "lyrics_v1": ["Ah,", "ah,"]
+    },
+    "73": {
+      "comment": "Pipeline: ['blah', 'And'] on 2n. PDF p58 system 4: 'just went blah__ And'. Pipeline: 'blah And' — 'blah' is correct from prior phrase, 'And' is pickup. But 2n+3r, only 2 syllables fit.",
+      "lyrics_v1": ["blah", "And"]
+    },
+    "74": {
+      "comment": "Pipeline: ['Ah', 'hot', 'cha,'] on 3n. PDF p58: 'gave up swing and hot-cha,'. But m74 has 3n. Pipeline 'Ah hot cha,' — 'Ah' should be part of prior phrase. Looking at PDF more carefully: m74 = 'and hot-cha,' on the notes shown. But pipeline has 3n so 'Ah hot cha,' is wrong. PDF: 'gave up swing and hot-cha, Ah, ah, ah!' The system shows 5 notes: 'gave up swing and hot-cha'. m74 has 3n+3r.",
+      "lyrics_v1": ["and", "hot", "cha,"]
+    },
+    "75": {
+      "comment": "Pipeline: ['Ah,'] on 1n. PDF: 'Ah,' — correct.",
+      "lyrics_v1": ["Ah,"]
+    },
+    "76": {
+      "comment": "Pipeline: ['ah!'] on 1n. PDF: 'ah!' — correct but should have comma pattern. PDF shows 'ah,' not 'ah!'.",
+      "lyrics_v1": ["ah,"]
+    },
+    "77": {
+      "comment": "Pipeline: ['Ah,', 'At'] on 2n. PDF p58 system 2: 'ah! ... At first it was di-vine-ah'. m77 has 2n. PDF: 'ah! ... Ah,' then 'At'. Actually pipeline shows pickup. Let me recheck: 'Ah, ah, ah!' ends the prior phrase. Then 'At first it was di-vine-ah' starts. m77='ah! At'. Pipeline is close.",
+      "lyrics_v1": ["ah!", "At"]
+    },
+    "78": {
+      "comment": "Pipeline: ['But'] on 1n. PDF p58 system 2: 'first it was di-vine-ah, But it turned out a'. m78 has 1n+5r. 'But' fits.",
+      "lyrics_v1": ["But"]
+    },
+    "79": {
+      "comment": "Pipeline: ['Cu', 'ban', 'Frank', 'en'] on 4n. PDF: 'Cu-ban Frank-en-'. Correct.",
+      "lyrics_v1": ["Cu", "ban", "Frank", "en"]
+    },
+    "83": {
+      "comment": "Pipeline: [\"It's\", 'got', 'me', 'by', 'the', 'throat', 'ah.'] on 7n. PDF p58 system 4: 'It's got me by the throat-ah.' Missing hyphen in pipeline but 7 syllables on 7 notes. Period at end.",
+      "lyrics_v1": ["It's", "got", "me", "by", "the", "throat", "ah."]
+    },
+    "84": {
+      "comment": "Pipeline: ['ah', 'Oh', \"what's\", 'the', 'an', 'ti', 'dote', 'ah?'] on 8n. PDF: 'Oh what's the an-ti-dote-ah?' — but 8n implies extra syllable. Pipeline has 'ah' as first syllable which is the tail of 'throat-ah.' Actually first 'ah' might be a grace note or tied note. PDF shows 8 notes: 'ah Oh what's the an-ti-dote-ah?'. Pipeline has it right but 'ah' at start is questionable. Keep as-is since note count matches.",
+      "lyrics_v1": ["ah", "Oh", "what's", "the", "an", "ti", "dote", "ah?"]
+    },
+    "85": {
+      "comment": "Pipeline: ['Ah,', 'It'] on 2n. PDF p59 system 1: 'Ah, ah!' then 'It brought me woe'. m85=2n: 'Ah, It'. But PDF actually shows 'Ah,' and 'It' as pickup.",
+      "lyrics_v1": ["Ah,", "It"]
+    },
+    "86": {
+      "comment": "Pipeline: ['ah!'] on 1n. PDF: 'ah!' Correct.",
+      "lyrics_v1": ["ah!"]
+    },
+    "87": {
+      "comment": "Pipeline: ['It', 'brought', 'me', 'woe', 'and'] on 5n. PDF p59: 'It brought me woe and strife-ah,'. m87=5n+1r. 'It brought me woe and' fits 5 notes. But PDF shows 'strife-ah,' continues. Correct.",
+      "lyrics_v1": ["It", "brought", "me", "woe", "and"]
+    },
+    "88": {
+      "comment": "STACKED. Pipeline v1: ['On', 'It', 'made', 'me', 'lose', 'my', 'wife'] v3: ['Oh', 'wheres', 'a', 'gun', 'or', 'knife']. 7 notes. PDF p59: v1='It made me lose my wife-ah,' v2='Oh where's a gun or knife-ah?' Two stacked verses. Pipeline garbled: 'On' contaminant at start of v1. Provide v1 only (7 notes).",
+      "lyrics_v1": ["It", "made", "me", "lose", "my", "wife", "ah,"]
+    },
+    "89": {
+      "comment": "Pipeline: ['knife'] on 1n. PDF: end of 'knife-ah?' phrase. Actually this is the held note continuation. Pipeline picked up 'knife' which is v2 bleed. For v1 this should be blank or the end of 'ah,' held.",
+      "lyrics_v1": []
+    },
+    "90": {
+      "comment": "Pipeline: ['rhum', 'ba', 'that'] on 4n (3 lyrics). PDF p59 system 2: 'It's__ the rhum-ba__ that'. Pipeline has 4n. 'rhum ba that' — missing 'It's the'. But with 4n and 3 lyrics, this is the tail. Actually PDF: 'It's the rhum-ba that blight-ed my life.' across several measures. m90 = 'rhum ba that' fits 3 of 4 notes.",
+      "lyrics_v1": ["rhum", "ba", "that"]
+    },
+    "91": {
+      "comment": "Pipeline: ['blight', 'ed', 'my'] on 4n (3 lyrics). PDF: 'blight-ed my'. Correct.",
+      "lyrics_v1": ["blight", "ed", "my"]
+    },
+    "92": {
+      "comment": "Pipeline: ['life.'] on 1n. PDF: 'life.__'. Correct.",
+      "lyrics_v1": ["life."]
+    },
+    "93": {
+      "comment": "Pipeline: ['a'] on 1n. PDF p59 system 3: instrumental transition. 'a' is likely OCR contamination from 'a-gain' in next phrase. But pipeline shows 1n with lyric. Could be a grace note pickup.",
+      "lyrics_v1": []
+    },
+    "95": {
+      "comment": "Pipeline: ['goes', 'a', 'gain!'] on 3n. PDF: 'There it goes a-gain!' Pipeline lost 'There it' from m94. m95 has 3n, 'goes a-gain!' fits.",
+      "lyrics_v1": ["goes", "a", "gain!"]
+    },
+    "96": {
+      "comment": "Pipeline: ['Just', 'An', 'oth', 'er'] on 4n. PDF p59 system 3: 'Just An-oth-er'. Correct.",
+      "lyrics_v1": ["Just", "An", "oth", "er"]
+    },
+    "97": {
+      "comment": "Pipeline: ['Rhum', 'ba'] on 4n (2 lyrics). PDF: 'Rhum-ba__'. Correct.",
+      "lyrics_v1": ["Rhum", "ba"]
+    },
+    "98": {
+      "comment": "Pipeline: ['Which'] on 1n. PDF: 'Which'. Correct.",
+      "lyrics_v1": ["Which"]
+    },
+    "100": {
+      "comment": "Pipeline: ['got', 'me', 'un', 'der'] on 4n. PDF p60: 'has got me un-der its'. m100='got me un-der'. Correct (pipeline lost 'has' from prior).",
+      "lyrics_v1": ["got", "me", "un", "der"]
+    },
+    "101": {
+      "comment": "Pipeline: ['thum', 'bah,'] on 4n (2 lyrics). PDF: 'thum-bah,__'. Correct.",
+      "lyrics_v1": ["thum", "bah,"]
+    },
+    "102": {
+      "comment": "Pipeline: ['ESS'] on 1n. PDF p60 system 2: 'So much so__'. Pipeline OCR garble: 'ESS' for 'So'. ",
+      "lyrics_v1": ["So"]
+    },
+    "103": {
+      "comment": "Pipeline: ['ESS'] on 1n. PDF: continuing 'much so'. Pipeline OCR garble again. 1n+1r, 'much' on the note.",
+      "lyrics_v1": ["much"]
+    },
+    "106": {
+      "comment": "Pipeline: ['slum', 'bah'] on 2n. PDF p60 system 2: 'slum-bah.__'. Correct but actually PDF shows 'slum-bah.' Should be 'slum-bah.'",
+      "lyrics_v1": ["slum", "bah."]
+    },
+    "108": {
+      "comment": "Pipeline: ['ag', 'ine'] on 3n (2 lyrics). PDF p60 system 3: 'im-ag-ine'. Pipeline: 'ag ine' — lost 'im' from prior. Correct for this measure.",
+      "lyrics_v1": ["ag", "ine"]
+    },
+    "109": {
+      "comment": "Pipeline: ['an', 'y', 'thing'] on 4n (3 lyrics). PDF: 'an-y-thing'. Correct.",
+      "lyrics_v1": ["an", "y", "thing"]
+    },
+    "110": {
+      "comment": "Pipeline: ['dum', 'bah?'] on 3n (2 lyrics). PDF: 'dumb-ah?__'. Pipeline OCR: 'dum' for 'dumb'.",
+      "lyrics_v1": ["dumb", "ah?"]
+    },
+    "111": {
+      "comment": "Pipeline: ['Why', 'did', 'I', 'have', 'to', 'sue'] on 6n. PDF p60 system 4: 'Why did I have to suc-'. Pipeline OCR: 'sue' for 'suc'.",
+      "lyrics_v1": ["Why", "did", "I", "have", "to", "suc"]
+    },
+    "112": {
+      "comment": "Pipeline: ['cum', 'bah'] on 3n (2 lyrics). PDF: 'cum-bah__'. Correct.",
+      "lyrics_v1": ["cum", "bah"]
+    },
+    "113": {
+      "comment": "Pipeline: ['to', 'that'] on 3n (2 lyrics). PDF: 'to that'. Correct.",
+      "lyrics_v1": ["to", "that"]
+    },
+    "114": {
+      "comment": "Pipeline: ['rhu', 'm', 'bah?'] on 4n (3 lyrics). PDF: 'rhu-m-bah?__'. Correct.",
+      "lyrics_v1": ["rhu", "m", "bah?"]
+    }
+  }
+}

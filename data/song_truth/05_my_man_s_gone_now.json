@@ -1,0 +1,69 @@
+{
+  "song": "05 - My Man's Gone Now",
+  "key_fifths": -1,
+  "time_signature": "3/4",
+  "comment": "Published lyrics from DuBose Heyward. D-minor centred recitative aria (Serena). No chord-row labels in published score -- spurious pipeline chords wiped. Partial coverage: measures where pipeline lost notes entirely (m8 stairs., m21 prayers., m35 to de prom-ise land., m48 man., m68 dead.) are unfixable by truth overlay and omitted.",
+  "measures": {
+    "7": {
+      "comment": "Pipeline had 5 notes with 0 lyrics. Published: 'foot-steps climb-ing up de' continues from m6 'foot'.",
+      "lyrics_v1": ["steps", "climb", "ing", "up", "de"]
+    },
+    "15": {
+      "comment": "Pipeline read 'rows' -- published is 'row's' (possessive: Sorrow's).",
+      "lyrics_v1": ["Sor", "row's"]
+    },
+    "17": {
+      "comment": "Pipeline read 'pny' -- published is 'p'ny,' (company → comp'ny).",
+      "lyrics_v1": ["com", "p'ny,"]
+    },
+    "29": {
+      "comment": "Pipeline had 4 notes with 0 lyrics. Published: 'Ain' dat I min'' (Animato section).",
+      "lyrics_v1": ["Ain'", "dat", "I", "min'"]
+    },
+    "39": {
+      "comment": "Pipeline dropped 'all' -- published: 'march-in' all de way'.",
+      "lyrics_v1": ["march", "in'", "all", "de", "way"]
+    },
+    "47": {
+      "comment": "Pipeline had 'Since I lose' (missing 'my') + spurious A major chord. No chords in published score.",
+      "lyrics_v1": ["Since", "I", "lose", "my"],
+      "chords": []
+    },
+    "59": {
+      "comment": "Pipeline OCR read 'by...' and 'bed' -- published: 'by' and 'bed.' (period).",
+      "lyrics_v1": ["by", "me", "in", "de", "bed."]
+    },
+    "61": {
+      "comment": "Pipeline OCR garbled 'Tell-in'' as 'Tell i in'' (extra token). Published: 'Tell-in' me de'.",
+      "lyrics_v1": ["Tell", "in'", "me", "de"]
+    },
+    "63": {
+      "comment": "Pipeline dropped 'noon' -- published: 'morn-in', noon an''.",
+      "lyrics_v1": ["morn", "in',", "noon", "an'"]
+    },
+    "73": {
+      "comment": "Spurious A major + A minor chords. No chords in published score.",
+      "chords": []
+    },
+    "74": {
+      "comment": "Pipeline had phantom 'all' before 'is'. Published: held note from m73 then 'is'.",
+      "lyrics_v1": ["is"]
+    },
+    "76": {
+      "comment": "Pipeline read stage direction 'CHORUS' as a lyric. Not a sung word.",
+      "lyrics_v1": []
+    },
+    "77": {
+      "comment": "Spurious Bb minor chord. No chords in published score.",
+      "chords": []
+    },
+    "83": {
+      "comment": "Spurious C chord. No chords in published score.",
+      "chords": []
+    },
+    "85": {
+      "comment": "Pipeline read 'Ah! freely' -- 'freely' is stage direction '(SERENA freely)', not a lyric.",
+      "lyrics_v1": ["Ah!"]
+    }
+  }
+}

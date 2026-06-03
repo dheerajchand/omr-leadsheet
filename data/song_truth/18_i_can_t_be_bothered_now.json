@@ -1,0 +1,88 @@
+{
+  "song": "18 - I Can't Be Bothered Now",
+  "key_fifths": 1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Simply) + Refrain (well marked). Pipeline has stacked-verse garble in m42 (5L/4n). Gaps at m8 (1n, instrumental), m28 (1n), m31 (2n), m63 (2n, instrumental). The gaps at m28-m31 caused a lyric shift through m32-m39; pipeline notes were also undercounted in that range so a full lyric reconstruction is not possible -- best-effort corrections provided. From m40 onward the pipeline is back in sync.",
+  "measures": {
+    "9": {
+      "comment": "Pipeline had 'When I'm ing' (3L/3n). Dropped 'danc'. Published: 'When I'm danc-'.",
+      "lyrics_v1": ["When", "I'm", "danc"]
+    },
+    "18": {
+      "comment": "Pipeline had 'ban ia,.' (2L/2n). Spurious comma. Published: 'ban-ia.'.",
+      "lyrics_v1": ["ban", "ia."]
+    },
+    "19": {
+      "comment": "Pipeline had 'set I'm not up' (4L/4n). Word order garbled. Published: 'I'm not up-set,'.",
+      "lyrics_v1": ["I'm", "not", "up", "set,"]
+    },
+    "28": {
+      "comment": "GAP: 1 note + 2 rests, no lyrics. Published: 'In' (pickup to 'In March or May').",
+      "lyrics_v1": ["In"]
+    },
+    "29": {
+      "comment": "GAP: 2 notes + 1 rest, no lyrics. Published: 'March or'.",
+      "lyrics_v1": ["March", "or"]
+    },
+    "30": {
+      "comment": "GAP: 4 notes, no lyrics. Published: 'May, I can't be'.",
+      "lyrics_v1": ["May,", "I", "can't", "be"]
+    },
+    "31": {
+      "comment": "GAP: 2 notes + 2 rests, no lyrics. Published: 'both-ered'.",
+      "lyrics_v1": ["both", "ered"]
+    },
+    "32": {
+      "comment": "Pipeline had 'and' (1L/1n). Shifted from gap. Published: 'now!' (completing 'I can't be both-ered now!').",
+      "lyrics_v1": ["now!"]
+    },
+    "33": {
+      "comment": "Pipeline had 'news' (1L/1n). Shifted. Published: pipeline lost notes in this range; best-effort: 'My' (start of 'My bonds and shares').",
+      "lyrics_v1": ["My"]
+    },
+    "34": {
+      "comment": "Pipeline had 'down' (1L/1n). Shifted. Published: 'bonds'.",
+      "lyrics_v1": ["bonds"]
+    },
+    "35": {
+      "comment": "Pipeline had 'stairs,' (1L/1n). Shifted. Published: 'and'.",
+      "lyrics_v1": ["and"]
+    },
+    "36": {
+      "comment": "Pipeline had 'who' (1L/1n). Shifted. Published: 'shares'.",
+      "lyrics_v1": ["shares"]
+    },
+    "37": {
+      "comment": "Pipeline had 'cares? round I'm' (3L/3n). Shifted. Published: 'May fall down' (from 'May fall down-stairs,').",
+      "lyrics_v1": ["May", "fall", "down"]
+    },
+    "38": {
+      "comment": "Pipeline had 'day ing and I' (4L/4n). Shifted. Published: best-effort 'stairs, Who cares? who' (pipeline lost notes mean some syllables of 'who cares? I'm danc-ing and I can't be both-ered' cannot be placed).",
+      "lyrics_v1": ["stairs,", "Who", "cares?", "who"]
+    },
+    "39": {
+      "comment": "Pipeline had 'can't be both ered' (4L/4n). Shifted. Published: 'cares? I'm danc ing'.",
+      "lyrics_v1": ["cares?", "I'm", "danc", "ing"]
+    },
+    "42": {
+      "comment": "STACKED 5L/4n. Pipeline had 'up a mong the I'. Published v1 (removing v2 bleed 'I'): 'up a mong the'.",
+      "lyrics_v1": ["up", "a", "mong", "the"]
+    },
+    "43": {
+      "comment": "Pipeline had 'stairs On' (2L/3n). 'stairs' is OCR for 'stars,'. Published: 'stars, On' -- only 2 syllables on 3 notes (one note may be tied or pickup).",
+      "lyrics_v1": ["stars,", "On"]
+    },
+    "59": {
+      "comment": "Pipeline had 'be both ereu' (3L/4n). 'ereu' is OCR garble for 'ered'. Published: 'be both-ered' -- 3 syllables on 4 notes (last note may be held).",
+      "lyrics_v1": ["be", "both", "ered"]
+    },
+    "60": {
+      "comment": "Pipeline had 'HOW!' (1L/1n). OCR garble. Published: 'now!'.",
+      "lyrics_v1": ["now!"]
+    },
+    "62": {
+      "comment": "Pipeline had 'now' (1L/1n). Second ending. Published: 'now.' (with period, not bare).",
+      "lyrics_v1": ["now."]
+    }
+  }
+}

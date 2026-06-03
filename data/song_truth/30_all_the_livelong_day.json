@@ -1,0 +1,132 @@
+{
+  "song": "30 - All The Livelong Day",
+  "key_fifths": 1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Moderato) mm1-16 + Refrain (Leisurely) mm17-51. Pipeline dropped most verse lyrics (6 GAP measures), read 'Refrain' direction as lyric, completely missed the 'What do I do-oo-oo? Dream a-bout you-oo-oo!' section (mm21-25), and has heavy v1/v2 stacking in mm34-41. Final section mm42-47 also mostly GAP. Two OCR garbles in verse ('hing,'→'ning,', 'Tho'→'The'). Copyright text misread as lyrics in m51.",
+  "measures": {
+    "2": {
+      "comment": "Pipeline had 'got me, I find I'm' (5 on 6n) — missing 'not'. Published Ira: 'got me, I find I'm not'.",
+      "lyrics_v1": ["got", "me,", "I", "find", "I'm", "not"]
+    },
+    "3": {
+      "comment": "Pipeline had 'not me, Tho me Id' (5 on 6n) — 'not' displaced from m2, 'Tho' OCR for 'The', 'Id' missing apostrophe. Published: 'me, The me I'd known in'.",
+      "lyrics_v1": ["me,", "The", "me", "I'd", "known", "in"]
+    },
+    "4": {
+      "comment": "GAP 5n. Pipeline had no lyrics. Published: 'the past.' — 2 syllables on 5 notes (3 held continuation).",
+      "lyrics_v1": ["the", "past."]
+    },
+    "5": {
+      "comment": "GAP 4n+1r. Pipeline had no lyrics. Published: 'You sim-ply stun'.",
+      "lyrics_v1": ["You", "sim", "ply", "stun"]
+    },
+    "6": {
+      "comment": "Pipeline had 'Love has un' (3 on 6n) — missing 'me,' from end of previous phrase. Published: 'me, Love has un-'.",
+      "lyrics_v1": ["me,", "Love", "has", "un"]
+    },
+    "7": {
+      "comment": "Pipeline had 'done' (1 on 4n) — missing 3 syllables. Published: 'done me at last.'.",
+      "lyrics_v1": ["done", "me", "at", "last."]
+    },
+    "9": {
+      "comment": "GAP 4n+1r. Pipeline had no lyrics. Published: 'From the be-gin-'.",
+      "lyrics_v1": ["From", "the", "be", "gin"]
+    },
+    "10": {
+      "comment": "GAP 6n. Pipeline had no lyrics. Published: '-ning You had me' — 4 syllables on 6 notes (2 held).",
+      "lyrics_v1": ["ning", "You", "had", "me"]
+    },
+    "11": {
+      "comment": "Pipeline had 'spin hing, round your' (4 on 6n) — 'hing,' is OCR for 'ning,', missing 'A-' before 'round'. Published: 'spin-ning, A-round your'.",
+      "lyrics_v1": ["spin", "ning,", "A", "round", "your"]
+    },
+    "12": {
+      "comment": "Pipeline had 'fin ger I'm twirl' (4 on 5n) — 'twirl' should be 'twirled.' (one syllable, not split). Published: 'fin-ger I'm twirled.'.",
+      "lyrics_v1": ["fin", "ger", "I'm", "twirled."]
+    },
+    "13": {
+      "comment": "Pipeline had 'ed But who's re' (4 on 4n+1r) — 'ed' is displaced from m12 ('twirled' is one syllable). Published: 'But who's re-'.",
+      "lyrics_v1": ["But", "who's", "re"]
+    },
+    "17": {
+      "comment": "Pipeline read 'Refrain' stage direction as lyric. PDF shows 'Refrain (Leisurely)' is a tempo marking, not a sung word. Clearing.",
+      "lyrics_v1": []
+    },
+    "21": {
+      "comment": "GAP 2n+3r. Pipeline had no lyrics. Published: 'What do' — start of 'What do I do-oo-oo?' section.",
+      "lyrics_v1": ["What", "do"]
+    },
+    "22": {
+      "comment": "GAP 4n. Pipeline had no lyrics. Published: 'I do-oo-oo?' — melismatic triplet.",
+      "lyrics_v1": ["I", "do", "oo", "oo?"]
+    },
+    "23": {
+      "comment": "GAP 3n+2r. Pipeline had no lyrics. Published: 'Dream a-bout'.",
+      "lyrics_v1": ["Dream", "a", "bout"]
+    },
+    "24": {
+      "comment": "GAP 4n. Pipeline had no lyrics. Published: 'you-oo-oo!' — melismatic triplet, 3 syllables on 4 notes (1 held).",
+      "lyrics_v1": ["you", "oo", "oo!"]
+    },
+    "29": {
+      "comment": "Pipeline had 'den Sud ly' (3 on 3n+2r) — garbled syllable order. Published: 'Sud-den-ly'.",
+      "lyrics_v1": ["Sud", "den", "ly"]
+    },
+    "30": {
+      "comment": "Pipeline had 'my gloom old' (3 on 3n+1r) — 'old' should be 'y' (from 'gloom-y'). Published: 'my gloom-y'.",
+      "lyrics_v1": ["my", "gloom", "y"]
+    },
+    "31": {
+      "comment": "Pipeline had 'sky turned ma. bright 'ly' (5 on 5n) — garbled order, stray period. Published: 'old sky turned ma-gic-'ly'. Pipeline detected 5 notes for 6 syllables; merging 'gic-'ly' on last note.",
+      "lyrics_v1": ["old", "sky", "turned", "ma", "gic-'ly"]
+    },
+    "36": {
+      "comment": "Pipeline stacked v1+v2: 'op tak po ing site me you. on.' (8 on 5n). Published v1: 'op-po-site you.' — 4 syllables on 5 notes (1 held).",
+      "lyrics_v1": ["op", "po", "site", "you."]
+    },
+    "37": {
+      "comment": "Pipeline had 'And' (1 on 1n+1r) — stacking artifact, not in published text. Clearing.",
+      "lyrics_v1": []
+    },
+    "38": {
+      "comment": "Pipeline stacked v1+v2: 'You'll Be i find lieve live love me for' (9 on 3n+1r). Published v1: 'You'll find love'.",
+      "lyrics_v1": ["You'll", "find", "love"]
+    },
+    "39": {
+      "comment": "Pipeline stacked v1+v2: 'ev when er this last ing; says.' (7 on 4n). Published v1: 'ev-er-last-ing;'.",
+      "lyrics_v1": ["ev", "er", "last", "ing;"]
+    },
+    "40": {
+      "comment": "Pipeline stacked v1+v2: 'Sum You're. mer, the spring why and and fall where time, fore,' (12 on 6n). Published v1: 'Sum-mer, spring and fall-time,'.",
+      "lyrics_v1": ["Sum", "mer,", "spring", "and", "fall", "time,"]
+    },
+    "41": {
+      "comment": "Pipeline stacked v1+v2: 'You're I my am one here and to all care' (10 on 5n). Published v1: 'You're my one and all-time.' — 6 syllables but 5 notes; merging 'all-time.' on last note.",
+      "lyrics_v1": ["You're", "my", "one", "and", "all-time."]
+    },
+    "42": {
+      "comment": "GAP 4n. Pipeline had no lyrics. Published: 'All I live for'.",
+      "lyrics_v1": ["All", "I", "live", "for"]
+    },
+    "43": {
+      "comment": "Pipeline had 'You're' (1 on 5n) — garble/displacement. Published: 'now is to hold you'.",
+      "lyrics_v1": ["now", "is", "to", "hold", "you"]
+    },
+    "44": {
+      "comment": "Pipeline had 'the' (1 on 1n) — garble. Published: 'tight,'.",
+      "lyrics_v1": ["tight,"]
+    },
+    "46": {
+      "comment": "GAP 4n. Pipeline had no lyrics. Published: 'All the live-long' (repeat of refrain).",
+      "lyrics_v1": ["All", "the", "live", "long"]
+    },
+    "47": {
+      "comment": "GAP 5n. Pipeline had no lyrics. Published: 'day and the long, long'.",
+      "lyrics_v1": ["day", "and", "the", "long,", "long"]
+    },
+    "51": {
+      "comment": "Pipeline read copyright text 'music company' as lyrics. Clearing.",
+      "lyrics_v1": []
+    }
+  }
+}

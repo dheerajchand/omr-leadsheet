@@ -1,0 +1,52 @@
+{
+  "song": "23 - Love Is Here To Stay",
+  "key_fifths": -1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by Ira Gershwin. Verse (Con anima) + Refrain. Pipeline has stacked-verse garble in m12 (8L/4n) and m13 (2L/1n). m51 gap (1n, no lyrics). Several OCR errors: merged tokens, wrong words, garbled syllables. m40-m41 'To-geth-er' misaligned but fixing cascades through m42-m43; left as comment-only for those.",
+  "measures": {
+    "10": {
+      "comment": "Pipeline had 'Noth ingseemsto be' (3L/5n) -- 'ingseemsto' is OCR-merged garble. Published: 'Noth-ing seems to be'.",
+      "lyrics_v1": ["Noth", "ing", "seems", "to", "be"]
+    },
+    "12": {
+      "comment": "STACKED 8L/4n. Pipeline read interleaved v1/v2: 'that er is we're nt go our ing'. Published v1: 'that is-n't our'.",
+      "lyrics_v1": ["that", "is", "n't", "our"]
+    },
+    "13": {
+      "comment": "STACKED 2L/1n. Pipeline read 'fair; a'. Published v1 on 1 note: 'fair;'.",
+      "lyrics_v1": ["fair;"]
+    },
+    "19": {
+      "comment": "Pipeline had 'Its' missing apostrophe. Published: 'It's'.",
+      "lyrics_v1": ["It's"]
+    },
+    "24": {
+      "comment": "Pipeline had 'a' (1L/1n). Published phrase is 'Not for a year' -- the pickup note here is 'Not'.",
+      "lyrics_v1": ["Not"]
+    },
+    "26": {
+      "comment": "Pipeline had 'But ev er and a,' -- stray comma on 'a,'. Published: 'But ev-er and a' (no comma).",
+      "lyrics_v1": ["But", "ev", "er", "and", "a"]
+    },
+    "30": {
+      "comment": "Pipeline had 'tel e phone and the ,' -- stray comma+space on last token. Published: 'tel-e-phone and the'.",
+      "lyrics_v1": ["tel", "e", "phone", "and", "the"]
+    },
+    "36": {
+      "comment": "Pipeline had 'But my' (2L/2n). Published: 'But, oh my dear,' -- the 2 notes carry 'But,' and 'oh'.",
+      "lyrics_v1": ["But,", "oh"]
+    },
+    "40": {
+      "comment": "Pipeline had 'To er' (2L/2n). OCR garbled second syllable. Published: 'To-geth-er' starts here; 2 notes = 'To geth'.",
+      "lyrics_v1": ["To", "geth"]
+    },
+    "47": {
+      "comment": "Pipeline had 'They're on Iy made of' -- 'Iy' is OCR garble for 'ly'. Published: 'They're on-ly made of'.",
+      "lyrics_v1": ["They're", "on", "ly", "made", "of"]
+    },
+    "51": {
+      "comment": "GAP: 1 note, no lyrics in pipeline. Published: 'to' (part of 'here to stay' in first ending).",
+      "lyrics_v1": ["to"]
+    }
+  }
+}

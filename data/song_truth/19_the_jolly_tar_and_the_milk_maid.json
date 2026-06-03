@@ -1,0 +1,172 @@
+{
+  "song": "19 - The Jolly Tar and The Milk Maid",
+  "key_fifths": -1,
+  "time_signature": "6/8",
+  "comment": "Published lyrics by Ira Gershwin. F major. 6/8 time (Allegretto scherzando). 4-page score. Duet with heavy verse stacking (30 stacked measures). Verse 1 = Milkmaid's perspective, Verse 2 = Jolly Tar's reply. Dal Segno structure with 1st/2nd endings. Pipeline has 157% coverage due to stacking. Most measures have 2 verses stacked; m3 has 3 verses. v1-only lyrics provided for all stacked measures. Many OCR errors in the stacked text: 'Ly' for 'ly', 'Ui' for 'ti', 'm' for 'my', etc.",
+  "measures": {
+    "1": {
+      "comment": "STACKED. Pipeline v1:['There'] v2:['The']. 1n+3r. PDF: v1='There' v2='The'. v1 only.",
+      "lyrics_v1": ["There"]
+    },
+    "2": {
+      "comment": "STACKED. Pipeline v1:['was','a','Jol','Ly'] v2:['Jol','ly','Tar,','he']. 4n. PDF: v1='was a Jol-ly' v2='Jol-ly Tar, he'. Pipeline OCR: 'Ly' should be 'ly'.",
+      "lyrics_v1": ["was", "a", "Jol", "ly"]
+    },
+    "3": {
+      "comment": "STACKED 3 verses. Pipeline v1:['Brit','ish','Tar','Who'] v2:['laugh','a','laugh.','Tis'] v3:['al','read','and','band']. 4n. PDF: v1='Brit-ish Tar who' v2='laughed a laugh. 'Tis' v3 is garbled. PDF actually shows only 2 verses here: v1='Brit-ish Tar who' v2='Tar, he laughed a laugh. 'Tis'. The v3 is pipeline contamination.",
+      "lyrics_v1": ["Brit", "ish", "Tar", "who"]
+    },
+    "4": {
+      "comment": "STACKED. Pipeline v1:['met','a','milk','maid'] v2:['for','the','best,','my']. 4n. PDF: v1='met a milk maid' v2='for the best, my'. Correct.",
+      "lyrics_v1": ["met", "a", "milk", "maid"]
+    },
+    "5": {
+      "comment": "STACKED. Pipeline v1:['bon','ny.','He'] v2:['bon','ny,','That']. 4n (6 lyrics). PDF: v1='bon-ny.__ He' v2='bon-ny, That'. Pipeline correct for v1.",
+      "lyrics_v1": ["bon", "ny.", "He"]
+    },
+    "6": {
+      "comment": "STACKED. Pipeline v1:['said,','How','beau','Ui'] v2:['you',\"won't\",'be','m']. 4n. PDF: v1='said, \"How beau-ti-' v2='you won't be my'. Pipeline OCR: 'Ui' for 'ti', 'm' for 'my'.",
+      "lyrics_v1": ["said,", "\"How", "beau", "ti"]
+    },
+    "7": {
+      "comment": "STACKED. Pipeline v1:['ful','you','are','With','a'] v2:['bet','ter','half','With','a']. 5n. PDF: v1='ful you are!\" With a' v2='bet-ter half.\" With a'. Pipeline missing closing quotes and punctuation.",
+      "lyrics_v1": ["ful", "you", "are!\"", "With", "a"]
+    },
+    "8": {
+      "comment": "STACKED. Pipeline v1:['hey','and','a'] v2:['he','and','a']. 4n (3 lyrics each). PDF: v1='hey__ and a' v2='hey__ and a'. Pipeline v2 OCR: 'he' for 'hey'.",
+      "lyrics_v1": ["hey", "and", "a"]
+    },
+    "9": {
+      "comment": "STACKED. Pipeline v1:['non','ny,','With','a','a'] v2:['non','ny,','With','a']. 5n. PDF: v1='non-ny,__ With a' (held note). Pipeline has extra 'a' at end of v1.",
+      "lyrics_v1": ["non", "ny,", "With", "a"]
+    },
+    "10": {
+      "comment": "Pipeline: ['hey','and','a'] on 4n (3 lyrics). PDF: 'hey__ and a'. Correct.",
+      "lyrics_v1": ["hey", "and", "a"]
+    },
+    "11": {
+      "comment": "Pipeline: ['non','ny','Such'] on 4n (3 lyrics). PDF p96 system 1: 'non-ny!__ \"Such' — missing exclamation and quote.",
+      "lyrics_v1": ["non", "ny!", "\"Such"]
+    },
+    "12": {
+      "comment": "Pipeline: ['gold','en','hair','I'] on 4n. PDF: 'gold-en hair I'. Correct.",
+      "lyrics_v1": ["gold", "en", "hair", "I"]
+    },
+    "13": {
+      "comment": "STACKED. Pipeline v1:['neer','did','see,','With'] v2:['see','ing','you','That']. 4n. PDF: v1='ne'er did see,\" With' v2='see-ing you That'. Pipeline OCR: 'neer' for 'ne'er', missing closing quote.",
+      "lyrics_v1": ["ne'er", "did", "see,\"", "With"]
+    },
+    "14": {
+      "comment": "STACKED. Pipeline v1:['to','shame','the'] v2:['Ive','a','wife','in']. 4n. PDF: v1='lips to shame the' v2='I've a wife in'. Pipeline v1 lost 'lips', v2 OCR: 'Ive' for 'I've'. v1 has only 3 lyrics on 4n — 'lips' was lost from prior measure overflow. Provide what fits.",
+      "lyrics_v1": ["to", "shame", "the"]
+    },
+    "15": {
+      "comment": "STACKED. Pipeline v1:['cher','ry.','Oh'] v2:['Ker','ry,','In']. 4n. PDF: v1='cher-ry.__ Oh,' v2='Ker-ry,__ In'. Pipeline missing comma after 'Oh'.",
+      "lyrics_v1": ["cher", "ry.", "Oh,"]
+    },
+    "16": {
+      "comment": "Pipeline: ['bux','om','milk','maid,'] on 4n. PDF: 'bux-om milk maid,'. Correct.",
+      "lyrics_v1": ["bux", "om", "milk", "maid,"]
+    },
+    "17": {
+      "comment": "Pipeline: ['mar','ry','With','a'] on 5n (4 lyrics). PDF: 'mar-ry me!\" With a'. Pipeline lost 'me!' and closing quote. 5 notes, 4 lyrics — 'me!' should be there. But pipeline shows only 4 lyric syllables on 5n.",
+      "lyrics_v1": ["mar", "ry", "me!\"", "With", "a"]
+    },
+    "18": {
+      "comment": "Pipeline v1:['down','a'] v2:['I'] on 3n (3 lyrics total). PDF: v1='down__ a' v2='I' (from the 'Spain and al-so Tim-buc-too!' verse line). Actually this is not stacked in the same way. PDF p96 system 3: 'down__ a'. Pipeline has 'down a' plus v2 'I' but only 3n. Actually the 2nd ending text is different. Keep v1.",
+      "lyrics_v1": ["down", "a"]
+    },
+    "19": {
+      "comment": "Pipeline: ['der','ry,','With','a'] on 5n (4 lyrics). PDF: 'der-ry,__ With a'. Correct.",
+      "lyrics_v1": ["der", "ry,", "With", "a"]
+    },
+    "20": {
+      "comment": "STACKED. Pipeline v1:['down,','a','down','a'] v2:['down,','a','down','a']. 4n. PDF: v1='down, a down a' v2='down, a down a'. Identical text, both verses same.",
+      "lyrics_v1": ["down,", "a", "down", "a"]
+    },
+    "21": {
+      "comment": "STACKED. Pipeline v1:['der','ry!'] v2:['der','ry!']. 3n (2 lyrics each). PDF: 'der-ry!__'. Both verses same.",
+      "lyrics_v1": ["der", "ry!"]
+    },
+    "23": {
+      "comment": "STACKED. Pipeline v1:['Our'] v2:['hearts','Youve']. 2n+2r. PDF p97 Refrain: v1='\"Our' v2='\"You've'. Pipeline v2 OCR: 'Youve' for 'You've'. m23 has 2n. v1 only has 1 lyric on 2n.",
+      "lyrics_v1": ["\"Our"]
+    },
+    "24": {
+      "comment": "STACKED. Pipeline v1:['hearts','could','rhyme?','said'] v2:['got','me','think',\"in'\"] on 4n. PDF: v1='hearts could rhyme?\" said' v2='got me think-in''. Pipeline v1 missing closing quote. v2 has curly apostrophe.",
+      "lyrics_v1": ["hearts", "could", "rhyme?\"", "said"]
+    },
+    "25": {
+      "comment": "STACKED. Pipeline v1:['she.','Tis'] v2:['twice;','Good']. 3n. PDF: v1='she. \"'Tis' v2='twice; \"Good-'. Pipeline lost opening quote marks.",
+      "lyrics_v1": ["she.", "\"'Tis"]
+    },
+    "26": {
+      "comment": "STACKED. Pipeline v1:['flat','tered',\"I'm\",'said'] v2:['bye','to','shoes','and']. 4n. PDF: v1='flat-tered I'm,\" said' v2='bye to shoes and'. Pipeline missing comma+quote after I'm.",
+      "lyrics_v1": ["flat", "tered", "I'm,\"", "said"]
+    },
+    "27": {
+      "comment": "STACKED. Pipeline v1:['she,','But'] v2:['rice,','For']. 3n (2 lyrics each). PDF: v1='she, \"But' v2='rice, \"For'. Missing opening quotes.",
+      "lyrics_v1": ["she,", "\"But"]
+    },
+    "28": {
+      "comment": "STACKED. Pipeline v1:['oh,','ah','me,','You'] v2:['oh,','ah','me,','Just']. 4n. PDF: v1='oh, ah me, You' v2='oh, ah me, Just'. Correct.",
+      "lyrics_v1": ["oh,", "ah", "me,", "You"]
+    },
+    "29": {
+      "comment": "STACKED. Pipeline v1:['see,','you','see,','You'] v2:['now,','you','see,','Just']. 4n. PDF: v1='see, you see, You' v2='now, you see, Just'. Correct.",
+      "lyrics_v1": ["see,", "you", "see,", "You"]
+    },
+    "30": {
+      "comment": "STACKED. Pipeline v1:['see,','you','see,','I'] v2:['now,','you','see,','I']. 4n. PDF: v1='see, you see, I' v2='now, you see, I'. Correct.",
+      "lyrics_v1": ["see,", "you", "see,", "I"]
+    },
+    "31": {
+      "comment": "STACKED. Pipeline v1:['hap','pen','to','be,','I'] v2:['hap','pen','to','be,','I']. 5n. PDF: v1='hap-pen to be, I' v2='hap-pen to be, I'. Identical. Correct.",
+      "lyrics_v1": ["hap", "pen", "to", "be,", "I"]
+    },
+    "32": {
+      "comment": "STACKED. Pipeline v1:['hap','pen','to','be','The'] v2:['hap','pen','to','be','The']. 5n. PDF: v1='hap-pen to be The' v2='hap-pen to be The'. Identical. Correct.",
+      "lyrics_v1": ["hap", "pen", "to", "be", "The"]
+    },
+    "33": {
+      "comment": "STACKED. Pipeline v1:['moth','er','of','three;'] v2:['hus','band','of','three,']. 5n (4 lyrics each). PDF: v1='moth-er of three;' v2='hus-band of three,'. Correct. 4 lyrics on 5n (held note).",
+      "lyrics_v1": ["moth", "er", "of", "three;"]
+    },
+    "34": {
+      "comment": "STACKED. Pipeline v1:['wife','al','read','y','and'] v2:['spliced','al','read','y','and']. 5n. PDF: v1='A wife al-read-y, and' v2='A-spliced al-read-y, and'. Pipeline lost 'A' from v1. Pipeline has 5 lyrics on 5n, but PDF has 6 syllables ('A wife al-read-y and'). 5n limit means we can only fit 5.",
+      "lyrics_v1": ["wife", "al", "read", "y,", "and"]
+    },
+    "35": {
+      "comment": "STACKED. Pipeline v1:['moth','er','of','three,','of'] v2:['bus','band','of','three,','of']. 5n. PDF: v1='moth-er of three, of' v2='hus-band of three, of'. Pipeline v2 OCR: 'bus' for 'hus'.",
+      "lyrics_v1": ["moth", "er", "of", "three,", "of"]
+    },
+    "36": {
+      "comment": "STACKED. Pipeline v1:['three,','of','three,','Of'] v2:['three,','of','three,','of']. 4n. PDF: v1='three, of three, of' v2='three, of three, of'. Pipeline v1 has capitalized 'Of' — should be lowercase.",
+      "lyrics_v1": ["three,", "of", "three,", "of"]
+    },
+    "37": {
+      "comment": "STACKED. Pipeline v1:['three,','of','three,','of'] v2:['three,','of','three,','of']. 4n. PDF: v1='three, of three, of' v2='three, of three, of'. Correct.",
+      "lyrics_v1": ["three,", "of", "three,", "of"]
+    },
+    "38": {
+      "comment": "STACKED. Pipeline v1:['three,'] v2:['three,']. 1n. PDF: 'three,__' (held). Correct.",
+      "lyrics_v1": ["three,"]
+    },
+    "39": {
+      "comment": "Pipeline: ['moth','er','of'] on 4n (3 lyrics). PDF p98 1st ending: '__ The moth-er of'. 3 lyrics on first 3 of 4n+1r. But actually this is the 1st ending tag. 'The moth-er of' = 4 syllables but pipeline has 3.",
+      "lyrics_v1": ["moth", "er", "of"]
+    },
+    "40": {
+      "comment": "Pipeline: ['three!'] on 2n (1 lyric). PDF: 'three!__'. Correct.",
+      "lyrics_v1": ["three!"]
+    },
+    "43": {
+      "comment": "Pipeline: ['The','hus','band','of'] on 5n (4 lyrics). PDF p98 2nd ending: 'The hus-band of'. Correct.",
+      "lyrics_v1": ["The", "hus", "band", "of"]
+    },
+    "44": {
+      "comment": "Pipeline: ['three!'] on 1n. PDF: 'three!__'. Correct.",
+      "lyrics_v1": ["three!"]
+    }
+  }
+}

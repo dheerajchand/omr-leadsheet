@@ -1,0 +1,196 @@
+{
+  "song": "02 - Bess You Is My Woman",
+  "key_fifths": -1,
+  "time_signature": "4/4",
+  "comment": "Published lyrics by DuBose Heyward. Complex duet: Porgy (m1-m19), Bess (m21-m39), combined sections (m40+). Pipeline stacks both voices on shared melody. Heavy OCR garble in directions. Many gaps where pipeline lost notes or lyrics. Truth provides primary voice lyrics.",
+  "measures": {
+    "1": {
+      "comment": "Pipeline stacked v1+v2: 'Bess, you From' (3 on 2n). 'From' is from later duet section. Published Porgy: 'Bess, you'.",
+      "lyrics_v1": ["Bess,", "you"]
+    },
+    "2": {
+      "comment": "Pipeline stacked v1+v2: 'is my one wo for man ev' (7 on 4n). Published Porgy: 'is my wo-man'.",
+      "lyrics_v1": ["is", "my", "wo", "man"]
+    },
+    "3": {
+      "comment": "Pipeline had 'now, mus' You' — 'mus'' is from later phrase 'you mus' laugh'. Published Porgy: 'now, You is,' on 4n (includes tied continuation).",
+      "lyrics_v1": ["now,", "You", "is,"]
+    },
+    "4": {
+      "comment": "Pipeline stacked: 'Is You keep' (3 on 2n). Published Porgy: 'You is!' (second exclamation).",
+      "lyrics_v1": ["You", "is!"]
+    },
+    "5": {
+      "comment": "Pipeline had NO lyrics on 2n+6r. Published Porgy: 'you mus'' (first 2 of 8 syllables in 'you mus' laugh an' sing an' dance for'). 6 notes lost as rests — 'laugh an' sing an' dance for' unfixable.",
+      "lyrics_v1": ["you", "mus'"]
+    },
+    "6": {
+      "comment": "Pipeline had NO lyrics on 4n. Published Porgy: 'two in-stead of'.",
+      "lyrics_v1": ["two", "in", "stead", "of"]
+    },
+    "7": {
+      "comment": "Pipeline had NO lyrics on 1n. Published Porgy: 'one.'.",
+      "lyrics_v1": ["one."]
+    },
+    "9": {
+      "comment": "Pipeline had NO lyrics on 2n. Published Porgy: 'Want no'.",
+      "lyrics_v1": ["Want", "no"]
+    },
+    "10": {
+      "comment": "Pipeline had NO lyrics on 4n. Published Porgy: 'wrin-kle on yo''.",
+      "lyrics_v1": ["wrin", "kle", "on", "yo'"]
+    },
+    "12": {
+      "comment": "Pipeline had 'how be' missing comma. Published Porgy: 'how, be-'.",
+      "lyrics_v1": ["how,", "be"]
+    },
+    "14": {
+      "comment": "Pipeline had 'of the past all' (4 on 4n+2r). Published: 'of the past is all done,' — 6 syllables but only 4 notes. 'all done,' on lost notes. Fixing note[3] from 'all' to 'is'.",
+      "lyrics_v1": ["of", "the", "past", "is"]
+    },
+    "15": {
+      "comment": "Pipeline had 'is' (1 on 2n) — garble/misplaced. Published Porgy: 'done.' (first of repeated 'done').",
+      "lyrics_v1": ["done.", "Oh,"]
+    },
+    "16": {
+      "comment": "Pipeline had NO lyrics on 1n+2r. Published Porgy: 'Bess,'.",
+      "lyrics_v1": ["Bess,"]
+    },
+    "17": {
+      "comment": "Pipeline had NO lyrics on 4n+1r. Published Porgy: 'my Bess! De real'.",
+      "lyrics_v1": ["my", "Bess!", "De", "real"]
+    },
+    "18": {
+      "comment": "Pipeline had 'hap pi ness is Bess be' — 'Bess' is OCR of 'jes''. Published Porgy: 'hap-pi-ness is jes' be-'.",
+      "lyrics_v1": ["hap", "pi", "ness", "is", "jes'", "be"]
+    },
+    "21": {
+      "comment": "Pipeline had 'Por gy' missing comma. Published Bess: 'Por-gy,'. Also direction garble ('TD', OCR trash) — not a lyrics fix.",
+      "lyrics_v1": ["Por", "gy,"]
+    },
+    "22": {
+      "comment": "Pipeline had ''0' wo man' (3 on 4n) — ''0'' is OCR garble of 'I's', 'yo'' dropped. Published Bess: 'I's yo' wo-man'.",
+      "lyrics_v1": ["I's", "yo'", "wo", "man"]
+    },
+    "23": {
+      "comment": "Pipeline had 'now,' (1 on 3n+2r). Published Bess: 'now, I is,' — missing 'I is,'. Adding.",
+      "lyrics_v1": ["now,", "I", "is,"]
+    },
+    "26": {
+      "comment": "Pipeline had ''less you sh de' — 'sh' is garbled 'shares'. Published Bess: ''less you shares de'.",
+      "lyrics_v1": ["'less", "you", "shares", "de"]
+    },
+    "28": {
+      "comment": "Pipeline had 'ar' (garble from 'poco rall.' direction). Published: no lyrics (transition). Clearing.",
+      "lyrics_v1": []
+    },
+    "29": {
+      "comment": "Pipeline had 'es' (garble). Published Bess: 'Dere's no'. Providing correct pickup.",
+      "lyrics_v1": ["Dere's", "no"]
+    },
+    "30": {
+      "comment": "Pipeline had NO lyrics on 4n. Published Bess: 'wrin-kle on my'.",
+      "lyrics_v1": ["wrin", "kle", "on", "my"]
+    },
+    "31": {
+      "comment": "Pipeline had NO lyrics on 1n+1r. Published Bess: 'brow'.",
+      "lyrics_v1": ["brow"]
+    },
+    "32": {
+      "comment": "Pipeline had 'rate' (garble). Published Bess: 'no' (start of 'no-how').",
+      "lyrics_v1": ["no"]
+    },
+    "33": {
+      "comment": "Pipeline had 'I no in'!' (garbled mix). Published Bess: 'how, but I ain'' — 'but' lost to missing note. Best 4 for 4n.",
+      "lyrics_v1": ["how,", "but", "I", "ain'"]
+    },
+    "34": {
+      "comment": "Pipeline had 'You hear me say in', if' — 'You hear' merged into one token. Published Bess: 'You hear me say-in', if'. Splitting.",
+      "lyrics_v1": ["You", "hear", "me", "say", "in',", "if"]
+    },
+    "37": {
+      "comment": "Pipeline had 'For gy,' — OCR 'F' for 'P'. Published Bess: 'Por-gy,'.",
+      "lyrics_v1": ["Por", "gy,"]
+    },
+    "41": {
+      "comment": "Pipeline had 'ev nin'' — missing leading apostrophe on ''nin''. Published Bess: 'Morn-in' time an' ev-'nin' time an''.",
+      "lyrics_v1": ["Morn", "in'", "time", "an'", "ev", "'nin'", "time", "an'"]
+    },
+    "43": {
+      "comment": "Pipeline dropped 'Morn' and 'ev' — had 'in' time an' in' time an'' (6 on 8n). Direction 'PORGY' is character marking not lyric. Published Porgy: 'Morn-in' time an' ev-'nin' time an''.",
+      "lyrics_v1": ["Morn", "in'", "time", "an'", "ev", "'nin'", "time", "an'"]
+    },
+    "44": {
+      "comment": "Pipeline had 'nier time an' win ter time;' — 'nier' is garbled 'mer'. Published Porgy: 'sum-mer time an' win-ter time;'. 'sum' lost to rest — unfixable.",
+      "lyrics_v1": ["mer", "time", "an'", "win", "ter", "time;"]
+    },
+    "45": {
+      "comment": "Pipeline had NO lyrics on 1n. Published: 'Bess,' (held, addressing Bess).",
+      "lyrics_v1": ["Bess,"]
+    },
+    "46": {
+      "comment": "Pipeline had NO lyrics on 4n. Published Porgy: 'you got yo'' (from 'Bess, you got yo' man').",
+      "lyrics_v1": ["you", "got", "yo'"]
+    },
+    "51": {
+      "comment": "Pipeline had 'NY i for ev er.' — 'NY' is garbled 'now', 'i' should be 'an''. Published Porgy: 'now an' for-ev-er.'.",
+      "lyrics_v1": ["now", "an'", "for", "ev", "er."]
+    },
+    "52": {
+      "comment": "Pipeline had 's . the ls Jos' be' (severe OCR garble). Published Porgy: 'Dis life is jes' be-'.",
+      "lyrics_v1": ["Dis", "life", "is", "jes'", "be"]
+    },
+    "53": {
+      "comment": "Pipeline stacked: 'gun, From a dis' (4 on 2n). Published Porgy: 'gun,' (end of phrase). Removing stacking.",
+      "lyrics_v1": ["gun,"]
+    },
+    "57": {
+      "comment": "Pipeline mixed voices: 'You Oh Bess don'' (4 on 4n). Bess 'You' + Porgy 'Oh, Bess, don''. Published Porgy: 'Oh, Bess, don''.",
+      "lyrics_v1": ["Oh,", "Bess,", "don'"]
+    },
+    "58": {
+      "comment": "Pipeline had 'min' dose wo' (3 on 4n). Published Porgy: 'min' dose wo-men,'. Missing 'men,'.",
+      "lyrics_v1": ["min'", "dose", "wo", "men,"]
+    },
+    "59": {
+      "comment": "Pipeline had 'got' (1 on 3n+2r). Published Porgy: 'You got yo'' (from 'You got yo' Por-gy').",
+      "lyrics_v1": ["You", "got", "yo'"]
+    },
+    "60": {
+      "comment": "Pipeline had 'you loves yo'Por gy,' — 'yo'Por' merged. Published Porgy: 'you loves yo' Por-gy,'.",
+      "lyrics_v1": ["you", "loves", "yo'", "Por", "gy,"]
+    },
+    "63": {
+      "comment": "Pipeline had 'yo it' (2 on 2n+1r). Published Porgy: 'seen it' (from 'I seen it in yo' eyes').",
+      "lyrics_v1": ["seen", "it"]
+    },
+    "64": {
+      "comment": "Pipeline had 'eyes Bess.,' — double punctuation. Published Porgy: 'eyes, Bess.'.",
+      "lyrics_v1": ["eyes,", "Bess."]
+    },
+    "67": {
+      "comment": "Pipeline had 'through de years a,' — stray comma on 'a'. Published Porgy: 'through de years a-'.",
+      "lyrics_v1": ["through", "de", "years", "a"]
+    },
+    "69": {
+      "comment": "Pipeline had 'er' (garble). Published: no lyrics (transition after 'sing-in'.'). Clearing.",
+      "lyrics_v1": []
+    },
+    "71": {
+      "comment": "Pipeline had 'ev min'' — 'min'' garbled from ''nin''. Published Bess: 'Morn-in' time an' ev-'nin' time an''.",
+      "lyrics_v1": ["Morn", "in'", "time", "an'", "ev", "'nin'", "time", "an'"]
+    },
+    "77": {
+      "comment": "Pipeline mixed voices: 'man From dis min ute I'm tell' (7 on 7n). 'man' is from Bess's 'my man Por-gy'. Published Porgy: 'From dis min-ute I'm tell-in''. Providing Porgy v1.",
+      "lyrics_v1": ["From", "dis", "min", "ute", "I'm", "tell", "in'"]
+    },
+    "79": {
+      "comment": "Pipeline mixed: 'From Oh, my Bes sie,' (5 on 5n). 'From' is bleed from previous phrase. Published Porgy: 'Oh, my Bes-sie,'.",
+      "lyrics_v1": ["Oh,", "my", "Bes", "sie,"]
+    },
+    "80": {
+      "comment": "Pipeline had 'ute hap py' — 'ute' is Bess bleed from 'min-ute'. Published Porgy: 'we's hap-py'.",
+      "lyrics_v1": ["we's", "hap", "py"]
+    }
+  }
+}
