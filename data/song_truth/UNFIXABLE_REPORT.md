@@ -1,10 +1,16 @@
 # Unfixable Issues Report — Song Truth Overlays
 
-Truth overlays can only redistribute lyrics across notes the pipeline already
-detected.  When the pipeline read a note as a rest (or missed it entirely), there
-is no `<note>` element to attach a lyric to, and the truth overlay cannot help.
+Truth overlays redistribute lyrics across notes the pipeline detected.
+When the pipeline read a note as a rest (or missed it entirely), the
+original overlay had no `<note>` element to attach a lyric to.
 
-This report catalogs every measure where published lyrics exceed available notes.
+**Update (#103):** The truth overlay now converts rests to cue-size notes
+when a measure has more truth syllables than detected notes.  Most
+measures listed below are now automatically handled.  Measures that have
+zero rests AND zero notes remain unfixable.
+
+This report catalogs every measure where published lyrics exceeded the
+originally available notes.
 
 ---
 
