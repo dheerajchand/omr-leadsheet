@@ -25,8 +25,8 @@
       "lyrics_v1": ["al", "Span", "ish", "tunes;"]
     },
     "6": {
-      "comment": "Pipeline stacked: 'They pol songs' (3 on 2n+3r). Published v1: 'The Ne-a-pol-i-tan' but only 2 notes — 'a-pol-i-tan' (4 syllables) lost to 3 rest-detected notes. Unfixable.",
-      "lyrics_v1": ["The", "Ne"]
+      "comment": "Pipeline stacked: 'They pol songs' (3 on 2n+3r). Published v1: 'The Ne-a-pol-i-tan' — 3 rests converted to notes via injection (#103).",
+      "lyrics_v1": ["The", "Ne", "a", "pol", "i-tan"]
     },
     "7": {
       "comment": "Pipeline stacked v1+v2: 8 on 4n. Published v1: 'Street Song sighs, You'.",
@@ -57,8 +57,8 @@
       "lyrics_v1": ["na", "tive", "strain,", "With"]
     },
     "14": {
-      "comment": "Pipeline stacked: 3 on 2n+2r. Published v1: 'folk songs plain-tive and' but only 2 notes — 'plain-tive and' (3 syllables) lost to rests. Unfixable.",
-      "lyrics_v1": ["folk", "songs"]
+      "comment": "Pipeline stacked: 3 on 2n+2r. Published v1: 'folk songs plain-tive and' — 2 rests converted to notes via injection (#103). 'and' merged onto last note.",
+      "lyrics_v1": ["folk", "songs", "plain", "tive-and"]
     },
     "15": {
       "comment": "Pipeline stacked v1+v2: 8 on 4n. Published v1: 'oth-ers gay, In'.",
@@ -69,11 +69,11 @@
       "lyrics_v1": ["their", "own", "pe"]
     },
     "17": {
-      "comment": "Pipeline had 'pe' (1 on 1n+4r). Displaced from m16. Published v1: '-cu-' (from 'pe-cu-liar'). '-liar' lost to 4 rests. Unfixable.",
-      "lyrics_v1": ["cu"]
+      "comment": "Pipeline had 'pe' (1 on 1n+4r). Published v1: '-cu-liar' — 1 rest converted to note via injection (#103).",
+      "lyrics_v1": ["cu", "liar"]
     },
     "18": {
-      "comment": "Pipeline stacked v1+v2: 13 on 7n. Published v1: 'way. A-mer-i-can folk songs,' — 'liar' from 'pe-cu-liar' lost (no notes), 'I' squeezed between m18/m19.",
+      "comment": "Pipeline stacked v1+v2: 13 on 7n. Published v1: 'way. A-mer-i-can folk songs,' — 'liar' now in m17 via injection.",
       "lyrics_v1": ["way.", "A", "mer", "i", "can", "folk", "songs,"]
     },
     "19": {

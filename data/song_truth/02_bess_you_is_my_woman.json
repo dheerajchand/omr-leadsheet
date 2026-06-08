@@ -21,8 +21,8 @@
       "lyrics_v1": ["You", "is!"]
     },
     "5": {
-      "comment": "Pipeline had NO lyrics on 2n+6r. Published Porgy: 'you mus'' (first 2 of 8 syllables in 'you mus' laugh an' sing an' dance for'). 6 notes lost as rests — 'laugh an' sing an' dance for' unfixable.",
-      "lyrics_v1": ["you", "mus'"]
+      "comment": "Pipeline had NO lyrics on 2n+6r. Published Porgy: 'you mus' laugh an' sing an' dance for' — 6 rests converted to notes via injection (#103).",
+      "lyrics_v1": ["you", "mus'", "laugh", "an'", "sing", "an'", "dance", "for"]
     },
     "6": {
       "comment": "Pipeline had NO lyrics on 4n. Published Porgy: 'two in-stead of'.",
@@ -121,8 +121,8 @@
       "lyrics_v1": ["Morn", "in'", "time", "an'", "ev", "'nin'", "time", "an'"]
     },
     "44": {
-      "comment": "Pipeline had 'nier time an' win ter time;' — 'nier' is garbled 'mer'. Published Porgy: 'sum-mer time an' win-ter time;'. 'sum' lost to rest — unfixable.",
-      "lyrics_v1": ["mer", "time", "an'", "win", "ter", "time;"]
+      "comment": "Pipeline had 'nier time an' win ter time;' — 'nier' is garbled 'mer'. Published Porgy: 'sum-mer time an' win-ter time;' — 1 rest converted to note for 'sum' via injection (#103).",
+      "lyrics_v1": ["sum", "mer", "time", "an'", "win", "ter", "time;"]
     },
     "45": {
       "comment": "Pipeline had NO lyrics on 1n. Published: 'Bess,' (held, addressing Bess).",
