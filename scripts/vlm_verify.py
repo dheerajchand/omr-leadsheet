@@ -43,9 +43,11 @@ logging.basicConfig(
 _log = logging.getLogger(__name__)
 
 VLM_PROMPT = """\
-Look at this cropped measure from a musical score. Report:
-1. How many noteheads (filled or open) do you see? Count only noteheads, not rests.
-2. What lyrics text appears below the staff? List each syllable separated by spaces. If no lyrics, return an empty list.
+This image shows ONE measure from the VOCAL line of a musical score.
+There is exactly one staff (five horizontal lines). Count ONLY the noteheads on THIS staff.
+Ignore any partial noteheads or staves visible at the top or bottom edges — those belong to other parts.
+1. How many noteheads (filled or open) are on the main staff? Count each notehead once.
+2. What lyrics text appears directly below the staff? List each syllable. If none, return an empty list.
 Reply ONLY as JSON: {"note_count": <int>, "lyrics": ["syl", "la", "ble"]}"""
 
 
@@ -384,7 +386,9 @@ def run(args: argparse.Namespace) -> None:
                 )
                 continue
 
-            crop_bytes = crop_measure(song["omr_path"], mb, pad_below=200)
+            crop_bytes = crop_measure(
+                song["omr_path"], mb, pad_above=30, pad_below=70,
+            )
             if crop_bytes is None:
                 _log.warning("m%d: crop failed for %s", mn, slug)
                 errors += 1
