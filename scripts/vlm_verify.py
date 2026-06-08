@@ -150,27 +150,32 @@ def _parse_vlm_response(text: str) -> dict | None:
     return None
 
 
-def _extract_musicxml_info(mxl_path: Path, measure_number: int) -> dict:
-    """Get note count and lyrics from a MusicXML file for one measure."""
+def _parse_musicxml(mxl_path: Path) -> dict[int, dict] | None:
+    """Parse a MusicXML file and return {measure_number: {note_count, lyrics}}.
+
+    Returns None if the file cannot be parsed.
+    """
     from music21 import converter, note as m21note
-    score = converter.parse(str(mxl_path))
+    try:
+        score = converter.parse(str(mxl_path))
+    except Exception as exc:
+        _log.warning("Cannot parse %s: %s", mxl_path.name, exc)
+        return None
     part = score.parts[0]
+    result: dict[int, dict] = {}
     for m in part.getElementsByClass("Measure"):
-        if int(m.number) == measure_number:
-            notes = [
-                n for n in m.recurse().notes
-                if isinstance(n, m21note.Note)
-            ]
-            lyrics = []
-            for n in notes:
-                for lyr in n.lyrics:
-                    if (lyr.number or 1) == 1 and lyr.text:
-                        lyrics.append(lyr.text)
-            return {
-                "note_count": len(notes),
-                "lyrics": lyrics,
-            }
-    return {"note_count": 0, "lyrics": []}
+        mn = int(m.number) if m.number else 0
+        notes = [
+            n for n in m.recurse().notes
+            if isinstance(n, m21note.Note)
+        ]
+        lyrics = []
+        for n in notes:
+            for lyr in n.lyrics:
+                if (lyr.number or 1) == 1 and lyr.text:
+                    lyrics.append(lyr.text)
+        result[mn] = {"note_count": len(notes), "lyrics": lyrics}
+    return result
 
 
 def _normalize_lyrics(lyrics: list[str]) -> list[str]:
@@ -234,10 +239,13 @@ def _find_songs(
         if filter_songs and not any(f in slug for f in filter_songs):
             continue
 
-        mxl_candidates = (
-            list(song_dir.glob("*lead.corrected.musicxml"))
-            + list(song_dir.glob("*lead.final.musicxml"))
-        )
+        mxl_candidates = [
+            p for p in (
+                list(song_dir.glob("*lead.corrected.musicxml"))
+                + list(song_dir.glob("*lead.final.musicxml"))
+            )
+            if not p.name.startswith("._")
+        ]
         if not mxl_candidates:
             continue
         mxl_path = mxl_candidates[0]
@@ -355,6 +363,13 @@ def run(args: argparse.Namespace) -> None:
 
         _log.info("Processing %s (%d measures)", slug, len(bounds))
 
+        mxml_data = _parse_musicxml(song["mxl_path"])
+        if mxml_data is None:
+            _log.warning("Skipping %s: MusicXML parse failed", slug)
+            measures_completed += len(bounds)
+            errors += len(bounds)
+            continue
+
         for mn, mb in sorted(bounds.items()):
             result_file = song_results_dir / f"m{mn}.json"
 
@@ -378,7 +393,7 @@ def run(args: argparse.Namespace) -> None:
 
             vlm_result = _query_vlm(args.ollama_url, args.model, crop_bytes)
 
-            mxml_info = _extract_musicxml_info(song["mxl_path"], mn)
+            mxml_info = mxml_data.get(mn, {"note_count": 0, "lyrics": []})
 
             if vlm_result is None:
                 result = {
