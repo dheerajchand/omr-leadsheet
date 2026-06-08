@@ -34,6 +34,8 @@ class MeasureBounds:
     x_right: float
     y_top: float
     y_bottom: float
+    y_clip_above: float | None = None
+    y_clip_below: float | None = None
 
 
 def measure_bounds_from_omr(omr_path: str | Path) -> dict[int, MeasureBounds]:
@@ -110,7 +112,12 @@ def measure_bounds_from_omr(omr_path: str | Path) -> dict[int, MeasureBounds]:
             for v in per_staff_bars.values():
                 v.sort()
 
+            all_staff_tops = sorted(
+                (top, sid) for sid, (top, _) in staff_y.items()
+            )
+
             seen: dict[int, MeasureBounds] = {}
+            seen_staff: dict[int, int] = {}
             staff_priority = sorted(vocal_staves) + sorted(
                 s for s in per_staff_bars if s not in vocal_staves
             )
@@ -132,7 +139,28 @@ def measure_bounds_from_omr(omr_path: str | Path) -> dict[int, MeasureBounds]:
                         y_top=top,
                         y_bottom=bottom,
                     )
+                    seen_staff[mid] = staff
                     prev_x = bx
+
+            for mid, mb in seen.items():
+                staff = seen_staff[mid]
+                s_top, s_bot = staff_y.get(staff, (0.0, 0.0))
+                clip_above = None
+                clip_below = None
+                for other_sid, (o_top, o_bot) in staff_y.items():
+                    if other_sid == staff:
+                        continue
+                    if o_bot < s_top:
+                        gap_mid = (o_bot + s_top) / 2.0
+                        if clip_above is None or gap_mid > clip_above:
+                            clip_above = gap_mid
+                    if o_top > s_bot:
+                        gap_mid = (s_bot + o_top) / 2.0
+                        if clip_below is None or gap_mid < clip_below:
+                            clip_below = gap_mid
+                mb.y_clip_above = clip_above
+                mb.y_clip_below = clip_below
+
             for mid, val in seen.items():
                 out[global_offset + mid] = val
 
@@ -155,7 +183,9 @@ def crop_measure(
     """Crop a single measure from BINARY.png, return PNG bytes.
 
     Uses Pillow if available, falls back to ImageMagick ``magick`` CLI.
-    The default pad_below=200 captures lyrics below the staff.
+    When ``bounds`` includes ``y_clip_above`` / ``y_clip_below`` (midpoints
+    to adjacent staves), the crop is clamped so it never bleeds into
+    another staff — regardless of the requested padding.
     """
     omr_path = str(omr_path)
     with tempfile.TemporaryDirectory() as td:
@@ -169,6 +199,11 @@ def crop_measure(
         x1 = int(bounds.x_right + pad_x)
         y0 = max(0, int(bounds.y_top - pad_above))
         y1 = int(bounds.y_bottom + pad_below)
+
+        if bounds.y_clip_above is not None:
+            y0 = max(y0, int(bounds.y_clip_above))
+        if bounds.y_clip_below is not None:
+            y1 = min(y1, int(bounds.y_clip_below))
 
         if Image is not None:
             img = Image.open(bin_png)

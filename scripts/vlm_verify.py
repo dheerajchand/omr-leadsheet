@@ -386,9 +386,7 @@ def run(args: argparse.Namespace) -> None:
                 )
                 continue
 
-            crop_bytes = crop_measure(
-                song["omr_path"], mb, pad_above=30, pad_below=70,
-            )
+            crop_bytes = crop_measure(song["omr_path"], mb)
             if crop_bytes is None:
                 _log.warning("m%d: crop failed for %s", mn, slug)
                 errors += 1
