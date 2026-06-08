@@ -70,7 +70,7 @@ cmd_launch() {
         "$REPO_ROOT/data/song_truth/" "${REMOTE_HOST}:${REMOTE_DATA_DIR}/song_truth/"
 
     # Build the python command
-    local py_cmd="cd ${REMOTE_WORK_DIR} && python3 vlm_verify.py"
+    local py_cmd="cd ${REMOTE_WORK_DIR} && ${REMOTE_WORK_DIR}/venv/bin/python3 vlm_verify.py"
     py_cmd+=" --data-dir ${REMOTE_DATA_DIR}"
     py_cmd+=" --work-dir ${REMOTE_WORK_DIR}"
     if [[ -n "$songs" ]]; then
@@ -81,9 +81,9 @@ cmd_launch() {
     fi
 
     echo "==> Pre-flight: checking Ollama and dependencies..."
-    ssh "$REMOTE_HOST" "python3 -c 'import requests, PIL; print(\"deps OK\")'" || {
+    ssh "$REMOTE_HOST" "${REMOTE_WORK_DIR}/venv/bin/python3 -c 'import requests, PIL, music21; print(\"deps OK\")'" || {
         echo "ERROR: Missing Python dependencies on ${REMOTE_HOST}."
-        echo "Run:  ssh ${REMOTE_HOST} 'pip3 install requests Pillow'"
+        echo "Run:  ssh ${REMOTE_HOST} '${REMOTE_WORK_DIR}/venv/bin/pip install requests Pillow music21'"
         exit 1
     }
 

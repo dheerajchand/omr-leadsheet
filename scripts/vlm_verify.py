@@ -30,7 +30,9 @@ from pathlib import Path
 
 import requests
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+_script_dir = Path(__file__).resolve().parent
+sys.path.insert(0, str(_script_dir / "src"))
+sys.path.insert(0, str(_script_dir.parent / "src"))
 from omr_leadsheet.barline import MeasureBounds, measure_bounds_from_omr, crop_measure
 
 logging.basicConfig(
@@ -193,14 +195,36 @@ def _lyrics_match(vlm: list[str], mxml: list[str]) -> bool:
     return all(x == y for x, y in zip(a, b))
 
 
-def _find_songs(data_dir: Path, filter_songs: list[str] | None) -> list[dict]:
-    """Discover songs with both .omr and corrected MusicXML files."""
+def _find_songs(
+    data_dir: Path, filter_songs: list[str] | None,
+    lead_dir: Path | None = None, omr_dir: Path | None = None,
+) -> list[dict]:
+    """Discover songs with both .omr and corrected MusicXML files.
+
+    Supports two layouts:
+    - Unified: data_dir/LeadSheets/ + data_dir/MusicXML/
+    - Gershwin songbook: lead_dir=lead_sheets/ + omr_dir=music_xml/
+    """
     songs = []
-    lead_dir = data_dir / "LeadSheets"
-    omr_dir = data_dir / "MusicXML"
+    if lead_dir is None:
+        lead_dir = data_dir / "LeadSheets"
+    if omr_dir is None:
+        omr_dir = data_dir / "MusicXML"
+    # Fallback: gershwin-songbook layout
+    if not lead_dir.exists():
+        alt = data_dir / "lead_sheets"
+        if alt.exists():
+            lead_dir = alt
+    if not omr_dir.exists():
+        alt = data_dir / "music_xml"
+        if alt.exists():
+            omr_dir = alt
 
     if not lead_dir.exists() or not omr_dir.exists():
-        _log.error("Expected LeadSheets/ and MusicXML/ in %s", data_dir)
+        _log.error(
+            "Cannot find lead sheets (%s) or OMR files (%s)",
+            lead_dir, omr_dir,
+        )
         return songs
 
     for song_dir in sorted(lead_dir.iterdir()):
@@ -210,16 +234,16 @@ def _find_songs(data_dir: Path, filter_songs: list[str] | None) -> list[dict]:
         if filter_songs and not any(f in slug for f in filter_songs):
             continue
 
-        mxl_candidates = list(song_dir.glob("*lead.corrected.musicxml")) + \
-                         list(song_dir.glob("*lead.final.musicxml"))
+        mxl_candidates = (
+            list(song_dir.glob("*lead.corrected.musicxml"))
+            + list(song_dir.glob("*lead.final.musicxml"))
+        )
         if not mxl_candidates:
             continue
         mxl_path = mxl_candidates[0]
 
-        omr_candidates = list(omr_dir.glob(f"{slug}*.omr")) + \
-                         list(omr_dir.glob(f"{slug.split(' - ')[-1] if ' - ' in slug else slug}*.omr"))
+        omr_candidates = list(omr_dir.glob(f"{slug}*.omr"))
         if not omr_candidates:
-            # Try matching by prefix number
             prefix = slug.split(" ")[0] if " " in slug else slug
             omr_candidates = [
                 p for p in omr_dir.glob("*.omr")
@@ -299,7 +323,9 @@ def run(args: argparse.Namespace) -> None:
         sys.exit(1)
 
     filter_songs = args.songs.split(",") if args.songs else None
-    songs = _find_songs(data_dir, filter_songs)
+    lead_dir = Path(args.lead_dir) if args.lead_dir else None
+    omr_dir = Path(args.omr_dir) if args.omr_dir else None
+    songs = _find_songs(data_dir, filter_songs, lead_dir=lead_dir, omr_dir=omr_dir)
     if not songs:
         _log.error("No songs found in %s", data_dir)
         sys.exit(1)
@@ -516,7 +542,9 @@ def main() -> None:
     ap.add_argument("--data-dir", required=True, help="Path to omr-leadsheet/data")
     ap.add_argument("--work-dir", required=True, help="Working directory for results")
     ap.add_argument("--ollama-url", default="http://localhost:11434")
-    ap.add_argument("--model", default="qwen2.5-vl")
+    ap.add_argument("--model", default="qwen2.5vl:32b")
+    ap.add_argument("--lead-dir", default=None, help="Override lead sheets directory")
+    ap.add_argument("--omr-dir", default=None, help="Override .omr files directory")
     ap.add_argument("--songs", default=None, help="Comma-separated song prefixes to filter")
     ap.add_argument("--resume", action="store_true", help="Skip measures with existing results")
     ap.add_argument("--log-file", default="vlm_verify.log")
