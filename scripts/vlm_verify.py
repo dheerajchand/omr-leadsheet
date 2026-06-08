@@ -372,6 +372,17 @@ def run(args: argparse.Namespace) -> None:
             errors += len(bounds)
             continue
 
+        # Detect intro offset: Audiveris counts piano intro measures that
+        # the vocal MusicXML part doesn't include.
+        aud_count = len(bounds)
+        mxml_count = max(mxml_data.keys()) if mxml_data else 0
+        intro_offset = max(0, aud_count - mxml_count)
+        if intro_offset:
+            _log.info(
+                "%s: intro offset=%d (audiveris=%d, mxml=%d)",
+                slug, intro_offset, aud_count, mxml_count,
+            )
+
         for mn, mb in sorted(bounds.items()):
             result_file = song_results_dir / f"m{mn}.json"
 
@@ -395,12 +406,15 @@ def run(args: argparse.Namespace) -> None:
 
             vlm_result = _query_vlm(args.ollama_url, args.model, crop_bytes)
 
-            mxml_info = mxml_data.get(mn, {"note_count": 0, "lyrics": []})
+            mxml_mn = mn - intro_offset
+            mxml_info = mxml_data.get(mxml_mn, {"note_count": 0, "lyrics": []})
 
             if vlm_result is None:
                 result = {
                     "song": slug,
                     "measure": mn,
+                    "mxml_measure": mxml_mn,
+                    "intro_offset": intro_offset,
                     "vlm_error": True,
                     "musicxml_note_count": mxml_info["note_count"],
                     "musicxml_lyrics": mxml_info["lyrics"],
@@ -415,6 +429,8 @@ def run(args: argparse.Namespace) -> None:
                 result = {
                     "song": slug,
                     "measure": mn,
+                    "mxml_measure": mxml_mn,
+                    "intro_offset": intro_offset,
                     "vlm_note_count": vlm_result["note_count"],
                     "musicxml_note_count": mxml_info["note_count"],
                     "note_count_match": nc_match,

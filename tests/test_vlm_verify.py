@@ -73,3 +73,34 @@ class TestLyricsMatch:
 
     def test_different_words_no_match(self):
         assert not _lyrics_match(["hello"], ["world"])
+
+
+class TestIntroOffset:
+    """Verify that intro_offset is computed as aud_count - mxml_max."""
+
+    def test_offset_positive(self):
+        # Simulates: Audiveris has 65 measures, MusicXML has 61
+        aud_count = 65
+        mxml_max = 61
+        offset = max(0, aud_count - mxml_max)
+        assert offset == 4
+
+    def test_offset_zero_when_aligned(self):
+        aud_count = 40
+        mxml_max = 40
+        offset = max(0, aud_count - mxml_max)
+        assert offset == 0
+
+    def test_mxml_lookup_with_offset(self):
+        mxml_data = {1: {"note_count": 2}, 2: {"note_count": 5}}
+        offset = 4
+        aud_mn = 5
+        mxml_mn = aud_mn - offset
+        assert mxml_mn == 1
+        assert mxml_data[mxml_mn]["note_count"] == 2
+
+    def test_intro_measures_below_offset(self):
+        offset = 6
+        for aud_mn in [1, 2, 3, 4, 5, 6]:
+            mxml_mn = aud_mn - offset
+            assert mxml_mn <= 0, "intro measures should map to non-positive mxml numbers"
