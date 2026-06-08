@@ -9,7 +9,8 @@
       "lyrics_v1": ["fling!"]
     },
     "7": {
-      "comment": "Pipeline detected 0 notes, 1 rest. PDF clearly shows a whole note on 'Blues?' — note detection error. Cannot provide lyrics (0 notes). Measure carries the word 'Blues?' completing the phrase 'Why keep nurs-ing the Blues?'."
+      "comment": "Pipeline detected 0 notes, 1 rest. PDF shows whole note on 'Blues?' — 1 rest converted to note via injection (#103).",
+      "lyrics_v1": ["Blues?"]
     },
     "9": {
       "comment": "GAP 3n. Pipeline had no lyrics. PDF: 'If_ you want' — 3 syllables on 3 notes.",
