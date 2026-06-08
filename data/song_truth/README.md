@@ -40,4 +40,10 @@ Field semantics:
   `C#+` for C-sharp augmented, `F#9⁷` rendered as `F#9/7` per
   MuseScore's stacked-numeral convention).
 
+- `measures[N].inject_pitch` — *(optional)* pitch name (e.g. `"C5"`,
+  `"F#3"`) for notes injected by the truth overlay when the measure has
+  more truth syllables than pipeline-detected notes (#103).  Rests are
+  converted to cue-size notes at this pitch.  If omitted, pitch is
+  inferred from the nearest note in the score.
+
 Measures not listed are skipped during comparison.

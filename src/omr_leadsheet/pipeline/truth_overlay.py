@@ -20,10 +20,60 @@ that GT-overlay is uniquely suited to.
 from __future__ import annotations
 
 import json
+import logging
 import re
 from pathlib import Path
 
-from music21 import converter, expressions, harmony, note as m21note, stream
+from music21 import converter, expressions, harmony, note as m21note, pitch as m21pitch, stream
+
+_log = logging.getLogger(__name__)
+
+
+def _infer_pitch(part, measure_number: int) -> m21pitch.Pitch:
+    """Find the nearest Note pitch by walking backward then forward
+    from *measure_number*.  Falls back to middle C."""
+    measures = list(part.getElementsByClass("Measure"))
+    by_num = {int(m.number): idx for idx, m in enumerate(measures) if m.number}
+    start = by_num.get(measure_number, 0)
+    # Walk backward
+    for idx in range(start, -1, -1):
+        for el in reversed(list(measures[idx].recurse().notes)):
+            if isinstance(el, m21note.Note):
+                return el.pitch
+    # Walk forward
+    for idx in range(start + 1, len(measures)):
+        for el in measures[idx].recurse().notes:
+            if isinstance(el, m21note.Note):
+                return el.pitch
+    return m21pitch.Pitch("C4")
+
+
+def _inject_notes_from_rests(measure, deficit: int,
+                             inject_pitch: m21pitch.Pitch) -> int:
+    """Convert rests in *measure* into cue-size notes until *deficit*
+    is satisfied.  Returns the number of notes actually injected."""
+    injected = 0
+    rests = sorted(
+        [r for r in measure.recurse().getElementsByClass(m21note.Rest)],
+        key=lambda r: float(r.offset),
+    )
+    for rest in rests:
+        if injected >= deficit:
+            break
+        rest_offset = float(rest.offset)
+        rest_ql = float(rest.duration.quarterLength)
+        needed = min(deficit - injected, max(1, int(rest_ql / 0.25)))
+        note_ql = rest_ql / needed
+        site = rest.activeSite or measure
+        site.remove(rest)
+        for k in range(needed):
+            n = m21note.Note(inject_pitch, quarterLength=note_ql)
+            n.style.noteSize = "cue"
+            site.insert(rest_offset + k * note_ql, n)
+            injected += 1
+            if injected >= deficit:
+                break
+    return injected
 
 
 def _truth_path_for(song_title: str, truth_root: Path | None = None) -> Path:
@@ -110,7 +160,9 @@ def apply_truth_overlay(score, truth: dict) -> dict:
          (a list of {target: int, measures: [int,...]} entries).
       2. Per-measure chord-list override (existing #80a/b behaviour).
       3. Per-measure v1 lyric-list override (#93). Lyrics are
-         distributed one syllable per Note in order.
+         distributed one syllable per Note in order.  When a measure
+         has more truth syllables than notes, rests are converted to
+         cue-size notes to carry the extra lyrics (#103).
       4. Strip phantom-marker "?" TextExpressions.
     Returns stats. Mutates the score in place."""
     stats = {
@@ -119,6 +171,7 @@ def apply_truth_overlay(score, truth: dict) -> dict:
         "chords_replaced": 0,
         "chords_inserted": 0,
         "lyrics_overridden": 0,
+        "notes_injected": 0,
         "phantom_markers_stripped": 0,
     }
     part = score.parts[0]
@@ -164,6 +217,28 @@ def apply_truth_overlay(score, truth: dict) -> dict:
                 n for n in m.recurse().notes
                 if isinstance(n, m21note.Note)
             ]
+            # Note injection: convert rests to notes when lyrics exceed notes
+            deficit = len(new_lyrics) - len(notes_in_m)
+            if deficit > 0:
+                raw = spec.get("inject_pitch")
+                if raw:
+                    try:
+                        ip = m21pitch.Pitch(raw)
+                    except Exception:
+                        ip = _infer_pitch(part, mn)
+                else:
+                    ip = _infer_pitch(part, mn)
+                count = _inject_notes_from_rests(m, deficit, ip)
+                stats["notes_injected"] += count
+                if count < deficit:
+                    _log.warning(
+                        "m%d: injected %d/%d needed notes (not enough rests)",
+                        mn, count, deficit,
+                    )
+                notes_in_m = [
+                    n for n in m.recurse().notes
+                    if isinstance(n, m21note.Note)
+                ]
             for i, n in enumerate(notes_in_m):
                 # Remove existing v1 lyrics
                 n.lyrics = [lyr for lyr in n.lyrics if (lyr.number or 1) != 1]
