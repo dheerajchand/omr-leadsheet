@@ -220,6 +220,72 @@ def test_clean_run_is_complete_and_returns_zero(
     assert progress["errors"] == 0
 
 
+def _report_summary(tmp_path):
+    report = json.loads((tmp_path / "work" / "discrepancy_report.json").read_text())
+    return report["summary"]
+
+
+def test_report_says_when_the_run_was_incomplete(
+    tmp_path, monkeypatch, stubbed_run
+):
+    calls = []
+    monkeypatch.setattr(vlm_verify, "_query_vlm", _fake_vlm(calls, failing={2}))
+
+    vlm_verify.run(_run_args(tmp_path))
+
+    summary = _report_summary(tmp_path)
+    assert summary["incomplete"] is True
+    assert summary["measures_expected"] == 2
+    assert summary["measures_missing"] == 1
+    assert summary["run_errors"] == 1
+    for key in ("total_measures", "note_mismatches", "lyric_mismatches", "vlm_errors"):
+        assert key in summary, f"existing key {key} must stay"
+
+
+def test_report_of_a_clean_run_is_not_incomplete(
+    tmp_path, monkeypatch, stubbed_run
+):
+    calls = []
+    monkeypatch.setattr(vlm_verify, "_query_vlm", _fake_vlm(calls))
+
+    vlm_verify.run(_run_args(tmp_path))
+
+    summary = _report_summary(tmp_path)
+    assert summary["incomplete"] is False
+    assert summary["measures_expected"] == 2
+    assert summary["measures_missing"] == 0
+    assert summary["run_errors"] == 0
+
+
+def test_report_counts_a_still_failing_earlier_error_as_missing(
+    tmp_path, monkeypatch, stubbed_run
+):
+    stubbed_run.mkdir(parents=True)
+    good = {"measure": 1, "vlm_note_count": 2, "musicxml_note_count": 2,
+            "note_count_match": True, "vlm_lyrics": [], "lyrics_match": True}
+    (stubbed_run / "m1.json").write_text(json.dumps(good))
+    (stubbed_run / "m2.json").write_text(json.dumps({"measure": 2, "vlm_error": True}))
+    calls = []
+    monkeypatch.setattr(vlm_verify, "_query_vlm", _fake_vlm(calls, failing={1}))
+
+    vlm_verify.run(_run_args(tmp_path, resume=True))
+
+    summary = _report_summary(tmp_path)
+    assert summary["incomplete"] is True
+    assert summary["measures_missing"] == 1
+    assert summary["vlm_errors"] == 1
+
+
+def test_resume_help_describes_the_retry_behaviour(monkeypatch, capsys):
+    monkeypatch.setattr(sys, "argv", ["vlm_verify.py", "--help"])
+
+    with pytest.raises(SystemExit):
+        vlm_verify.main()
+
+    help_text = " ".join(capsys.readouterr().out.split())
+    assert "re-query measures whose result is missing, unreadable or an earlier error" in help_text
+
+
 @pytest.mark.parametrize("run_result", [0, 1])
 def test_main_exits_with_the_code_run_returns(monkeypatch, run_result):
     monkeypatch.setattr(vlm_verify, "run", lambda args: run_result)
@@ -240,7 +306,18 @@ SH = Path(__file__).resolve().parents[1] / "scripts" / "vlm_verify.sh"
 _STUB = """#!/bin/bash
 printf '%s\\n' "$(basename "$0") $*" >> "$STUB_LOG"
 case "$*" in
-  *has-session*) [ "${STUB_TMUX_RUNNING:-0}" = "1" ] && exit 0 || exit 1 ;;
+  *has-session*)
+    if [ -n "${STUB_HAS_SESSION_SEQ:-}" ]; then
+      n=0
+      [ -f "$STUB_COUNT" ] && n=$(<"$STUB_COUNT")
+      n=$((n + 1))
+      printf '%s' "$n" > "$STUB_COUNT"
+      IFS=, read -r -a seq <<< "$STUB_HAS_SESSION_SEQ"
+      i=$((n - 1))
+      [ "$i" -ge "${#seq[@]}" ] && i=$((${#seq[@]} - 1))
+      exit "${seq[$i]}"
+    fi
+    [ "${STUB_TMUX_RUNNING:-0}" = "1" ] && exit 0 || exit 1 ;;
 esac
 exit 0
 """
@@ -269,14 +346,18 @@ def launch(tmp_path):
     log = tmp_path / "stub.log"
     log.write_text("")
 
-    def run_launch(*args, running=False):
+    def run_launch(*args, running=False, has_session=None):
+        """``has_session``: comma-separated exit codes for successive has-session calls."""
         env = {
             "PATH": str(stubs),
             "HOME": str(tmp_path),
             "STUB_LOG": str(log),
+            "STUB_COUNT": str(tmp_path / "has-session.count"),
             "STUB_TMUX_RUNNING": "1" if running else "0",
             "VLM_REMOTE_HOST": "stub-host.invalid",
         }
+        if has_session is not None:
+            env["STUB_HAS_SESSION_SEQ"] = has_session
         proc = subprocess.run(
             [shutil.which("bash"), str(SH), "launch", *args],
             env=env, capture_output=True, text=True, timeout=30,
@@ -317,6 +398,39 @@ def test_launch_replaces_a_running_job_only_with_force_restart(launch):
     assert "new-session" in joined
 
 
+def test_force_restart_kills_the_job_before_anything_is_copied(launch):
+    proc, calls = launch("--force-restart", running=True)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    kills = [i for i, c in enumerate(calls) if "kill-session" in c]
+    copies = [i for i, c in enumerate(calls) if c.startswith(("scp", "rsync"))]
+    assert len(kills) == 1
+    assert copies, "the sync should still run after the kill"
+    assert kills[0] < copies[0], "a live job's files must not be overwritten"
+
+
+def test_launch_aborts_without_killing_when_a_job_appears_during_the_sync(launch):
+    # First check: no session (rc 1). Re-check before new-session: one exists (rc 0).
+    proc, calls = launch(has_session="1,0")
+
+    assert proc.returncode != 0
+    assert "appeared" in proc.stdout + proc.stderr
+    joined = "\n".join(calls)
+    assert "kill-session" not in joined
+    assert "new-session" not in joined
+    assert any(c.startswith("scp") for c in calls), "the first check passed, so the sync ran"
+
+
+def test_launch_aborts_when_the_recheck_cannot_reach_tmux(launch):
+    proc, calls = launch(has_session="1,255")
+
+    assert proc.returncode != 0
+    assert "could not re-check" in proc.stdout + proc.stderr
+    joined = "\n".join(calls)
+    assert "kill-session" not in joined
+    assert "new-session" not in joined
+
+
 def test_launch_starts_normally_when_no_job_is_running(launch):
     proc, calls = launch("--resume")
 
@@ -332,6 +446,7 @@ def test_launch_rejects_shell_metacharacters_in_songs(launch, songs):
     proc, calls = launch("--songs", songs)
 
     assert proc.returncode != 0
+    assert "--songs may contain only" in proc.stdout + proc.stderr
     assert not any("new-session" in c for c in calls)
     assert not any(c.startswith(("scp", "rsync")) for c in calls)
 
@@ -345,9 +460,16 @@ def test_launch_requires_a_value_for_songs(launch):
 
 
 def test_launch_quotes_songs_for_the_remote_shell(launch):
-    proc, calls = launch("--songs", "Shall We,01")
+    songs = "Shall We,01"
+    proc, calls = launch("--songs", songs)
 
     assert proc.returncode == 0, proc.stdout + proc.stderr
     started = [c for c in calls if "new-session" in c]
     assert len(started) == 1
-    assert "--songs Shall\\ We\\,01" in started[0]
+    # printf %q output differs between bash versions, so ask the same bash.
+    quoted = subprocess.run(
+        [shutil.which("bash"), "-c", 'printf %q "$1"', "_", songs],
+        capture_output=True, text=True, check=True,
+    ).stdout
+    assert quoted != songs, "the value must actually be escaped"
+    assert f"--songs {quoted}" in started[0]

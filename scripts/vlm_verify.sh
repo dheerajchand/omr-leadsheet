@@ -84,7 +84,9 @@ cmd_launch() {
             echo "       To kill it and start over, re-run with --force-restart." >&2
             exit 1
         fi
-        echo "==> --force-restart: the running '${TMUX_SESSION}' session will be killed."
+        # Kill before the sync below so it cannot overwrite a live job's files.
+        echo "==> --force-restart: killing the running '${TMUX_SESSION}' session before syncing."
+        ssh "$REMOTE_HOST" "tmux kill-session -t ${TMUX_SESSION} 2>/dev/null || true"
     elif [[ "$session_rc" -ne 1 ]]; then
         echo "ERROR: could not check for a running job on ${REMOTE_HOST} (exit ${session_rc})." >&2
         exit 1
@@ -128,8 +130,20 @@ cmd_launch() {
     }
 
     echo "==> Launching in tmux session '${TMUX_SESSION}'..."
-    # Reached with a live session only when --force-restart was passed.
-    ssh "$REMOTE_HOST" "tmux kill-session -t ${TMUX_SESSION} 2>/dev/null || true"
+    if [[ -z "$force_restart" ]]; then
+        # Another launch may have started a job since the first check; never
+        # kill it. (With --force-restart the old job was already killed above.)
+        session_rc=0
+        ssh "$REMOTE_HOST" "tmux has-session -t ${TMUX_SESSION} 2>/dev/null" || session_rc=$?
+        if [[ "$session_rc" -eq 0 ]]; then
+            echo "ERROR: tmux session '${TMUX_SESSION}' appeared on ${REMOTE_HOST} while syncing; not replacing it." >&2
+            echo "       Re-run with --force-restart to kill it and start over." >&2
+            exit 1
+        elif [[ "$session_rc" -ne 1 ]]; then
+            echo "ERROR: could not re-check for a running job on ${REMOTE_HOST} (exit ${session_rc})." >&2
+            exit 1
+        fi
+    fi
     ssh "$REMOTE_HOST" "tmux new-session -d -s ${TMUX_SESSION} '${py_cmd}; echo; echo \"=== DONE ===\"; read'"
 
     echo "==> Job launched on ${REMOTE_HOST} in tmux session '${TMUX_SESSION}'"

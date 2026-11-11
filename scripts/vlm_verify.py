@@ -317,6 +317,11 @@ def _load_truth_files(data_dir: Path) -> dict[str, dict]:
     return truth
 
 
+def _song_results_dir(results_dir: Path, slug: str) -> Path:
+    """Directory holding one song's per-measure result files."""
+    return results_dir / re.sub(r"[^A-Za-z0-9_-]", "_", slug)
+
+
 def _has_cached_result(result_file: Path) -> bool:
     """True when ``result_file`` holds a usable VLM answer that --resume may skip.
 
@@ -381,7 +386,7 @@ def run(args: argparse.Namespace) -> int:
 
     for song_idx, (song, bounds) in enumerate(song_bounds):
         slug = song["slug"]
-        song_results_dir = results_dir / re.sub(r"[^A-Za-z0-9_-]", "_", slug)
+        song_results_dir = _song_results_dir(results_dir, slug)
         song_results_dir.mkdir(exist_ok=True)
 
         _log.info("Processing %s (%d measures)", slug, len(bounds))
@@ -477,7 +482,20 @@ def run(args: argparse.Namespace) -> int:
 
     # Final: generate discrepancy report
     _log.info("Generating discrepancy report...")
-    _generate_report(results_dir, truth_files, work_dir)
+    measures_missing = sum(
+        1
+        for song, bounds in song_bounds
+        for mn in bounds
+        if not _has_cached_result(
+            _song_results_dir(results_dir, song["slug"]) / f"m{mn}.json"
+        )
+    )
+    _generate_report(
+        results_dir, truth_files, work_dir,
+        measures_expected=total_measures,
+        measures_missing=measures_missing,
+        run_errors=errors,
+    )
     status = "complete" if errors == 0 else "incomplete"
     _update_progress(work_dir, status,
                      songs_completed=len(songs), songs_total=len(songs),
@@ -495,8 +513,17 @@ def run(args: argparse.Namespace) -> int:
 
 def _generate_report(
     results_dir: Path, truth_files: dict[str, dict], work_dir: Path,
+    measures_expected: int | None = None,
+    measures_missing: int = 0,
+    run_errors: int = 0,
 ) -> None:
-    """Build discrepancy_report.json from per-measure result files."""
+    """Build discrepancy_report.json from per-measure result files.
+
+    The summary also says whether the run was complete: ``measures_expected``
+    is how many measures the run set out to check, ``measures_missing`` how
+    many of them have no usable result file, and ``incomplete`` is true when
+    any measure errored or is missing, so the report alone shows a partial run.
+    """
     note_mismatches = 0
     lyric_mismatches = 0
     vlm_errors = 0
@@ -571,6 +598,10 @@ def _generate_report(
             "note_mismatches": note_mismatches,
             "lyric_mismatches": lyric_mismatches,
             "vlm_errors": vlm_errors,
+            "measures_expected": measures_expected,
+            "measures_missing": measures_missing,
+            "run_errors": run_errors,
+            "incomplete": bool(run_errors or measures_missing),
         },
         "accuracy_vs_truth": {
             "true_positives": true_positives,
@@ -608,7 +639,11 @@ def main() -> None:
     ap.add_argument("--lead-dir", default=None, help="Override lead sheets directory")
     ap.add_argument("--omr-dir", default=None, help="Override .omr files directory")
     ap.add_argument("--songs", default=None, help="Comma-separated song prefixes to filter")
-    ap.add_argument("--resume", action="store_true", help="Skip measures with existing results")
+    ap.add_argument(
+        "--resume", action="store_true",
+        help="Skip measures with a usable result; re-query measures whose "
+             "result is missing, unreadable or an earlier error",
+    )
     ap.add_argument("--log-file", default="vlm_verify.log")
     args = ap.parse_args()
     sys.exit(run(args))
