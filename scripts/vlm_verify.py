@@ -495,6 +495,7 @@ def run(args: argparse.Namespace) -> int:
         measures_expected=total_measures,
         measures_missing=measures_missing,
         run_errors=errors,
+        songs_in_run=[song["slug"] for song in songs],
     )
     status = "complete" if errors == 0 else "incomplete"
     _update_progress(work_dir, status,
@@ -516,14 +517,27 @@ def _generate_report(
     measures_expected: int | None = None,
     measures_missing: int = 0,
     run_errors: int = 0,
+    songs_in_run: list[str] | None = None,
 ) -> None:
     """Build discrepancy_report.json from per-measure result files.
 
-    The summary also says whether the run was complete: ``measures_expected``
-    is how many measures the run set out to check, ``measures_missing`` how
-    many of them have no usable result file, and ``incomplete`` is true when
-    any measure errored or is missing, so the report alone shows a partial run.
+    Two scopes appear in the summary. ``total_measures``, ``note_mismatches``,
+    ``lyric_mismatches`` and ``vlm_errors`` cover EVERY song directory under
+    ``results_dir``, including songs from earlier runs. ``measures_expected``,
+    ``measures_missing``, ``run_errors``, ``songs_in_run`` and ``incomplete``
+    cover only the run that wrote the report: ``incomplete`` is true when a
+    measure of this run errored or has no usable result, so the report alone
+    shows a partial run. ``vlm_errors_outside_run`` counts errored result
+    files in song directories that are not part of this run. When the caller
+    gives no run information, ``incomplete`` and ``vlm_errors_outside_run``
+    are ``None`` (unknown) instead of a misleading ``False`` or ``0``.
     """
+    run_scoped = measures_expected is not None and songs_in_run is not None
+    run_dirs = (
+        {_song_results_dir(results_dir, slug).name for slug in songs_in_run}
+        if songs_in_run is not None else None
+    )
+    vlm_errors_outside_run = 0
     note_mismatches = 0
     lyric_mismatches = 0
     vlm_errors = 0
@@ -552,6 +566,8 @@ def _generate_report(
 
             if r.get("vlm_error"):
                 vlm_errors += 1
+                if run_dirs is not None and song_dir.name not in run_dirs:
+                    vlm_errors_outside_run += 1
                 continue
 
             is_note_mismatch = not r.get("note_count_match", True)
@@ -601,7 +617,13 @@ def _generate_report(
             "measures_expected": measures_expected,
             "measures_missing": measures_missing,
             "run_errors": run_errors,
-            "incomplete": bool(run_errors or measures_missing),
+            "incomplete": (
+                bool(run_errors or measures_missing) if run_scoped else None
+            ),
+            "songs_in_run": songs_in_run,
+            "vlm_errors_outside_run": (
+                vlm_errors_outside_run if run_dirs is not None else None
+            ),
         },
         "accuracy_vs_truth": {
             "true_positives": true_positives,

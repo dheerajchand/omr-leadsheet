@@ -276,6 +276,42 @@ def test_report_counts_a_still_failing_earlier_error_as_missing(
     assert summary["vlm_errors"] == 1
 
 
+def test_subset_run_beside_another_songs_stale_errors_is_scoped(
+    tmp_path, monkeypatch, stubbed_run
+):
+    other = tmp_path / "work" / "results" / "S2"
+    other.mkdir(parents=True)
+    for n in (1, 2, 3):
+        (other / f"m{n}.json").write_text(json.dumps({"measure": n, "vlm_error": True}))
+    calls = []
+    monkeypatch.setattr(vlm_verify, "_query_vlm", _fake_vlm(calls))
+
+    rc = vlm_verify.run(_run_args(tmp_path))
+
+    summary = _report_summary(tmp_path)
+    assert rc == 0
+    assert summary["incomplete"] is False, "S1 finished cleanly"
+    assert summary["songs_in_run"] == ["S1"]
+    assert summary["vlm_errors"] == 3, "whole results directory, unchanged meaning"
+    assert summary["vlm_errors_outside_run"] == 3
+    assert summary["total_measures"] == 5
+    assert summary["measures_expected"] == 2
+
+
+def test_report_without_run_information_says_incomplete_is_unknown(tmp_path):
+    results = tmp_path / "results"
+    (results / "S1").mkdir(parents=True)
+    (results / "S1" / "m1.json").write_text(json.dumps({"measure": 1, "vlm_error": True}))
+
+    vlm_verify._generate_report(results, {}, tmp_path)
+
+    summary = json.loads((tmp_path / "discrepancy_report.json").read_text())["summary"]
+    assert summary["incomplete"] is None
+    assert summary["songs_in_run"] is None
+    assert summary["vlm_errors_outside_run"] is None
+    assert summary["vlm_errors"] == 1
+
+
 def test_resume_help_describes_the_retry_behaviour(monkeypatch, capsys):
     monkeypatch.setattr(sys, "argv", ["vlm_verify.py", "--help"])
 
@@ -305,6 +341,10 @@ SH = Path(__file__).resolve().parents[1] / "scripts" / "vlm_verify.sh"
 
 _STUB = """#!/bin/bash
 printf '%s\\n' "$(basename "$0") $*" >> "$STUB_LOG"
+case "$*" in
+  *"import requests"*) exit "${STUB_PREFLIGHT_RC:-0}" ;;
+esac
+[ "$(basename "$0")" = "${STUB_FAIL_CMD:-}" ] && exit 1
 case "$*" in
   *has-session*)
     if [ -n "${STUB_HAS_SESSION_SEQ:-}" ]; then
@@ -346,8 +386,14 @@ def launch(tmp_path):
     log = tmp_path / "stub.log"
     log.write_text("")
 
-    def run_launch(*args, running=False, has_session=None):
-        """``has_session``: comma-separated exit codes for successive has-session calls."""
+    def run_launch(*args, running=False, has_session=None,
+                   preflight_rc=None, fail_cmd=None):
+        """Run launch against the stubs.
+
+        ``has_session``: comma-separated exit codes for successive has-session calls.
+        ``preflight_rc``: exit code of the dependency pre-flight ssh call.
+        ``fail_cmd``: name of a stub (e.g. ``scp``) that always fails.
+        """
         env = {
             "PATH": str(stubs),
             "HOME": str(tmp_path),
@@ -358,6 +404,10 @@ def launch(tmp_path):
         }
         if has_session is not None:
             env["STUB_HAS_SESSION_SEQ"] = has_session
+        if preflight_rc is not None:
+            env["STUB_PREFLIGHT_RC"] = str(preflight_rc)
+        if fail_cmd is not None:
+            env["STUB_FAIL_CMD"] = fail_cmd
         proc = subprocess.run(
             [shutil.which("bash"), str(SH), "launch", *args],
             env=env, capture_output=True, text=True, timeout=30,
@@ -390,7 +440,8 @@ def test_launch_refuses_to_replace_a_running_job(launch):
 
 
 def test_launch_replaces_a_running_job_only_with_force_restart(launch):
-    proc, calls = launch("--force-restart", running=True)
+    # Running at the first check, gone after the kill.
+    proc, calls = launch("--force-restart", has_session="0,1")
 
     assert proc.returncode == 0, proc.stdout + proc.stderr
     joined = "\n".join(calls)
@@ -399,7 +450,7 @@ def test_launch_replaces_a_running_job_only_with_force_restart(launch):
 
 
 def test_force_restart_kills_the_job_before_anything_is_copied(launch):
-    proc, calls = launch("--force-restart", running=True)
+    proc, calls = launch("--force-restart", has_session="0,1")
 
     assert proc.returncode == 0, proc.stdout + proc.stderr
     kills = [i for i, c in enumerate(calls) if "kill-session" in c]
@@ -407,6 +458,60 @@ def test_force_restart_kills_the_job_before_anything_is_copied(launch):
     assert len(kills) == 1
     assert copies, "the sync should still run after the kill"
     assert kills[0] < copies[0], "a live job's files must not be overwritten"
+
+
+def test_failing_preflight_makes_no_kill_even_with_force_restart(launch):
+    proc, calls = launch("--force-restart", has_session="0,1", preflight_rc=1)
+
+    assert proc.returncode != 0
+    assert "Missing Python dependencies" in proc.stdout + proc.stderr
+    joined = "\n".join(calls)
+    assert "kill-session" not in joined, "the old job must survive a failed pre-flight"
+    assert "new-session" not in joined
+    assert not any(c.startswith(("scp", "rsync")) for c in calls)
+    assert "was killed" not in proc.stdout + proc.stderr
+
+
+def test_force_restart_aborts_before_copying_when_the_session_survives_the_kill(launch):
+    # Still alive at the re-check after the kill (rc 0 both times).
+    proc, calls = launch("--force-restart", has_session="0,0")
+
+    assert proc.returncode != 0
+    assert "still running" in proc.stdout + proc.stderr
+    joined = "\n".join(calls)
+    assert joined.count("kill-session") == 1
+    assert "new-session" not in joined
+    assert not any(c.startswith(("scp", "rsync")) for c in calls), (
+        "a surviving job's files must not be overwritten"
+    )
+    assert "was killed" not in proc.stdout + proc.stderr
+
+
+def test_force_restart_aborts_when_the_kill_cannot_be_confirmed(launch):
+    proc, calls = launch("--force-restart", has_session="0,255")
+
+    assert proc.returncode != 0
+    assert "could not confirm the kill" in proc.stdout + proc.stderr
+    assert not any(c.startswith(("scp", "rsync")) for c in calls)
+    assert not any("new-session" in c for c in calls)
+
+
+def test_sync_failure_after_a_forced_kill_says_nothing_is_running(launch):
+    proc, calls = launch("--force-restart", has_session="0,1", fail_cmd="scp")
+
+    assert proc.returncode != 0
+    output = proc.stdout + proc.stderr
+    assert "was killed and no new job was started" in output
+    assert "nothing is running" in output
+    assert any("kill-session" in c for c in calls)
+    assert not any("new-session" in c for c in calls)
+
+
+def test_a_successful_forced_launch_prints_no_killed_note(launch):
+    proc, calls = launch("--force-restart", has_session="0,1")
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "was killed and no new job was started" not in proc.stdout + proc.stderr
 
 
 def test_launch_aborts_without_killing_when_a_job_appears_during_the_sync(launch):

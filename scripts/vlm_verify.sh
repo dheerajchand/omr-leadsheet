@@ -43,6 +43,17 @@ EOF
     exit 1
 }
 
+# Set once a --force-restart has killed the old session; if the launch then
+# fails before the new job starts, say so on the way out (EXIT trap).
+KILLED_OLD_SESSION=""
+LAUNCH_OK=""
+note_killed_session() {
+    if [[ -n "$KILLED_OLD_SESSION" && -z "$LAUNCH_OK" ]]; then
+        echo "NOTE: the previous '${TMUX_SESSION}' session on ${REMOTE_HOST} was killed and no new job was started; nothing is running." >&2
+    fi
+}
+trap note_killed_session EXIT
+
 cmd_launch() {
     local songs=""
     local resume=""
@@ -76,6 +87,7 @@ cmd_launch() {
     # Never replace a running job without being asked: check before any copy,
     # because the sync below overwrites the files the job is using.
     local session_rc=0
+    local kill_old=""
     ssh "$REMOTE_HOST" "tmux has-session -t ${TMUX_SESSION} 2>/dev/null" || session_rc=$?
     if [[ "$session_rc" -eq 0 ]]; then
         if [[ -z "$force_restart" ]]; then
@@ -84,12 +96,37 @@ cmd_launch() {
             echo "       To kill it and start over, re-run with --force-restart." >&2
             exit 1
         fi
-        # Kill before the sync below so it cannot overwrite a live job's files.
-        echo "==> --force-restart: killing the running '${TMUX_SESSION}' session before syncing."
-        ssh "$REMOTE_HOST" "tmux kill-session -t ${TMUX_SESSION} 2>/dev/null || true"
+        kill_old="yes"
     elif [[ "$session_rc" -ne 1 ]]; then
         echo "ERROR: could not check for a running job on ${REMOTE_HOST} (exit ${session_rc})." >&2
         exit 1
+    fi
+
+    # Check the remote environment before anything destructive. It uses the
+    # remote venv, not the files synced below, so a failure here leaves a
+    # running job untouched.
+    echo "==> Pre-flight: checking dependencies..."
+    ssh "$REMOTE_HOST" "${REMOTE_WORK_DIR}/venv/bin/python3 -c 'import requests, PIL, music21; print(\"deps OK\")'" || {
+        echo "ERROR: Missing Python dependencies on ${REMOTE_HOST}."
+        echo "Run:  ssh ${REMOTE_HOST} '${REMOTE_WORK_DIR}/venv/bin/pip install requests Pillow music21'"
+        exit 1
+    }
+
+    if [[ -n "$kill_old" ]]; then
+        # Kill before the sync below so it cannot overwrite a live job's files,
+        # and confirm it is really gone before copying anything.
+        echo "==> --force-restart: killing the running '${TMUX_SESSION}' session before syncing."
+        ssh "$REMOTE_HOST" "tmux kill-session -t ${TMUX_SESSION} 2>/dev/null || true"
+        session_rc=0
+        ssh "$REMOTE_HOST" "tmux has-session -t ${TMUX_SESSION} 2>/dev/null" || session_rc=$?
+        if [[ "$session_rc" -eq 0 ]]; then
+            echo "ERROR: tmux session '${TMUX_SESSION}' is still running on ${REMOTE_HOST} after the kill; nothing was copied." >&2
+            exit 1
+        elif [[ "$session_rc" -ne 1 ]]; then
+            echo "ERROR: could not confirm the kill on ${REMOTE_HOST} (exit ${session_rc}); nothing was copied." >&2
+            exit 1
+        fi
+        KILLED_OLD_SESSION="yes"
     fi
 
     echo "==> Syncing scripts to ${REMOTE_HOST}..."
@@ -122,13 +159,6 @@ cmd_launch() {
         py_cmd+=" --resume"
     fi
 
-    echo "==> Pre-flight: checking Ollama and dependencies..."
-    ssh "$REMOTE_HOST" "${REMOTE_WORK_DIR}/venv/bin/python3 -c 'import requests, PIL, music21; print(\"deps OK\")'" || {
-        echo "ERROR: Missing Python dependencies on ${REMOTE_HOST}."
-        echo "Run:  ssh ${REMOTE_HOST} '${REMOTE_WORK_DIR}/venv/bin/pip install requests Pillow music21'"
-        exit 1
-    }
-
     echo "==> Launching in tmux session '${TMUX_SESSION}'..."
     if [[ -z "$force_restart" ]]; then
         # Another launch may have started a job since the first check; never
@@ -146,6 +176,7 @@ cmd_launch() {
     fi
     ssh "$REMOTE_HOST" "tmux new-session -d -s ${TMUX_SESSION} '${py_cmd}; echo; echo \"=== DONE ===\"; read'"
 
+    LAUNCH_OK="yes"
     echo "==> Job launched on ${REMOTE_HOST} in tmux session '${TMUX_SESSION}'"
     echo "    Check progress:  $0 status"
     echo "    Attach:          $0 attach"
