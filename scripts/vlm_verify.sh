@@ -2,7 +2,10 @@
 # VLM verification job runner for cyberpower.
 #
 # Subcommands:
-#   launch [--songs 01,02,15] [--resume]  Start verification on cyberpower
+#   launch [--songs 01,02,15] [--resume] [--force-restart]
+#                                          Start verification on cyberpower; refuses
+#                                          to replace a running job without
+#                                          --force-restart
 #   status                                 Check progress
 #   results [--dest ./vlm_results]         Download results
 #   attach                                 Attach to tmux session
@@ -25,7 +28,9 @@ usage() {
 Usage: $0 <command> [options]
 
 Commands:
-  launch [--songs 01,02,15] [--resume]  Sync data and start VLM verification
+  launch [--songs 01,02,15] [--resume] [--force-restart]
+                                         Sync data and start VLM verification
+                                         (--force-restart kills a running job)
   status                                 Show progress.json from remote
   results [--dest DIR]                   Download results to local machine
   attach                                 Attach to tmux session on remote
@@ -41,14 +46,49 @@ EOF
 cmd_launch() {
     local songs=""
     local resume=""
+    local force_restart=""
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            --songs) songs="$2"; shift 2 ;;
+            --songs)
+                if [[ $# -lt 2 ]]; then
+                    echo "ERROR: --songs requires a value (e.g. --songs 01,02,15)" >&2
+                    usage
+                fi
+                songs="$2"; shift 2 ;;
             --resume) resume="--resume"; shift ;;
+            --force-restart) force_restart="yes"; shift ;;
             *) echo "Unknown option: $1"; usage ;;
         esac
     done
+
+    # --songs becomes part of a command line that a remote shell parses, so
+    # accept only song-prefix characters and still shell-quote the value.
+    if [[ -n "$songs" ]]; then
+        local songs_re='^[A-Za-z0-9_., -]+$'
+        if ! [[ "$songs" =~ $songs_re ]]; then
+            echo "ERROR: --songs may contain only letters, digits, space and . , _ -" >&2
+            exit 1
+        fi
+        songs="$(printf '%q' "$songs")"
+    fi
+
+    # Never replace a running job without being asked: check before any copy,
+    # because the sync below overwrites the files the job is using.
+    local session_rc=0
+    ssh "$REMOTE_HOST" "tmux has-session -t ${TMUX_SESSION} 2>/dev/null" || session_rc=$?
+    if [[ "$session_rc" -eq 0 ]]; then
+        if [[ -z "$force_restart" ]]; then
+            echo "ERROR: tmux session '${TMUX_SESSION}' is already running on ${REMOTE_HOST}." >&2
+            echo "       Watch it with:  $0 attach   or   $0 status" >&2
+            echo "       To kill it and start over, re-run with --force-restart." >&2
+            exit 1
+        fi
+        echo "==> --force-restart: the running '${TMUX_SESSION}' session will be killed."
+    elif [[ "$session_rc" -ne 1 ]]; then
+        echo "ERROR: could not check for a running job on ${REMOTE_HOST} (exit ${session_rc})." >&2
+        exit 1
+    fi
 
     echo "==> Syncing scripts to ${REMOTE_HOST}..."
     ssh "$REMOTE_HOST" "mkdir -p ${REMOTE_WORK_DIR} ${REMOTE_DATA_DIR}"
@@ -88,7 +128,7 @@ cmd_launch() {
     }
 
     echo "==> Launching in tmux session '${TMUX_SESSION}'..."
-    # Kill existing session if any
+    # Reached with a live session only when --force-restart was passed.
     ssh "$REMOTE_HOST" "tmux kill-session -t ${TMUX_SESSION} 2>/dev/null || true"
     ssh "$REMOTE_HOST" "tmux new-session -d -s ${TMUX_SESSION} '${py_cmd}; echo; echo \"=== DONE ===\"; read'"
 

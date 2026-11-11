@@ -317,7 +317,28 @@ def _load_truth_files(data_dir: Path) -> dict[str, dict]:
     return truth
 
 
-def run(args: argparse.Namespace) -> None:
+def _has_cached_result(result_file: Path) -> bool:
+    """True when ``result_file`` holds a usable VLM answer that --resume may skip.
+
+    A missing, unreadable or ``vlm_error`` file is not a cached answer: those
+    measures are queried again.
+    """
+    try:
+        cached = json.loads(result_file.read_text())
+    except FileNotFoundError:
+        return False
+    except (OSError, json.JSONDecodeError) as exc:
+        _log.warning("Ignoring unreadable cached result %s: %s", result_file, exc)
+        return False
+    return isinstance(cached, dict) and not cached.get("vlm_error")
+
+
+def run(args: argparse.Namespace) -> int:
+    """Verify every measure; return 0 when all succeeded, 1 if any errored.
+
+    A failed VLM call writes no result file, so a rerun (with or without
+    ``--resume``) queries that measure again.
+    """
     data_dir = Path(args.data_dir).resolve()
     work_dir = Path(args.work_dir).resolve()
     work_dir.mkdir(parents=True, exist_ok=True)
@@ -386,7 +407,7 @@ def run(args: argparse.Namespace) -> None:
         for mn, mb in sorted(bounds.items()):
             result_file = song_results_dir / f"m{mn}.json"
 
-            if args.resume and result_file.exists():
+            if args.resume and _has_cached_result(result_file):
                 measures_completed += 1
                 _update_progress(
                     work_dir, "running",
@@ -410,36 +431,36 @@ def run(args: argparse.Namespace) -> None:
             mxml_info = mxml_data.get(mxml_mn, {"note_count": 0, "lyrics": []})
 
             if vlm_result is None:
-                result = {
-                    "song": slug,
-                    "measure": mn,
-                    "mxml_measure": mxml_mn,
-                    "intro_offset": intro_offset,
-                    "vlm_error": True,
-                    "musicxml_note_count": mxml_info["note_count"],
-                    "musicxml_lyrics": mxml_info["lyrics"],
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
-                }
+                # Not cached: a transient failure must not become a permanent
+                # result. The measure is retried on the next run.
+                _log.warning("m%d: VLM call failed for %s", mn, slug)
                 errors += 1
-            else:
-                nc_match = vlm_result["note_count"] == mxml_info["note_count"]
-                ly_match = _lyrics_match(
-                    vlm_result["lyrics"], mxml_info["lyrics"]
+                measures_completed += 1
+                _update_progress(
+                    work_dir, "running",
+                    current_song=slug, current_measure=mn,
+                    songs_completed=song_idx, songs_total=len(songs),
+                    measures_completed=measures_completed,
+                    measures_total=total_measures, errors=errors,
                 )
-                result = {
-                    "song": slug,
-                    "measure": mn,
-                    "mxml_measure": mxml_mn,
-                    "intro_offset": intro_offset,
-                    "vlm_note_count": vlm_result["note_count"],
-                    "musicxml_note_count": mxml_info["note_count"],
-                    "note_count_match": nc_match,
-                    "vlm_lyrics": vlm_result["lyrics"],
-                    "musicxml_lyrics": mxml_info["lyrics"],
-                    "lyrics_match": ly_match,
-                    "vlm_raw": vlm_result.get("raw", ""),
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
-                }
+                continue
+
+            nc_match = vlm_result["note_count"] == mxml_info["note_count"]
+            ly_match = _lyrics_match(vlm_result["lyrics"], mxml_info["lyrics"])
+            result = {
+                "song": slug,
+                "measure": mn,
+                "mxml_measure": mxml_mn,
+                "intro_offset": intro_offset,
+                "vlm_note_count": vlm_result["note_count"],
+                "musicxml_note_count": mxml_info["note_count"],
+                "note_count_match": nc_match,
+                "vlm_lyrics": vlm_result["lyrics"],
+                "musicxml_lyrics": mxml_info["lyrics"],
+                "lyrics_match": ly_match,
+                "vlm_raw": vlm_result.get("raw", ""),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            }
 
             result_file.write_text(json.dumps(result, indent=2) + "\n")
             measures_completed += 1
@@ -457,11 +478,19 @@ def run(args: argparse.Namespace) -> None:
     # Final: generate discrepancy report
     _log.info("Generating discrepancy report...")
     _generate_report(results_dir, truth_files, work_dir)
-    _update_progress(work_dir, "complete",
+    status = "complete" if errors == 0 else "incomplete"
+    _update_progress(work_dir, status,
                      songs_completed=len(songs), songs_total=len(songs),
                      measures_completed=measures_completed,
                      measures_total=total_measures, errors=errors)
+    if errors:
+        _log.error(
+            "Incomplete: %d measure(s) errored and were not cached; rerun "
+            "with --resume to retry them. Results in %s", errors, work_dir,
+        )
+        return 1
     _log.info("Done. Results in %s", work_dir)
+    return 0
 
 
 def _generate_report(
@@ -582,7 +611,7 @@ def main() -> None:
     ap.add_argument("--resume", action="store_true", help="Skip measures with existing results")
     ap.add_argument("--log-file", default="vlm_verify.log")
     args = ap.parse_args()
-    run(args)
+    sys.exit(run(args))
 
 
 if __name__ == "__main__":
