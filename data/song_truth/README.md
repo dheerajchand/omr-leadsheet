@@ -47,3 +47,10 @@ Field semantics:
   inferred from the nearest note in the score.
 
 Measures not listed are skipped during comparison.
+
+## VLM Verification (#106)
+
+These truth files also serve as the accuracy test suite for the VLM
+verification stage (`scripts/vlm_verify.py`).  The 29 songs and 851
+known corrections provide ground truth for measuring precision and
+recall of automated note-count and lyric cross-checking via qwen2.5-vl.
